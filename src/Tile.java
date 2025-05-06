@@ -1,21 +1,27 @@
 public class Tile {
-    int[] terrain;
+    public enum Terrain{CITY, FIELD, ROAD}
+    Terrain up, right, down, left;
+    boolean cloister, pennant;
     public Tile(int[] terrain) {
-        this.terrain = new int[5];
-        System.arraycopy(terrain, 0, this.terrain, 0, 5);
+        up = terrain[0] == 0 ? Terrain.CITY : terrain[0] == 1 ? Terrain.FIELD : Terrain.ROAD;
+        right = terrain[1] == 0 ? Terrain.CITY : terrain[1] == 1 ? Terrain.FIELD : Terrain.ROAD;
+        down = terrain[2] == 0 ? Terrain.CITY : terrain[2] == 1 ? Terrain.FIELD : Terrain.ROAD;
+        left = terrain[3] == 0 ? Terrain.CITY : terrain[3] == 1 ? Terrain.FIELD : Terrain.ROAD;
+        cloister = terrain[4] == 1;
+        pennant = terrain[5] == 1;
     }
     public void rotate_left() {
-        int temp = terrain[0];
-        terrain[0] = terrain[1];
-        terrain[1] = terrain[2];
-        terrain[2] = terrain[3];
-        terrain[3] = temp;
+        Terrain temp = up;
+        up = right;
+        right = down;
+        down = left;
+        left = temp;
     }
     public void rotate_right() {
-        int temp = terrain[3];
-        terrain[3] = terrain[2];
-        terrain[2] = terrain[1];
-        terrain[1] = terrain[0];
-        terrain[0] = temp;
+        Terrain temp = up;
+        up = left;
+        left = down;
+        down = right;
+        right = temp;
     }
 }
