@@ -9,12 +9,12 @@ public class Table {
         tiles = new Tile[TABLE_DIMENSIONS][TABLE_DIMENSIONS];
         tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/app/img/tiles/D.png");
     }
-    public void put_tile(Tile tile, int x, int y) {
-        if (can_place(tile, x, y)) {
+    public void putTile(Tile tile, int x, int y) {
+        if (canPlace(tile, x, y)) {
             tiles[x][y] = tile;
         }
     }
-    public boolean can_place(Tile tile, int x, int y) {
+    public boolean canPlace(Tile tile, int x, int y) {
         if (tiles[x][y] != null) return false;
         if (tiles[x - 1][y] == null && tiles[x + 1][y] == null && tiles[x][y - 1] == null && tiles[x][y + 1] == null) return false;
         if (tiles[x - 1][y] != null && tile.left != tiles[x - 1][y].right) return false;

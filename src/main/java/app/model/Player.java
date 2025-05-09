@@ -13,19 +13,19 @@ public class Player {
     public void rename(String name) {
         this.name = name;
     }
-    public void add_points(int points) {
+    public void addPoints(int points) {
         this.points += points;
     }
-    public void set_color(Color color) {
+    public void setColor(Color color) {
         this.color = color;
     }
-    public String get_name() {
+    public String getName() {
         return name;
     }
-    public Color get_color() {
+    public Color getColor() {
         return color;
     }
-    public int get_points() {
+    public int getPoints() {
         return points;
     }
 }

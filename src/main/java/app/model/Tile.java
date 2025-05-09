@@ -15,15 +15,7 @@ public class Tile {
         pennant = terrain[5] == 1;
         this.image_path = image_path;
     }
-    public void rotate_left() {
-        Terrain temp = up;
-        up = right;
-        right = down;
-        down = left;
-        left = temp;
-        rotation = (rotation + 270) % 360;
-    }
-    public void rotate_right() {
+    public void rotate() {
         Terrain temp = up;
         up = left;
         left = down;
@@ -31,7 +23,7 @@ public class Tile {
         right = temp;
         rotation = (rotation + 90) % 360;
     }
-    public String get_image_path() {
+    public String getImagePath() {
         return image_path;
     }
 

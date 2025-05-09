@@ -32,7 +32,7 @@ public class Box {
             }
         }
     }
-    public Tile give_tile() {
+    public Tile giveTile() {
         Random r = new Random();
         return tiles.remove(r.nextInt(tiles.size()));
     }

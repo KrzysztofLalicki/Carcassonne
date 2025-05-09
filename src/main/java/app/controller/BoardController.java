@@ -23,7 +23,7 @@ public class BoardController {
         this.boardView = new BoardView(game.getTable());
         selected = new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION);
         boardView.setOnTablePosition(selected);
-        nextTile = game.getBox().give_tile();
+        nextTile = game.getBox().giveTile();
     }
 
     public BoardView getBoardView() {
@@ -39,10 +39,10 @@ public class BoardController {
         else if(event.getCode() == KeyCode.LEFT) x--;
         else if(event.getCode() == KeyCode.RIGHT) x++;
         else if(event.getCode() == KeyCode.R)
-            nextTile.rotate_right();
-        else if(event.getCode() == KeyCode.SPACE && table.can_place(nextTile, selected.x, selected.y)) {
-            table.put_tile(nextTile, selected.x, selected.y);
-            nextTile = box.give_tile();
+            nextTile.rotate();
+        else if(event.getCode() == KeyCode.SPACE && table.canPlace(nextTile, selected.x, selected.y)) {
+            table.putTile(nextTile, selected.x, selected.y);
+            nextTile = box.giveTile();
         }
 
         Position newPos = new Position(x, y);
@@ -53,7 +53,7 @@ public class BoardController {
         if(table.getTiles()[newPos.x][newPos.y] == null) {
             boardView.setImageOnSelectedTile(nextTile);
 
-            if (table.can_place(nextTile, newPos.x, newPos.y))
+            if (table.canPlace(nextTile, newPos.x, newPos.y))
                 boardView.setSelectionOutline(TileView.Outline.GREEN);
             else
                 boardView.setSelectionOutline(TileView.Outline.RED);
