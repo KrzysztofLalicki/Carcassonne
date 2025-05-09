@@ -1,21 +1,16 @@
 package app;
 
-import javafx.scene.image.Image;
-
 public class Tile {
     public enum Terrain{CITY, FIELD, ROAD}
     Terrain up, right, down, left;
     boolean cloister, pennant;
-    public String image = "/img/tiles/mock/blue.png";
-
-    public Tile(int[] terrain, String image) {
+    public Tile(int[] terrain) {
         up = terrain[0] == 0 ? Terrain.CITY : terrain[0] == 1 ? Terrain.FIELD : Terrain.ROAD;
         right = terrain[1] == 0 ? Terrain.CITY : terrain[1] == 1 ? Terrain.FIELD : Terrain.ROAD;
         down = terrain[2] == 0 ? Terrain.CITY : terrain[2] == 1 ? Terrain.FIELD : Terrain.ROAD;
         left = terrain[3] == 0 ? Terrain.CITY : terrain[3] == 1 ? Terrain.FIELD : Terrain.ROAD;
         cloister = terrain[4] == 1;
         pennant = terrain[5] == 1;
-        this.image = image;
     }
     public void rotate_left() {
         Terrain temp = up;

@@ -1,12 +1,29 @@
 package app;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Box {
     ArrayList<Tile> tiles;
-    public Box() {
+    public Box() throws IOException {
         tiles = new ArrayList<>();
+        List<String> lines = Files.readAllLines(Paths.get("tiles.txt"));
+        int[] tile = new int[6];
+        for (String line : lines) {
+            Scanner scanner = new Scanner(line);
+            for (int j = 0; j < 6; j++) {
+                tile[j] = scanner.nextInt();
+            }
+            int tiles = scanner.nextInt();
+            for (int j = 0; j < tiles; j++) {
+                this.tiles.add(new Tile(tile));
+            }
+        }
     }
     public void add_tile(Tile tile) {
         tiles.add(tile);
