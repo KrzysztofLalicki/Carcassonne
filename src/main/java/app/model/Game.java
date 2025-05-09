@@ -7,7 +7,7 @@ public class Game {
     ArrayList<Player> players;
     Box box;
     Table table;
-    Game() throws IOException {
+    public Game(){
         players = new ArrayList<>();
         table = new Table();
         box = new Box();
@@ -17,5 +17,8 @@ public class Game {
     }
     void remove_player(int nr) {
         players.remove(nr);
+    }
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

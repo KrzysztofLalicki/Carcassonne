@@ -10,9 +10,15 @@ import java.util.Scanner;
 
 public class Box {
     ArrayList<Tile> tiles;
-    public Box() throws IOException {
+    public Box(){
         tiles = new ArrayList<>();
-        List<String> lines = Files.readAllLines(Paths.get("tiles.txt"));
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(Paths.get("tiles.txt"));
+        }
+        catch (IOException e){
+            throw new RuntimeException(e);
+        }
         int[] tile = new int[6];
         for (String line : lines) {
             Scanner scanner = new Scanner(line);
