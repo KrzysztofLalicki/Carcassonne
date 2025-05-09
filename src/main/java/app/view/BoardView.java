@@ -26,7 +26,7 @@ public class BoardView extends GridPane {
         tiles[onViewPosition.x][onViewPosition.y].select();
 
         this.table = table;
-        onTablePosition = new Position(72 - DISPLAYED_GRID_SIZE / 2, 72 - DISPLAYED_GRID_SIZE / 2);
+        onTablePosition = new Position(71 - DISPLAYED_GRID_SIZE / 2, 71 - DISPLAYED_GRID_SIZE / 2);
 
         updateTilesImages();
     }
@@ -34,8 +34,8 @@ public class BoardView extends GridPane {
     private void updateTilesImages() {
         for(int i = 0; i < DISPLAYED_GRID_SIZE; i++)
             for(int j = 0; j < DISPLAYED_GRID_SIZE; j++) {
-                if (table.tiles[i + onTablePosition.x][j + onTablePosition.y] != null)
-                    tiles[i][j].setTileImage(new Image(getClass().getResource(table.tiles[i + onTablePosition.x][j + onTablePosition.y].image).toExternalForm()));
+                if (table.getTiles()[i + onTablePosition.x][j + onTablePosition.y] != null)
+                    tiles[i][j].setTileImage(new Image(getClass().getResource(table.getTiles()[i + onTablePosition.x][j + onTablePosition.y].get_image_path()).toExternalForm()));
                 else
                     tiles[i][j].setTileImage(null);
             }
@@ -43,7 +43,21 @@ public class BoardView extends GridPane {
 
 
     public void setOnTablePosition(Position newOnTablePosition) {
-        onTablePosition = newOnTablePosition;
-        updateTilesImages();
+        //Position diff = new Position(newOnTablePosition.x - onTablePosition.x, newOnTablePosition.y - onTablePosition.y);
+        Position newOnViewPosition = new Position(onViewPosition.x + newOnTablePosition.x - onTablePosition.x, onViewPosition.y + newOnTablePosition.y - onTablePosition.y);
+        if(newOnViewPosition.x <= 0 || newOnViewPosition.x >= DISPLAYED_GRID_SIZE || newOnViewPosition.y <= 0 || newOnViewPosition.y >= DISPLAYED_GRID_SIZE) {
+            onTablePosition = newOnTablePosition;
+            tiles[onViewPosition.x][onViewPosition.y].select();
+            onViewPosition = new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2);
+            tiles[onViewPosition.x][onViewPosition.y].select();
+            onTablePosition = newOnTablePosition;
+            updateTilesImages();
+        }
+        else {
+            tiles[onViewPosition.x][onViewPosition.y].select();
+            onViewPosition = newOnViewPosition;
+            tiles[onViewPosition.x][onViewPosition.y].select();
+            onTablePosition = newOnTablePosition;
+        }
     }
 }

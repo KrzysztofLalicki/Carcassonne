@@ -22,12 +22,13 @@ public class Box {
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
-                this.tiles.add(new Tile(tile, image_code + ".png"));
+                this.tiles.add(new Tile(tile, "/img/tiles/" + image_code + ".png"));
             }
         }
     }
     public Tile give_tile() {
         Random r = new Random();
-        return tiles.remove(r.nextInt(tiles.size()));
+        //return tiles.remove(r.nextInt(tiles.size()));
+        return tiles.get(r.nextInt(tiles.size()));
     }
 }
