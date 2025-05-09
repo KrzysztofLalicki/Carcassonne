@@ -12,7 +12,7 @@ public class BoardController {
 
     public BoardController(BoardView board) {
         this.board = board;
-        selected = new Position(69, 69);
+        selected = new Position(71, 71);
         board.setOnTablePosition(selected);
     }
 

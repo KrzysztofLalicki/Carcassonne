@@ -1,20 +1,18 @@
-package app;
-
-import java.io.IOException;
+package app.model;
 
 public class Table {
     Tile[][] tiles;
     public Table() {
         tiles = new Tile[143][143];
-//        tiles[71][71] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/img/tiles/D.png");
-        try {
-            Box b = new Box();
-            for(int i = 0; i < 143; i++)
-                for(int j = 0; j < 143; j++)
-                    tiles[i][j] = b.give_tile();
-        } catch(IOException e) {
-            throw new RuntimeException(e);
-        }
+        tiles[71][71] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/app/img/tiles/D.png");
+//        try {
+//            Box b = new Box();
+//            for(int i = 0; i < 143; i++)
+//                for(int j = 0; j < 143; j++)
+//                    tiles[i][j] = b.give_tile();
+//        } catch(IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
     public void put_tile(Tile tile, int x, int y) {

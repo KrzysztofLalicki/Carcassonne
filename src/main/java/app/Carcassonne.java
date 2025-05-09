@@ -1,17 +1,16 @@
 package app;
 
 import app.controller.BoardController;
+import app.model.Table;
 import app.view.BoardView;
-import app.view.TileView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import static java.lang.Thread.sleep;
 
 
-public class HelloApplication extends Application {
+public class Carcassonne extends Application {
     public static void main(String[] args) {
         launch(args);
     }
