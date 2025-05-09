@@ -1,4 +1,4 @@
-package app;
+package app.model;
 
 public class Tile {
     public enum Terrain{CITY, FIELD, ROAD}

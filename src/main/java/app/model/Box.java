@@ -1,4 +1,4 @@
-package app;
+package app.model;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -22,7 +22,7 @@ public class Box {
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
-                this.tiles.add(new Tile(tile, image_code + ".png"));
+                this.tiles.add(new Tile(tile, "/app/img/tiles/" + image_code + ".png"));
             }
         }
     }
