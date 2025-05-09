@@ -1,12 +1,13 @@
 package app;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Game {
     ArrayList<Player> players;
     Box box;
     Table table;
-    Game() {
+    Game() throws FileNotFoundException {
         players = new ArrayList<>();
         box = new Box();
         table = new Table();
@@ -16,5 +17,16 @@ public class Game {
     }
     void remove_player(int nr) {
         players.remove(nr);
+    }
+
+    public static void main(String[] args) {
+        Game game = null;
+        try {
+            game = new Game();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert game != null;
+        System.out.println(game.box.tiles.size());
     }
 }
