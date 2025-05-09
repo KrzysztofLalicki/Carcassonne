@@ -16,17 +16,15 @@ public class Box {
         int[] tile = new int[6];
         for (String line : lines) {
             Scanner scanner = new Scanner(line);
+            String image_code = scanner.next();
             for (int j = 0; j < 6; j++) {
                 tile[j] = scanner.nextInt();
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
-                this.tiles.add(new Tile(tile));
+                this.tiles.add(new Tile(tile, image_code + ".png"));
             }
         }
-    }
-    public void add_tile(Tile tile) {
-        tiles.add(tile);
     }
     public Tile give_tile() {
         Random r = new Random();
