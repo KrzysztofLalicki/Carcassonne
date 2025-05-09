@@ -1,24 +1,26 @@
 package app;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Box {
     ArrayList<Tile> tiles;
-    public Box() throws FileNotFoundException {
+    public Box() throws IOException {
         tiles = new ArrayList<>();
-        String file = "tiles.txt";
-        Scanner scanner = new Scanner(new File(file));
+        List<String> lines = Files.readAllLines(Paths.get("tiles.txt"));
         int[] tile = new int[6];
-        while(scanner.hasNext()) {
-            for (int i = 0; i < 6; i++) {
-                tile[i] = scanner.nextInt();
+        for (String line : lines) {
+            Scanner scanner = new Scanner(line);
+            for (int j = 0; j < 6; j++) {
+                tile[j] = scanner.nextInt();
             }
             int tiles = scanner.nextInt();
-            for (int i = 0; i < tiles; i++) {
+            for (int j = 0; j < tiles; j++) {
                 this.tiles.add(new Tile(tile));
             }
         }

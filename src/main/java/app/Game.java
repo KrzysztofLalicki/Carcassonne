@@ -1,13 +1,13 @@
 package app;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Game {
     ArrayList<Player> players;
     Box box;
     Table table;
-    Game() throws FileNotFoundException {
+    Game() throws IOException {
         players = new ArrayList<>();
         box = new Box();
         table = new Table();
@@ -23,7 +23,7 @@ public class Game {
         Game game = null;
         try {
             game = new Game();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         assert game != null;
