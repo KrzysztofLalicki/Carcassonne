@@ -1,3 +1,5 @@
+package app;
+
 public class Tile {
     public enum Terrain{CITY, FIELD, ROAD}
     Terrain up, right, down, left;
