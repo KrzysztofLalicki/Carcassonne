@@ -1,23 +1,32 @@
 package app;
 
+import app.controller.BoardController;
+import app.view.BoardView;
+import app.view.TileView;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import static java.lang.Thread.sleep;
+
 
 public class HelloApplication extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    public static void main(String[] args) {
-        launch();
+    @Override
+    public void start(Stage primaryStage) {
+        Table table = new Table();
+        BoardView boardView = new BoardView(table);
+        BoardController boardController = new BoardController(boardView);
+
+        Scene scene = new Scene(boardView);
+        scene.setOnKeyPressed(boardController::handleKeyPress);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
+
 }

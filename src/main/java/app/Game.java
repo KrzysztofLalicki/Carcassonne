@@ -1,3 +1,5 @@
+package app;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -14,5 +16,9 @@ public class Game {
     }
     void remove_player(int nr) {
         players.remove(nr);
+    }
+
+    public static void main(String args[]){
+
     }
 }
