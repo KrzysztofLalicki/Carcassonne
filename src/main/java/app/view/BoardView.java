@@ -2,16 +2,18 @@ package app.view;
 
 import app.model.Table;
 import app.model.Position;
+import app.model.Tile;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
 public class BoardView extends GridPane {
     private static final int DISPLAYED_GRID_SIZE = 11;
 
-    private TileView[][] tiles;
+    private final TileView[][] tiles;
     private Position onViewPosition;
+    private TileView.Outline outline = TileView.Outline.RED;
 
-    private Table table;
+    private final Tile[][] table;
     private Position onTablePosition;
 
 
@@ -23,39 +25,51 @@ public class BoardView extends GridPane {
                 add(tiles[i][j], i, j);
             }
         onViewPosition = new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2);
-        tiles[onViewPosition.x][onViewPosition.y].select();
+        tiles[onViewPosition.x][onViewPosition.y].setOutline(outline);
 
-        this.table = table;
+        this.table = table.getTiles();
         onTablePosition = new Position(0, 0);
 
         updateTilesImages();
     }
 
+
+
     private void updateTilesImages() {
         for(int xTable = onTablePosition.x - onViewPosition.x, xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
             for(int yTable = onTablePosition.y - onViewPosition.y, yView = 0;  yView < DISPLAYED_GRID_SIZE; yTable++, yView++) {
                 try {
-                    tiles[xView][yView].setTileImage(new Image(getClass().getResource(table.getTiles()[xTable][yTable].get_image_path()).toExternalForm()));
+                    tiles[xView][yView].setTileImage(new Image(getClass().getResource(table[xTable][yTable].get_image_path()).toExternalForm()));
+                    tiles[xView][yView].setRotate(table[xTable][yTable].getRotation());
                 } catch(NullPointerException | IndexOutOfBoundsException e) {
                     tiles[xView][yView].setTileImage(null);
                 }
             }
     }
 
+    public void setSelectionOutline(TileView.Outline outline) {
+        this.outline = outline;
+        tiles[onViewPosition.x][onViewPosition.y].setOutline(outline);
+    }
+
+    public void setImageOnSelectedTile(Tile tile){
+        try {
+            tiles[onViewPosition.x][onViewPosition.y].setTileImage(new Image(getClass().getResource(tile.get_image_path()).toExternalForm()));
+            tiles[onViewPosition.x][onViewPosition.y].setRotate(tile.getRotation());
+        } catch(NullPointerException | IndexOutOfBoundsException e) {
+            tiles[onViewPosition.x][onViewPosition.y].setTileImage(null);
+        }
+    }
+
 
     public void setOnTablePosition(Position newOnTablePosition) {
         Position newOnViewPosition = new Position(onViewPosition.x + newOnTablePosition.x - onTablePosition.x, onViewPosition.y + newOnTablePosition.y - onTablePosition.y);
-
-        if(newOnViewPosition.x <= 0 || newOnViewPosition.x >= DISPLAYED_GRID_SIZE - 1 || newOnViewPosition.y <= 0 || newOnViewPosition.y >= DISPLAYED_GRID_SIZE - 1) {
-            onTablePosition = newOnTablePosition;
-            updateTilesImages();
-        }
-        else {
-            tiles[onViewPosition.x][onViewPosition.y].select();
+        if(newOnViewPosition.x > 0 && newOnViewPosition.x < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y > 0 && newOnViewPosition.y < DISPLAYED_GRID_SIZE - 1) {
+            tiles[onViewPosition.x][onViewPosition.y].setOutline(TileView.Outline.NONE);
             onViewPosition = newOnViewPosition;
-            tiles[onViewPosition.x][onViewPosition.y].select();
-            onTablePosition = newOnTablePosition;
+            tiles[onViewPosition.x][onViewPosition.y].setOutline(outline);
         }
-
+        onTablePosition = newOnTablePosition;
+        updateTilesImages();
     }
 }

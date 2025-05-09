@@ -4,7 +4,8 @@ public class Tile {
     public enum Terrain{CITY, FIELD, ROAD}
     Terrain up, right, down, left;
     boolean cloister, pennant;
-    private String image_path;
+    private final String image_path;
+    private Integer rotation = 0;
     public Tile(int[] terrain, String image_path) {
         up = terrain[0] == 0 ? Terrain.CITY : terrain[0] == 1 ? Terrain.FIELD : Terrain.ROAD;
         right = terrain[1] == 0 ? Terrain.CITY : terrain[1] == 1 ? Terrain.FIELD : Terrain.ROAD;
@@ -20,6 +21,7 @@ public class Tile {
         right = down;
         down = left;
         left = temp;
+        rotation = (rotation + 270) % 360;
     }
     public void rotate_right() {
         Terrain temp = up;
@@ -27,8 +29,13 @@ public class Tile {
         left = down;
         down = right;
         right = temp;
+        rotation = (rotation + 90) % 360;
     }
     public String get_image_path() {
         return image_path;
+    }
+
+    public Integer getRotation() {
+        return rotation;
     }
 }
