@@ -28,6 +28,6 @@ public class Box {
     }
     public Tile give_tile() {
         Random r = new Random();
-        return tiles.get(r.nextInt(tiles.size()));
+        return tiles.remove(r.nextInt(tiles.size()));
     }
 }
