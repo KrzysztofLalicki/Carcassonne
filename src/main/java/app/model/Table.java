@@ -1,10 +1,13 @@
 package app.model;
 
 public class Table {
+    public static final int TABLE_DIMENSIONS = 143;
+    public static final int STARTING_TILE_POSITION = 71;
+
     Tile[][] tiles;
     public Table() {
-        tiles = new Tile[143][143];
-        tiles[71][71] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/app/img/tiles/D.png");
+        tiles = new Tile[TABLE_DIMENSIONS][TABLE_DIMENSIONS];
+        tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/app/img/tiles/D.png");
     }
     public void put_tile(Tile tile, int x, int y) {
         if (can_place(tile, x, y)) {

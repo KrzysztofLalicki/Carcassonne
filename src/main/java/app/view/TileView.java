@@ -13,7 +13,6 @@ import javafx.scene.shape.StrokeType;
 
 public class TileView extends StackPane {
     ImageView tileImage;
-    boolean selected = false;
 
     Rectangle selectionRectangle = new Rectangle(100, 100);
     {
@@ -21,6 +20,21 @@ public class TileView extends StackPane {
         selectionRectangle.setStroke(Color.TRANSPARENT);
         selectionRectangle.setStrokeWidth(5);
         selectionRectangle.setStrokeType(StrokeType.INSIDE);
+    }
+
+    public void setOutline(Outline outline) {
+        selectionRectangle.setStroke(outline.color);
+    }
+
+    public enum Outline {
+        NONE(Color.TRANSPARENT),
+        RED(Color.RED),
+        GREEN(Color.GREEN);
+
+        public final Color color;
+        Outline(Color color) {
+            this.color = color;
+        }
     }
 
     public TileView() {
@@ -43,23 +57,7 @@ public class TileView extends StackPane {
         tileImage.setImage(image);
     }
 
-    public void rotate() {
-        tileImage.setRotate(tileImage.getRotate() + 90);
-    }
-
-    //select/unselect rectangle
-    public boolean select() {
-        if(selected) {
-            selectionRectangle.setStroke(Color.TRANSPARENT);
-            selected = false;
-            return false;
-        }
-        selectionRectangle.setStroke(Color.RED);
-        selected = true;
-        return false;
-    }
-
-    public boolean isEmpty() {
-        return tileImage.getImage() == null;
+    public void setRotate(int rotation) {
+        tileImage.setRotate(rotation);
     }
 }

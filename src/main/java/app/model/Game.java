@@ -1,6 +1,5 @@
 package app.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Game {
@@ -20,5 +19,13 @@ public class Game {
     }
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public Box getBox() {
+        return box;
     }
 }
