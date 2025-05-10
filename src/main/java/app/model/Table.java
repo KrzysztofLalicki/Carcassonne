@@ -15,13 +15,12 @@ public class Table {
         }
     }
     public boolean canPlace(Tile tile, int x, int y) {
-        if (tiles[x][y] != null) return false;
         if (tiles[x - 1][y] == null && tiles[x + 1][y] == null && tiles[x][y - 1] == null && tiles[x][y + 1] == null) return false;
         if (tiles[x - 1][y] != null && tile.left != tiles[x - 1][y].right) return false;
         if (tiles[x + 1][y] != null && tile.right != tiles[x + 1][y].left) return false;
         if (tiles[x][y - 1] != null && tile.up != tiles[x][y - 1].down) return false;
         if (tiles[x][y + 1] != null && tile.down != tiles[x][y + 1].up) return false;
-        return true;
+        return tiles[x][y] == null;
     }
 
     public Tile[][] getTiles() {

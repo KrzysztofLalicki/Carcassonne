@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Box {
-    ArrayList<Tile> tiles;
+    private final ArrayList<Tile> tiles;
     public Box(){
         tiles = new ArrayList<>();
         List<String> lines;
@@ -35,5 +35,8 @@ public class Box {
     public Tile giveTile() {
         Random r = new Random();
         return tiles.remove(r.nextInt(tiles.size()));
+    }
+    public boolean isEmpty() {
+        return tiles.isEmpty();
     }
 }

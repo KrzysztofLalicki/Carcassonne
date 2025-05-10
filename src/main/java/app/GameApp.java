@@ -139,7 +139,7 @@ public class GameApp extends Application {
             int level = -10;
             for(Player player : gameInstance.getPlayers())
             {
-                Button playernameButton = new Button(player.get_name());
+                Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
                 playernameButton.setTranslateY(level);
                 playernameButton.setTranslateX(-230);
@@ -212,7 +212,7 @@ public class GameApp extends Application {
             int level = -10;
             for(Player player : gameInstance.getPlayers())
             {
-                Button playernameButton = new Button(player.get_name());
+                Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
                 playernameButton.setTranslateY(level);
                 playernameButton.setTranslateX(-230);
@@ -299,7 +299,7 @@ public class GameApp extends Application {
             int level = -10;
             for(Player player : gameInstance.getPlayers())
             {
-                Button playernameButton = new Button(player.get_name());
+                Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
                 playernameButton.setTranslateY(level);
                 playernameButton.setTranslateX(-230);
@@ -352,7 +352,7 @@ public class GameApp extends Application {
     {
         for(Player player : gameInstance.getPlayers())
         {
-            if(player.get_name().equals(playerName))
+            if(player.getName().equals(playerName))
                 return true;
         }
         return false;
