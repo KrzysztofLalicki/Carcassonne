@@ -84,6 +84,7 @@ public class GameController {
 
         if(table.getTiles()[newPos.x][newPos.y] == null && !gameEnded) {
             boardView.setImageOnSelectedTile(nextTile);
+            sideBarView.setNextTile(nextTile);
 
             if (table.canPlace(nextTile, newPos.x, newPos.y)) {
                 boardView.setSelectionOutline(TileView.Outline.GREEN);
