@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.*;
+import app.utils.Position;
 import app.view.BoardView;
 import app.view.GameView;
 import app.view.SideBarView;
@@ -48,8 +49,8 @@ public class GameController {
 
     private boolean gameEnded = false;
     public void handleKeyPress(KeyEvent event) {
-        int x = selected.x;
-        int y = selected.y;
+        int x = selected.x();
+        int y = selected.y();
 
         if (event.getCode() == KeyCode.UP) y--;
         else if(event.getCode() == KeyCode.DOWN) y++;
@@ -57,9 +58,9 @@ public class GameController {
         else if(event.getCode() == KeyCode.RIGHT) x++;
         else if(event.getCode() == KeyCode.R)
             nextTile.rotate();
-        else if(event.getCode() == KeyCode.SPACE && table.canPlace(nextTile, selected.x, selected.y)) {
+        else if(event.getCode() == KeyCode.SPACE && table.canPlace(nextTile, selected.x(), selected.y())) {
             if(!gameEnded)
-                table.putTile(nextTile, selected.x, selected.y);
+                table.putTile(nextTile, selected.x(), selected.y());
 
             if(!box.isEmpty()) {
                 nextTile = box.giveTile();
@@ -82,11 +83,11 @@ public class GameController {
         boardView.setOnTablePosition(newPos);
         selected = newPos;
 
-        if(table.getTiles()[newPos.x][newPos.y] == null && !gameEnded) {
+        if(table.getTiles()[newPos.x()][newPos.y()] == null && !gameEnded) {
             boardView.setImageOnSelectedTile(nextTile);
             sideBarView.setNextTile(nextTile);
 
-            if (table.canPlace(nextTile, newPos.x, newPos.y)) {
+            if (table.canPlace(nextTile, newPos.x(), newPos.y())) {
                 boardView.setSelectionOutline(TileView.Outline.GREEN);
                 sideBarView.setNextTileOutline(TileView.Outline.GREEN);
             }

@@ -8,4 +8,6 @@ module app.app {
     exports app;
     exports app.model;
     opens app.model to javafx.fxml;
+    exports app.utils;
+    opens app.utils to javafx.fxml;
 }
