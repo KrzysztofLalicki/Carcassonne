@@ -1,8 +1,9 @@
 package app;
 
-import app.controller.BoardController;
+import app.controller.GameController;
 import app.model.Game;
-import app.view.BoardView;
+import app.model.Player;
+import app.view.GameView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,10 +18,15 @@ public class Carcassonne extends Application {
     @Override
     public void start(Stage primaryStage) {
         Game game = new Game();
-        BoardController boardController = new BoardController(game);
-        BoardView boardView = boardController.getBoardView();
-        Scene scene = new Scene(boardView);
-        scene.setOnKeyPressed(boardController::handleKeyPress);
+
+        game.addPlayer(new Player("Kuba"));
+        game.addPlayer(new Player("Oskar"));
+        game.addPlayer(new Player("Krzysztof"));
+
+        GameController gameController = new GameController(game);
+        GameView gameView = gameController.getGameView();
+        Scene scene = new Scene(gameView);
+        scene.setOnKeyPressed(gameController::handleKeyPress);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
