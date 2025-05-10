@@ -22,7 +22,6 @@ public class Table {
         if (tiles[x][y + 1] != null && tile.down != tiles[x][y + 1].up) return false;
         return tiles[x][y] == null;
     }
-
     public Tile[][] getTiles() {
         return tiles;
     }

@@ -3,6 +3,7 @@ package app.model;
 import java.util.ArrayList;
 
 public class Game {
+
     private final ArrayList<Player> players;
     private final Box box;
     private final Table table;

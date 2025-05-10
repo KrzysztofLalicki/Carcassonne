@@ -26,7 +26,6 @@ public class Tile {
     public String getImagePath() {
         return image_path;
     }
-
     public Integer getRotation() {
         return rotation;
     }
