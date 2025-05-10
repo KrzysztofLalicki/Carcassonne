@@ -14,7 +14,7 @@ import javafx.scene.shape.StrokeType;
 public class TileView extends StackPane {
     ImageView tileImage;
 
-    Rectangle selectionRectangle = new Rectangle(100, 100);
+    Rectangle selectionRectangle = new Rectangle(60, 60);
     {
         selectionRectangle.setFill(Color.TRANSPARENT);
         selectionRectangle.setStroke(Color.TRANSPARENT);
@@ -38,14 +38,14 @@ public class TileView extends StackPane {
     }
 
     public TileView() {
-        setMinSize(100, 100);
-        setMaxSize(100, 100);
+        setMinSize(60, 60);
+        setMaxSize(60, 60);
 
         setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         tileImage = new ImageView();
-        tileImage.setFitWidth(100);
-        tileImage.setFitHeight(100);
+        tileImage.setFitWidth(60);
+        tileImage.setFitHeight(60);
         tileImage.setPreserveRatio(true);
         tileImage.setSmooth(true);
 
