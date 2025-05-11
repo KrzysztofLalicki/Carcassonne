@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.menu.PostGameMenu;
 import app.model.*;
 import app.utils.Position;
 import app.view.BoardView;
@@ -9,6 +10,9 @@ import app.view.TileView;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
+
+import static app.Carcassonne.primaryStage;
 
 
 public class GameController {
@@ -74,7 +78,11 @@ public class GameController {
             sideBarView.setNextTile(nextTile);
         }
         else if(gameEnded && event.getCode() == KeyCode.ESCAPE) {
-            //TODO: Get back to menu
+            /*StackPane postMenu = new PostGameMenu();
+            primaryStage.getScene().setRoot(postMenu);
+            primaryStage.setTitle("Game Over");
+            primaryStage.show();*/
+            //TODO PostGameScene
             Platform.exit();
         }
 
