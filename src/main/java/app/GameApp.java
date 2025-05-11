@@ -90,7 +90,8 @@ public class GameApp extends Application {
                 primaryStage.getScene().setRoot(meuLayout);
             }
             else{
-                //scena rozgrywki
+                Carcassonne carcassonne = new Carcassonne(gameInstance, primaryStage);
+                carcassonne.start(primaryStage);
             }
         });
 

@@ -11,18 +11,19 @@ import javafx.stage.Stage;
 
 
 public class Carcassonne extends Application {
+    private Game game;
+    private Stage primaryStage;
+
+    public Carcassonne(Game game, Stage primaryStage) {
+        this.game = game;
+        this.primaryStage = primaryStage;
+    }
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        Game game = new Game();
-
-        game.addPlayer(new Player("Kuba"));
-        game.addPlayer(new Player("Oskar"));
-        game.addPlayer(new Player("Krzysztof"));
-
         GameController gameController = new GameController(game);
         GameView gameView = gameController.getGameView();
         Scene scene = new Scene(gameView);
