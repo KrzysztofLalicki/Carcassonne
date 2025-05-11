@@ -2,7 +2,6 @@ package app;
 
 import app.controller.GameController;
 import app.model.Game;
-import app.model.Player;
 import app.view.GameView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,6 +16,7 @@ public class Carcassonne extends Application {
     public Carcassonne(Game game, Stage primaryStage) {
         this.game = game;
         this.primaryStage = primaryStage;
+        primaryStage.setResizable(false);
     }
     public static void main(String[] args) {
         launch(args);
