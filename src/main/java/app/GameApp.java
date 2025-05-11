@@ -43,9 +43,7 @@ public class GameApp extends Application {
         newGameButton.setOnAction(e -> {
             gameInstance = new Game();
             StackPane menuLayout = createMenuLayout("");
-
-            Scene menuScene = new Scene(menuLayout, 800, 600);
-            primaryStage.setScene(menuScene);
+            primaryStage.getScene().setRoot(menuLayout);
         });
 
         Button exit = createStyledButton("Opuść gre");
