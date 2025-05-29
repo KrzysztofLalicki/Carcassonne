@@ -10,21 +10,22 @@ import java.util.Scanner;
 
 public class Box {
     private final ArrayList<Tile> tiles;
+
     public Box(){
         tiles = new ArrayList<>();
         List<String> lines;
         try {
-            lines = Files.readAllLines(Paths.get("tiles.txt"));
+            lines = Files.readAllLines(Paths.get("src/main/resources/tiles.txt"));
         }
         catch (IOException e){
             throw new RuntimeException(e);
         }
-        int[] tile = new int[6];
+        short[] tile = new short[6];
         for (String line : lines) {
             Scanner scanner = new Scanner(line);
             String image_code = scanner.next();
             for (int j = 0; j < 6; j++) {
-                tile[j] = scanner.nextInt();
+                tile[j] = scanner.nextShort();
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
@@ -32,7 +33,11 @@ public class Box {
             }
         }
     }
+
     public Tile giveTile() {
+        if (isEmpty()) {
+            return null;
+        }
         Random r = new Random();
         return tiles.remove(r.nextInt(tiles.size()));
     }

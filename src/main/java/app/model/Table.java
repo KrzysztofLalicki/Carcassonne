@@ -5,16 +5,22 @@ public class Table {
     public static final int STARTING_TILE_POSITION = 71;
 
     private final Game game;
-    Tile[][] tiles;
+    private final Tile[][] tiles;
     public Table(Game game) {
         this.game = game;
 
         tiles = new Tile[TABLE_DIMENSIONS][TABLE_DIMENSIONS];
-        tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = new Tile(new int[]{0, 2, 1, 2, 0, 0}, "/app/img/tiles/D.png");
+        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, "/app/img/tiles/D.png");
+        startingTile.placeOnTable(this, STARTING_TILE_POSITION, STARTING_TILE_POSITION);
+        startingTile.generateSegments();
+        tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = startingTile;
     }
-    public void putTile(Tile tile, int x, int y) {
+    public void placeTile(Tile tile, int x, int y) {
         if (canPlace(tile, x, y)) {
             tiles[x][y] = tile;
+            tile.placeOnTable(this, x, y);
+            tile.generateSegments();
+            // TODO: player should be able to place a follower in their turn
             game.nextPlayer();
         }
     }

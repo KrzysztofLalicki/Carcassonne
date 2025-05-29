@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.menu.PostGameMenu;
 import app.model.*;
 import app.utils.Position;
 import app.view.BoardView;
@@ -10,9 +9,6 @@ import app.view.TileView;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
-
-import static app.Carcassonne.primaryStage;
 
 
 public class GameController {
@@ -64,7 +60,7 @@ public class GameController {
             nextTile.rotate();
         else if(event.getCode() == KeyCode.SPACE && table.canPlace(nextTile, selected.x(), selected.y())) {
             if(!gameEnded)
-                table.putTile(nextTile, selected.x(), selected.y());
+                table.placeTile(nextTile, selected.x(), selected.y());
 
             if(!box.isEmpty()) {
                 nextTile = box.giveTile();
@@ -72,7 +68,7 @@ public class GameController {
             }
             else {
                 gameEnded = true;
-                nextTile = new Tile(new int[6], null);
+                nextTile = new Tile(new short[6], null);
                 gameView.setBottomText(GameView.GAME_END_TEXT);
             }
             sideBarView.setNextTile(nextTile);
