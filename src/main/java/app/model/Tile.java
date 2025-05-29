@@ -1,13 +1,10 @@
 package app.model;
 
-import java.util.ArrayList;
-
 public class Tile {
 
-    int x, y;
     short up, left, centre, right, down;
     boolean pennant;
-    private final ArrayList<Segment> segments;
+    private final Segment[][] segments;
 
     private final String image_path;
     private Integer rotation = 0;
@@ -20,7 +17,7 @@ public class Tile {
         down = terrain[4];
         pennant = terrain[5] == 1;
         this.image_path = image_path;
-        segments = new ArrayList<>();
+        segments = new Segment[3][3];
     }
 
     public void rotate() {
@@ -39,20 +36,17 @@ public class Tile {
     }
     public void generateSegments() {
         if (centre == 3) {
-            segments.add(new Cloister(this));
+            segments[1][1] = new Segment(new Cloister());
+            segments[1][1].getArea().addTile(this);
         }
     }
-    public ArrayList<Segment> getSegments() {
+    public Segment[][] getSegments() {
         return segments;
     }
+    public boolean canPlace(int x, int y) {
+        return segments[x][y] != null && segments[x][y].getArea().isFree();
+    }
     public boolean placeFollower(Follower follower) {
-        for (Segment segment : segments) {
-            if (segment instanceof Cloister) {
-                follower.putOnTile(this);
-                segment.addFollower(follower);
-                return true;
-            }
-        }
         return false;
     }
 }

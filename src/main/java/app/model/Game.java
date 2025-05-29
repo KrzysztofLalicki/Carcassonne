@@ -8,7 +8,6 @@ public class Game {
     private final Box box;
     private final Table table;
     private Integer currentPlayer;
-    private ArrayList<Cloister> cloisters;
 
     public Game(){
         players = new ArrayList<>();
@@ -35,7 +34,6 @@ public class Game {
         currentPlayer = 0;
         while (!box.isEmpty()) {
             getCurrentPlayer().doTurn(box.giveTile(), table);
-            table.update();
             nextPlayer();
         }
     }

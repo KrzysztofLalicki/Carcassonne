@@ -12,12 +12,11 @@ public class Table {
         tiles = new Tile[TABLE_DIMENSIONS][TABLE_DIMENSIONS];
         tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = new Tile(new short[]{1, 2, 0, 2, 0, 0}, "/app/img/tiles/D.png");
     }
-    public void putTile(Tile tile, int x, int y) {
+    public void placeTile(Tile tile, int x, int y) {
         if (canPlace(tile, x, y)) {
             tiles[x][y] = tile;
-            tile.x = x;
-            tile.y = y;
             tile.generateSegments();
+            // TODO: player should be able to place a follower in their turn
             game.nextPlayer();
         }
     }
@@ -31,28 +30,5 @@ public class Table {
     }
     public Tile[][] getTiles() {
         return tiles;
-    }
-    public void update() {
-        for (int i = 0; i < TABLE_DIMENSIONS; i++) {
-            for (int j = 0; j < TABLE_DIMENSIONS; j++) {
-                if (tiles[i][j] != null) {
-                    for (Segment segment : tiles[i][j].getSegments()) {
-                        if (segment instanceof Cloister cloister) {
-                            int surroundings = 0;
-                            for (int k = -1; k < 2; k++) {
-                                for (int l = -1; l < 2; l++) {
-                                    if (tiles[i + k][j + l] != null) {
-                                        surroundings++;
-                                    }
-                                }
-                            }
-                            if (surroundings == 9) {
-                                cloister.finish();
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

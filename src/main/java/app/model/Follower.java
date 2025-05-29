@@ -4,6 +4,7 @@ public class Follower {
 
     private final Player player;
     private Tile tile;
+    int x, y;
 
     public Follower(Player player) {
         this.player = player;
@@ -13,8 +14,15 @@ public class Follower {
     public Player getPlayer() {
         return player;
     }
-    public void putOnTile(Tile tile) {
-        this.tile = tile;
+    public void placeOnTile(Tile tile, int x, int y) {
+        if (tile.canPlace(x, y)) {
+            this.tile = tile;
+            this.x = x;
+            this.y = y;
+        }
+    }
+    public void remove() {
+        tile = null;
     }
     public Tile getTile() {
         return tile;

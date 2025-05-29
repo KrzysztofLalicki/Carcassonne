@@ -1,19 +1,17 @@
 package app.model;
 
-public abstract class Segment {
+public class Segment {
 
-    Tile tile;
-    Follower follower;
+    private Area area;
 
-    public Segment(Tile tile) {
-        this.tile = tile;
-        follower = null;
+    public Segment(Area area) {
+        this.area = area;
     }
 
-    public void addFollower(Follower follower) {
-        this.follower = follower;
+    public void setArea(Area area) {
+        this.area = area;
     }
-    public void removeFollower() {
-        follower = null;
+    public Area getArea() {
+        return area;
     }
 }
