@@ -72,7 +72,7 @@ public class GameController {
             }
             else {
                 gameEnded = true;
-                nextTile = new Tile(new int[6], null);
+                nextTile = new Tile(new short[6], null);
                 gameView.setBottomText(GameView.GAME_END_TEXT);
             }
             sideBarView.setNextTile(nextTile);
