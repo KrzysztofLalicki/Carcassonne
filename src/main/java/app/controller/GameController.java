@@ -37,7 +37,7 @@ public class GameController {
         gameView.setBottomText(GameView.CONTROLS_TEXT);
 
         selected = new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION);
-        boardView.setOnTablePosition(selected);
+//        boardView.setOnTablePosition(selected);
         nextTile = game.getBox().giveTile();
 
         sideBarView.setNextTile(nextTile);
@@ -86,24 +86,24 @@ public class GameController {
 
         Position newPos = new Position(x, y);
 
-        boardView.setOnTablePosition(newPos);
+//        boardView.setOnTablePosition(newPos);
         selected = newPos;
 
         if(table.getTiles()[newPos.x()][newPos.y()] == null && !gameEnded) {
-            boardView.setImageOnSelectedTile(nextTile);
+//            boardView.setImageOnSelectedTile(nextTile);
             sideBarView.setNextTile(nextTile);
 
             if (table.canPlace(nextTile, newPos.x(), newPos.y())) {
-                boardView.setSelectionOutline(TileView.Outline.GREEN);
+//                boardView.setSelectionOutline(TileView.Outline.GREEN);
 //                sideBarView.setNextTileOutline(TileView.Outline.GREEN);
             }
             else {
-                boardView.setSelectionOutline(TileView.Outline.RED);
+//                boardView.setSelectionOutline(TileView.Outline.RED);
 //                sideBarView.setNextTileOutline(TileView.Outline.RED);
             }
         }
         else {
-            boardView.setSelectionOutline(TileView.Outline.RED);
+//            boardView.setSelectionOutline(TileView.Outline.RED);
 //            sideBarView.setNextTileOutline(TileView.Outline.RED);
         }
     }

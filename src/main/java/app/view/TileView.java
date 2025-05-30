@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 public class TileView extends StackPane {
-    ImageView tileImage;
+    ImageView tileImage = new ImageView();
 
     Rectangle selectionRectangle = new Rectangle(60, 60);
     {
@@ -39,8 +39,6 @@ public class TileView extends StackPane {
     }
 
     public TileView(TileViewModel model) {
-        tileImage.rotateProperty().bind(model.rotation);
-
         setMinSize(60, 60);
         setMaxSize(60, 60);
 
@@ -54,11 +52,18 @@ public class TileView extends StackPane {
 
         getChildren().add(tileImage);
         getChildren().add(selectionRectangle);
+
+        setTileViewModel(model);
     }
 
-    public void setTileImage(Image image) {
-        tileImage.setImage(image);
+    public void setTileViewModel(TileViewModel model) {
+        tileImage.imageProperty().bind(model.image);
+        tileImage.rotateProperty().bind(model.rotation);
     }
+
+//    public void setTileImage(Image image) {
+//        tileImage.setImage(image);
+//    }
 
 //    public void setRotate(int rotation) {
 //        tileImage.setRotate(rotation);

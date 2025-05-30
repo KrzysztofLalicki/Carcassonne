@@ -20,8 +20,9 @@ public class GameView extends BorderPane {
 
     //TODO: remove table from here!!!
     public GameView(SideBarView sideBarView, GameViewModel gameViewModel, Table table) {
-        boardView = new BoardView(table, gameViewModel.getBoardViewModel());
+        boardView = new BoardView(gameViewModel.getBoardViewModel());
 
+        this.sideBarView = sideBarView;
         sideBarView.setPadding(new Insets(10));
         setLeft(sideBarView);
         setRight(boardView);
