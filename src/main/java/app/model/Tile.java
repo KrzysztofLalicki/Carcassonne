@@ -41,7 +41,7 @@ public class Tile {
         this.y = y;
     }
     public void generateSegments() {
-        if (left != 1 || up != 1) {
+        if (left != 1 || centre != 1 || up != 1) {
             Field field = new Field(this);
             segments[0][0] = new Segment(field);
             if (left != 1 && table.getTiles()[x - 1][y] != null) {
@@ -51,9 +51,9 @@ public class Tile {
                 table.getTiles()[x][y - 1].getSegments()[0][2].getArea().mergeWith(field);
             }
         }
-        if (up != 1 || right != 1) {
+        if (up != 1 || centre != 1 || right != 1) {
             Field field = new Field(this);
-            segments[2][0] = new Segment(new Field(this));
+            segments[2][0] = new Segment(field);
             if (up != 1 && table.getTiles()[x][y - 1] != null) {
                 table.getTiles()[x][y - 1].getSegments()[2][2].getArea().mergeWith(field);
             }
@@ -61,9 +61,9 @@ public class Tile {
                 table.getTiles()[x + 1][y].getSegments()[0][0].getArea().mergeWith(field);
             }
         }
-        if (left != 1 || down != 1) {
+        if (left != 1 || centre != 1 || down != 1) {
             Field field = new Field(this);
-            segments[0][2] = new Segment(new Field(this));
+            segments[0][2] = new Segment(field);
             if (left != 1 && table.getTiles()[x - 1][y] != null) {
                 table.getTiles()[x - 1][y].getSegments()[2][2].getArea().mergeWith(field);
             }
@@ -71,9 +71,9 @@ public class Tile {
                 table.getTiles()[x][y + 1].getSegments()[0][0].getArea().mergeWith(field);
             }
         }
-        if (down != 1 || right != 1) {
+        if (down != 1 || centre != 1 || right != 1) {
             Field field = new Field(this);
-            segments[2][2] = new Segment(new Field(this));
+            segments[2][2] = new Segment(field);
             if (down != 1 && table.getTiles()[x][y + 1] != null) {
                 table.getTiles()[x][y + 1].getSegments()[2][0].getArea().mergeWith(field);
             }
