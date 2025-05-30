@@ -5,6 +5,7 @@ import app.model.Player;
 import app.view.GameView;
 import app.view.SideBarView;
 import app.viewmodels.GameViewModel;
+import app.viewmodels.SideBarViewModel;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -64,7 +65,9 @@ public class ViewModelMenu {
             game.start();
 
             GameViewModel gameViewModel = new GameViewModel(game);
-            GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel);
+            SideBarViewModel sbvm = new SideBarViewModel(game);
+            SideBarView sbv = new SideBarView(sbvm);
+            GameView gameView = new GameView(sbv, gameViewModel);
             Scene scene = new Scene(gameView);
 
             primaryStage.setScene(scene);
