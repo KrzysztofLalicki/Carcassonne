@@ -1,7 +1,7 @@
 package app.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.*;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -9,18 +9,25 @@ public class Game {
     private final ArrayList<Player> players;
     private final Box box;
     private final Table table;
-    private Integer currentPlayer;
+
+    private int currentPlayerNumber;
+    private ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
+
     BooleanProperty hasEnded = new SimpleBooleanProperty(false);
+
 
     public Game(){
         players = new ArrayList<>();
         table = new Table(this);
         box = new Box(this);
-        currentPlayer = 0;
     }
 
     public BooleanProperty getHasEndedProperty() {
         return hasEnded;
+    }
+
+    public ObjectProperty<Player> getCurrentPlayerProperty() {
+        return currentPlayer;
     }
 
     public void addPlayer(Player player) {
@@ -31,11 +38,13 @@ public class Game {
     }
     public void nextPlayer() {
         box.giveTile();
-        currentPlayer = (currentPlayer + 1) % players.size();
+        currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
+        currentPlayer.set(players.get(currentPlayerNumber));
     }
 
     public void start() {
-        currentPlayer = 0;
+        currentPlayerNumber = 0;
+        currentPlayer.set(players.get(currentPlayerNumber));
         box.giveTile();
     }
 
@@ -47,8 +56,5 @@ public class Game {
     }
     public Box getBox() {
         return box;
-    }
-    public Player getCurrentPlayer() {
-        return players.get(currentPlayer);
     }
 }

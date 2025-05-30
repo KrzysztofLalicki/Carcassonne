@@ -2,9 +2,6 @@ package app.viewmodels;
 
 import app.model.Game;
 import app.model.Player;
-import javafx.beans.property.ObjectProperty;
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +14,12 @@ public class SideBarViewModel {
         for (Player player : game.getPlayers()) {
             players.put(player, new PlayerViewModel(player));
         }
+
+        players.get(game.getCurrentPlayerProperty().get()).setSelected(true);
+        game.getCurrentPlayerProperty().addListener((_, oldPlayer, newPlayer) -> {
+            players.get(oldPlayer).setSelected(false);
+            players.get(newPlayer).setSelected(true);
+        });
     }
 
     public List<PlayerViewModel> getPlayersViewModels() {
