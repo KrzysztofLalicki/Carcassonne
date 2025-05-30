@@ -56,7 +56,7 @@ public class MainMenu extends StackPane {
 //                GameView gameView = gameController.getGameView();
 
                 GameViewModel gameViewModel = new GameViewModel(game);
-                GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel, game.getTable());
+                GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel);
                 GameController gameController = new GameController(game, gameView);
 
 

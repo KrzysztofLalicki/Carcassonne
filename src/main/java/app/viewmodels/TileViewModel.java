@@ -1,7 +1,7 @@
 package app.viewmodels;
 
 import app.model.Tile;
-import javafx.beans.binding.Binding;
+import app.view.TileView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -13,6 +13,13 @@ public class TileViewModel {
     Tile tile;
     public IntegerProperty rotation = new SimpleIntegerProperty();
     public ObjectProperty<Image> image = new SimpleObjectProperty<>();
+    ObjectProperty<TileView.Outline> outline = new SimpleObjectProperty<>(TileView.Outline.NONE);
+    public void setOutline(TileView.Outline outline) {
+        this.outline.set(outline);
+    }
+    public ObjectProperty<TileView.Outline> getOutlineProperty() {
+        return outline;
+    }
 
     void setTile(Tile tile) {
         if(tile != null) {

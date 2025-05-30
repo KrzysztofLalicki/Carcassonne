@@ -31,7 +31,7 @@ public class Carcassonne extends Application {
         game.addPlayer(new Player("cipa"));
 
         GameViewModel gameViewModel = new GameViewModel(game);
-        GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel, game.getTable());
+        GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel);
         GameController gameController = new GameController(game, gameView);
 
 

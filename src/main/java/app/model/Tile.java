@@ -30,7 +30,6 @@ public class Tile {
     public StringProperty getImagePathProperty() {return imagePath;}
 
 
-
     public Tile(short[] terrain, String image_path) {
         up = terrain[0];
         left = terrain[1];
