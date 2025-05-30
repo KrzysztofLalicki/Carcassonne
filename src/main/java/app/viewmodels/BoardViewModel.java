@@ -17,12 +17,12 @@ public class BoardViewModel {
     private TileViewModel[][] tilesViewModels = new TileViewModel[143][143];
     private ObjectProperty<TileViewModel>[][] onViewTilesViewModels = new ObjectProperty[DISPLAYED_GRID_SIZE][DISPLAYED_GRID_SIZE];
 
-    public ObjectProperty<TileViewModel> getOnTableTilesViewModelsProperties(int x, int y) {return onViewTilesViewModels[x][y];}
-
     private ObjectProperty<Position> onTablePosition = new SimpleObjectProperty<Position>(new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION));
     private ObjectProperty<Position> onViewPosition = new SimpleObjectProperty<Position>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
     private Position prevOnViewPosition = null;
     private Position prevOnTablePosition = null;
+
+    public ObjectProperty<TileViewModel> getOnTableTilesViewModelsProperties(int x, int y) {return onViewTilesViewModels[x][y];}
 
     private void setOnTablePosition(Position newOnTablePosition) {
         Position newOnViewPosition = new Position(onViewPosition.get().x() + newOnTablePosition.x() - onTablePosition.get().x(), onViewPosition.get().y() + newOnTablePosition.y() - onTablePosition.get().y());
@@ -47,8 +47,7 @@ public class BoardViewModel {
                 tilesViewModels[i][j] = new TileViewModel(game.getTable().getTiles()[i][j]);
         refreshTilesViewModels();
 
-        nextTile.set(game.getBox().giveTile());
-        nextTileViewModel = new TileViewModel(nextTile);
+        nextTile.bind(game.getBox().getNextTileProperty());
         updateSelection();
 
         onTablePosition.addListener((_, _, _) -> refreshTilesViewModels());
@@ -59,6 +58,10 @@ public class BoardViewModel {
 
     public void rotateNextTile() {
         nextTile.get().rotate();
+    }
+
+    public void placeTile() {
+        game.getTable().placeTile(nextTile.get(), onTablePosition.get().x(), onTablePosition.get().y());
     }
 
     private void refreshTilesViewModels() {

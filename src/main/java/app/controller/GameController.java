@@ -38,7 +38,7 @@ public class GameController {
 
         selected = new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION);
 //        boardView.setOnTablePosition(selected);
-        nextTile = game.getBox().giveTile();
+//        nextTile = game.getBox().giveTile();
 
         sideBarView.setNextTile(nextTile);
 //        sideBarView.setNextTileOutline(TileView.Outline.RED);
@@ -65,7 +65,7 @@ public class GameController {
                 table.placeTile(nextTile, selected.x(), selected.y());
 
             if(!box.isEmpty()) {
-                nextTile = box.giveTile();
+//                nextTile = box.giveTile();
                 sideBarView.selectPlayer(game.getCurrentPlayer());
             }
             else {

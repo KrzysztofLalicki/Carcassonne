@@ -30,13 +30,14 @@ public class Carcassonne extends Application {
         game.addPlayer(new Player("dupa"));
         game.addPlayer(new Player("cipa"));
 
+        game.start();
         GameViewModel gameViewModel = new GameViewModel(game);
         GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel);
-        GameController gameController = new GameController(game, gameView);
+//        GameController gameController = new GameController(game, gameView);
 
 
         Scene scene = new Scene(gameView);
-        scene.setOnKeyPressed(evt -> gameController.handleKeyPress(evt));
+//        scene.setOnKeyPressed(evt -> gameController.handleKeyPress(evt));
 
         primaryStage.setScene(scene);
 

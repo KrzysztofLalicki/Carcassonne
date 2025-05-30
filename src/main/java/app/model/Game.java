@@ -24,18 +24,14 @@ public class Game {
         players.remove(nr);
     }
     public void nextPlayer() {
+        box.giveTile();
         currentPlayer = (currentPlayer + 1) % players.size();
     }
 
-//    For now, I will start the game by setting current player to 0 in constructor
-//    and calling next_player() from Table putTile().
-//    TODO: Improve model-controller communication
     public void start() {
         currentPlayer = 0;
-        while (!box.isEmpty()) {
-            getCurrentPlayer().doTurn(box.giveTile(), table);
-            nextPlayer();
-        }
+        box.giveTile();
+
     }
 
     public ArrayList<Player> getPlayers() {

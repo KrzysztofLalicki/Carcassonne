@@ -25,7 +25,6 @@ public class TileViewModel {
         if(tile != null) {
             this.tile = tile;
             rotation = tile.getRotationProperty();
-            image.set(new Image(getClass().getResource(tile.getImagePath()).toExternalForm()));
             image.bind(Bindings.createObjectBinding(() -> {
                 String path = tile.getImagePath();
                 return new Image(getClass().getResource(path).toExternalForm());

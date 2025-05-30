@@ -1,5 +1,8 @@
 package app.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,6 +13,11 @@ import java.util.Scanner;
 
 public class Box {
     private final ArrayList<Tile> tiles;
+    private ObjectProperty<Tile> nextTile = new SimpleObjectProperty<>();
+
+    public ObjectProperty<Tile> getNextTileProperty(){
+        return nextTile;
+    }
 
     public Box(){
         tiles = new ArrayList<>();
@@ -34,12 +42,13 @@ public class Box {
         }
     }
 
-    public Tile giveTile() {
+    public void giveTile() {
         if (isEmpty()) {
-            return null;
+            nextTile.set(null);
+            return;
         }
         Random r = new Random();
-        return tiles.remove(r.nextInt(tiles.size()));
+        nextTile.set(tiles.remove(r.nextInt(tiles.size())));
     }
     public boolean isEmpty() {
         return tiles.isEmpty();

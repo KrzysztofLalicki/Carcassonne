@@ -1,8 +1,6 @@
 package app.view;
 
-import app.utils.Position;
 import app.viewmodels.BoardViewModel;
-import app.viewmodels.TileViewModel;
 import javafx.scene.layout.GridPane;
 
 import static app.viewmodels.BoardViewModel.DISPLAYED_GRID_SIZE;
@@ -29,6 +27,7 @@ public class BoardView extends GridPane {
                 case A, LEFT -> boardViewModel.moveSelection(-1, 0);
                 case D, RIGHT -> boardViewModel.moveSelection(1, 0);
                 case R -> boardViewModel.rotateNextTile();
+                case SPACE ->  boardViewModel.placeTile();
             }
         });
         setFocusTraversable(true);
