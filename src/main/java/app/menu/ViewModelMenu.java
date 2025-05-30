@@ -65,9 +65,7 @@ public class ViewModelMenu {
             game.start();
 
             GameViewModel gameViewModel = new GameViewModel(game);
-            SideBarViewModel sbvm = new SideBarViewModel(game);
-            SideBarView sbv = new SideBarView(sbvm);
-            GameView gameView = new GameView(sbv, gameViewModel);
+            GameView gameView = new GameView(gameViewModel);
             Scene scene = new Scene(gameView);
 
             primaryStage.setScene(scene);

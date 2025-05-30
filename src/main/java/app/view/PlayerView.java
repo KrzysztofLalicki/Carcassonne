@@ -26,7 +26,7 @@ public class PlayerView extends HBox {
         scoreLabel.setFont(Font.font("Monospaced"));
         scoreLabel.setTextFill(Color.LIGHTGRAY);
         scoreLabel.textProperty().bind(
-                Bindings.concat("Score: ", viewModel.getScoreProperty().asString())
+                Bindings.concat("[Score: ", viewModel.getScoreProperty().asString(), "]")
         );
 
         getChildren().addAll(nameLabel, scoreLabel);
