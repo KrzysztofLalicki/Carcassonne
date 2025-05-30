@@ -43,7 +43,7 @@ public class Table {
         if (tiles[x + 1][y].get() != null && tile.right != tiles[x + 1][y].get().left) return false;
         if (tiles[x][y - 1].get() != null && tile.up != tiles[x][y - 1].get().down) return false;
         if (tiles[x][y + 1].get() != null && tile.down != tiles[x][y + 1].get().up) return false;
-        return tiles[x][y] == null;
+        return tiles[x][y].get() == null;
     }
     public ObjectProperty<Tile>[][] getTiles() {
         return tiles;

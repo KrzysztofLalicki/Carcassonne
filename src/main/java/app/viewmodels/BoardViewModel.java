@@ -1,7 +1,10 @@
 package app.viewmodels;
 
+import app.model.Game;
 import app.model.Table;
+import app.model.Tile;
 import app.utils.Position;
+import app.view.TileView;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -9,42 +12,85 @@ import javafx.beans.property.SimpleObjectProperty;
 public class BoardViewModel {
     public static final int DISPLAYED_GRID_SIZE = 13;
 
-    private TileViewModel[][] tileViewModels = new TileViewModel[143][143];
+    private Game game;
 
-    private ObjectProperty<Position> onTablePosition = new SimpleObjectProperty<>(new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION));
-    public Position getOnTablePosition() {
-        return onTablePosition.get();
-    }
+    private TileViewModel[][] tilesViewModels = new TileViewModel[143][143];
+    private ObjectProperty<TileViewModel>[][] onViewTilesViewModels = new ObjectProperty[DISPLAYED_GRID_SIZE][DISPLAYED_GRID_SIZE];
+
+    public ObjectProperty<TileViewModel> getOnTableTilesViewModelsProperties(int x, int y) {return onViewTilesViewModels[x][y];}
+
+    private ObjectProperty<Position> onTablePosition = new SimpleObjectProperty<Position>(new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION));
+    private ObjectProperty<Position> onViewPosition = new SimpleObjectProperty<Position>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
+    private Position prevOnViewPosition = null;
+    private Position prevOnTablePosition = null;
+
     private void setOnTablePosition(Position newOnTablePosition) {
-        onViewPosition.set(new Position(getOnViewPosition().x() + newOnTablePosition.x() - getOnTablePosition().x(), getOnViewPosition().y() + newOnTablePosition.y() - getOnTablePosition().y()));
+        Position newOnViewPosition = new Position(onViewPosition.get().x() + newOnTablePosition.x() - onTablePosition.get().x(), onViewPosition.get().y() + newOnTablePosition.y() - onTablePosition.get().y());
+        if (newOnViewPosition.x() > 0 && newOnViewPosition.x() < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y() > 0 && newOnViewPosition.y() < DISPLAYED_GRID_SIZE - 1)
+            onViewPosition.set(newOnViewPosition);
         onTablePosition.set(newOnTablePosition);
     }
-    public ObjectProperty<Position> getOnTablePositionProperty() {
-        return onTablePosition;
+
+    public void moveSelection(int x, int y) {
+        Position newOnTablePosition = new Position(onTablePosition.get().x() + x, onTablePosition.get().y() + y);
+        setOnTablePosition(newOnTablePosition);
     }
 
-    private ObjectProperty<Position> onViewPosition = new SimpleObjectProperty<>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
-    public Position getOnViewPosition() {
-        return onViewPosition.get();
-    }
-    public ObjectProperty<Position> getOnViewPositionProperty() {
-        return onViewPosition;
-    }
+    private ObjectProperty<Tile> nextTile = new SimpleObjectProperty<>();
+    private TileViewModel nextTileViewModel = new TileViewModel(nextTile);
 
-    private TileViewModel selectionTileViewModel;
+    public BoardViewModel(Game game) {
+        this.game = game;
 
-    public TileViewModel getSelectionTileViewModel() {
-        return selectionTileViewModel;
-    }
-
-    public BoardViewModel(Table table) {
         for (int i = 0; i < 143; i++)
             for (int j = 0; j < 143; j++)
-                tileViewModels[i][j] = new TileViewModel(table.getTiles()[i][j]);
-        selectionTileViewModel = new TileViewModel(table.getTiles()[71][71]);
+                tilesViewModels[i][j] = new TileViewModel(game.getTable().getTiles()[i][j]);
+        refreshTilesViewModels();
+
+        nextTile.set(game.getBox().giveTile());
+        nextTileViewModel = new TileViewModel(nextTile);
+        updateSelection();
+
+        onTablePosition.addListener((_, _, _) -> refreshTilesViewModels());
+        onViewPosition.addListener((_, _, _) -> updateSelection());
+        nextTile.addListener((_, _, _) -> updateSelection());
+        nextTileViewModel.rotation.addListener((_, _, _) -> updateSelection());
     }
 
-    public TileViewModel getTileViewModel(int x, int y) {
-        return tileViewModels[x][y];
+    public void rotateNextTile() {
+        nextTile.get().rotate();
+    }
+
+    private void refreshTilesViewModels() {
+        for(int xTable = onTablePosition.get().x() - onViewPosition.get().x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
+            for(int yTable = onTablePosition.get().y() - onViewPosition.get().y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++) {
+                if(onViewTilesViewModels[xView][yView] == null)
+                    onViewTilesViewModels[xView][yView] = new SimpleObjectProperty<>(tilesViewModels[xTable][yTable]);
+                else {
+                    tilesViewModels[xTable][yTable].setOutline(TileView.Outline.NONE);
+                    onViewTilesViewModels[xView][yView].set(tilesViewModels[xTable][yTable]);
+                }
+            }
+        updateSelection();
+    }
+
+    private void updateSelection() {
+        if(prevOnViewPosition != null && prevOnTablePosition != null) {
+            onViewTilesViewModels[prevOnViewPosition.x()][prevOnViewPosition.y()].get().setOutline(TileView.Outline.NONE);
+            onViewTilesViewModels[prevOnViewPosition.x()][prevOnViewPosition.y()].set(tilesViewModels[prevOnTablePosition.x()][prevOnTablePosition.y()]);
+        }
+
+        prevOnViewPosition = new Position(onViewPosition.get().x(), onViewPosition.get().y());
+        prevOnTablePosition = new Position(onTablePosition.get().x(), onTablePosition.get().y());
+
+        if(game.getTable().getTiles()[onTablePosition.get().x()][onTablePosition.get().y()].get() == null)
+            onViewTilesViewModels[onViewPosition.get().x()][onViewPosition.get().y()].set(nextTileViewModel);
+        else
+            onViewTilesViewModels[onViewPosition.get().x()][onViewPosition.get().y()].set(tilesViewModels[prevOnTablePosition.x()][prevOnTablePosition.y()]);
+
+        if(game.getTable().canPlace(nextTile.get(), onTablePosition.get().x(), onTablePosition.get().y()))
+            onViewTilesViewModels[onViewPosition.get().x()][onViewPosition.get().y()].get().setOutline(TileView.Outline.GREEN);
+        else
+            onViewTilesViewModels[onViewPosition.get().x()][onViewPosition.get().y()].get().setOutline(TileView.Outline.RED);
     }
 }

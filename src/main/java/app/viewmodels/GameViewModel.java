@@ -7,7 +7,7 @@ public class GameViewModel {
 
 
     public GameViewModel(Game game) {
-        boardViewModel = new BoardViewModel(game.getTable());
+        boardViewModel = new BoardViewModel(game);
     }
 
     public BoardViewModel getBoardViewModel() {

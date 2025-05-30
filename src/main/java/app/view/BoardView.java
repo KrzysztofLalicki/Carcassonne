@@ -9,37 +9,28 @@ import static app.viewmodels.BoardViewModel.DISPLAYED_GRID_SIZE;
 
 public class BoardView extends GridPane {
     private final TileView[][] tiles;
-    private final TileView selectionTileView;
-
-    private final BoardViewModel boardViewModel;
 
     public BoardView(BoardViewModel boardViewModel) {
-        this.boardViewModel = boardViewModel;
-
         tiles = new TileView[DISPLAYED_GRID_SIZE][DISPLAYED_GRID_SIZE];
-        selectionTileView = new TileView(boardViewModel.getSelectionTileViewModel());
 
-        final Position onTablePosition = boardViewModel.getOnTablePosition();
-        final Position onViewPosition = boardViewModel.getOnViewPosition();
-        for(int xTable = onTablePosition.x() - onViewPosition.x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
-            for(int yTable = onTablePosition.y() - onViewPosition.y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++) {
-                tiles[xView][yView] = new TileView(boardViewModel.getTileViewModel(xTable, yTable));
-                this.add(tiles[xView][yView], xView, yView);
+        for (int i = 0; i < DISPLAYED_GRID_SIZE; i++)
+            for (int j = 0; j < DISPLAYED_GRID_SIZE; j++) {
+                tiles[i][j] = new TileView(boardViewModel.getOnTableTilesViewModelsProperties(i, j).get());
+                this.add(tiles[i][j], i, j);
+                final TileView tile = tiles[i][j];
+                boardViewModel.getOnTableTilesViewModelsProperties(i, j).addListener((_, _, newViewModel) ->
+                        tile.setTileViewModel(newViewModel));
             }
 
-        boardViewModel.getOnViewPositionProperty().addListener(_ -> updateTilesViewModels());
-        boardViewModel.getOnTablePositionProperty().addListener(_ -> updateTilesViewModels());
-        boardViewModel.getSelectionTileViewModel().getOutlineProperty().addListener(_ -> updateTilesViewModels());
-    }
-
-    private void updateTilesViewModels() {
-        final Position onTablePosition = boardViewModel.getOnTablePosition();
-        final Position onViewPosition = boardViewModel.getOnViewPosition();
-
-        for(int xTable = onTablePosition.x() - onViewPosition.x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
-            for(int yTable = onTablePosition.y() - onViewPosition.y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++)
-                tiles[xView][yView].setTileViewModel(boardViewModel.getTileViewModel(xTable, yTable));
-
-        tiles[onViewPosition.x()][onViewPosition.y()].setTileViewModel(boardViewModel.getSelectionTileViewModel());
+        setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case W, UP -> boardViewModel.moveSelection(0, -1);
+                case S, DOWN -> boardViewModel.moveSelection(0, 1);
+                case A, LEFT -> boardViewModel.moveSelection(-1, 0);
+                case D, RIGHT -> boardViewModel.moveSelection(1, 0);
+                case R -> boardViewModel.rotateNextTile();
+            }
+        });
+        setFocusTraversable(true);
     }
 }
