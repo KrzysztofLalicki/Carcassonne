@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 
 public class BoardView extends GridPane {
     private static final int DISPLAYED_GRID_SIZE = 13;
+    private final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
+    private final static String TILE_IMAGE_EXTENSION = ".png";
 
     private final TileView[][] tiles;
     private Position onViewPosition;
@@ -39,7 +41,7 @@ public class BoardView extends GridPane {
         for(int xTable = onTablePosition.x() - onViewPosition.x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
             for(int yTable = onTablePosition.y() - onViewPosition.y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++) {
                 try {
-                    tiles[xView][yView].setTileImage(new Image(getClass().getResource(table[xTable][yTable].getImagePath()).toExternalForm()));
+                    tiles[xView][yView].setTileImage(new Image(getClass().getResource(TILE_IMAGE_DIRECTORY + table[xTable][yTable].getSymbol() + TILE_IMAGE_EXTENSION).toExternalForm()));
                     tiles[xView][yView].setRotate(table[xTable][yTable].getRotation());
                 } catch(NullPointerException | IndexOutOfBoundsException e) {
                     tiles[xView][yView].setTileImage(null);
@@ -54,7 +56,7 @@ public class BoardView extends GridPane {
 
     public void setImageOnSelectedTile(Tile tile){
         try {
-            tiles[onViewPosition.x()][onViewPosition.y()].setTileImage(new Image(getClass().getResource(tile.getImagePath()).toExternalForm()));
+            tiles[onViewPosition.x()][onViewPosition.y()].setTileImage(new Image(getClass().getResource(TILE_IMAGE_DIRECTORY + tile.getSymbol() + TILE_IMAGE_EXTENSION).toExternalForm()));
             tiles[onViewPosition.x()][onViewPosition.y()].setRotate(tile.getRotation());
         } catch(NullPointerException | IndexOutOfBoundsException e) {
             tiles[onViewPosition.x()][onViewPosition.y()].setTileImage(null);

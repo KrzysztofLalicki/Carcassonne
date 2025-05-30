@@ -9,13 +9,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Box {
+
     private final ArrayList<Tile> tiles;
+    private static final String TILE_SET_PATH = "src/main/resources/tiles.txt";
 
     public Box(){
         tiles = new ArrayList<>();
         List<String> lines;
         try {
-            lines = Files.readAllLines(Paths.get("src/main/resources/tiles.txt"));
+            lines = Files.readAllLines(Paths.get(TILE_SET_PATH));
         }
         catch (IOException e){
             throw new RuntimeException(e);
@@ -23,13 +25,13 @@ public class Box {
         short[] tile = new short[6];
         for (String line : lines) {
             Scanner scanner = new Scanner(line);
-            String image_code = scanner.next();
+            String symbol = scanner.next();
             for (int j = 0; j < 6; j++) {
                 tile[j] = scanner.nextShort();
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
-                this.tiles.add(new Tile(tile, "/app/img/tiles/" + image_code + ".png"));
+                this.tiles.add(new Tile(tile, symbol));
             }
         }
     }
