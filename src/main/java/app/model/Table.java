@@ -3,6 +3,7 @@ package app.model;
 public class Table {
     public static final int TABLE_DIMENSIONS = 143;
     public static final int STARTING_TILE_POSITION = 71;
+    private static final String STARTING_TILE_SYMBOL = "D";
 
     private final Game game;
     private final Tile[][] tiles;
@@ -10,7 +11,7 @@ public class Table {
         this.game = game;
 
         tiles = new Tile[TABLE_DIMENSIONS][TABLE_DIMENSIONS];
-        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, "/app/img/tiles/D.png");
+        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, STARTING_TILE_SYMBOL);
         startingTile.placeOnTable(this, STARTING_TILE_POSITION, STARTING_TILE_POSITION);
         startingTile.generateSegments();
         tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION] = startingTile;
