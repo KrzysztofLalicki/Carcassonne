@@ -1,7 +1,5 @@
 package app.menu;
 
-import app.controller.GameController;
-import app.model.Game;
 import app.model.Player;
 import app.view.GameView;
 import app.view.SideBarView;

@@ -22,13 +22,18 @@ public class TileViewModel {
     }
 
     void setTile(Tile tile) {
+        this.tile = tile;
         if(tile != null) {
-            this.tile = tile;
             rotation = tile.getRotationProperty();
             image.bind(Bindings.createObjectBinding(() -> {
                 String path = tile.getImagePath();
                 return new Image(getClass().getResource(path).toExternalForm());
             }, tile.getImagePathProperty()));
+        }
+        else {
+            if(image.isBound())
+                image.unbind();
+            image.set(null);
         }
     }
 

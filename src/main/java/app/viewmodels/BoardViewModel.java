@@ -14,7 +14,7 @@ public class BoardViewModel {
 
     private Game game;
 
-    private TileViewModel[][] tilesViewModels = new TileViewModel[143][143];
+    private TileViewModel[][] tilesViewModels = new TileViewModel[Table.TABLE_DIMENSIONS][Table.TABLE_DIMENSIONS];
     private ObjectProperty<TileViewModel>[][] onViewTilesViewModels = new ObjectProperty[DISPLAYED_GRID_SIZE][DISPLAYED_GRID_SIZE];
 
     private ObjectProperty<Position> onTablePosition = new SimpleObjectProperty<Position>(new Position(Table.STARTING_TILE_POSITION, Table.STARTING_TILE_POSITION));
@@ -25,6 +25,8 @@ public class BoardViewModel {
     public ObjectProperty<TileViewModel> getOnTableTilesViewModelsProperties(int x, int y) {return onViewTilesViewModels[x][y];}
 
     private void setOnTablePosition(Position newOnTablePosition) {
+        if(newOnTablePosition.x() < 0 || newOnTablePosition.x() >= Table.TABLE_DIMENSIONS || newOnTablePosition.y() < 0 || newOnTablePosition.y() >= Table.TABLE_DIMENSIONS)
+            return;
         Position newOnViewPosition = new Position(onViewPosition.get().x() + newOnTablePosition.x() - onTablePosition.get().x(), onViewPosition.get().y() + newOnTablePosition.y() - onTablePosition.get().y());
         if (newOnViewPosition.x() > 0 && newOnViewPosition.x() < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y() > 0 && newOnViewPosition.y() < DISPLAYED_GRID_SIZE - 1)
             onViewPosition.set(newOnViewPosition);
@@ -32,8 +34,7 @@ public class BoardViewModel {
     }
 
     public void moveSelection(int x, int y) {
-        Position newOnTablePosition = new Position(onTablePosition.get().x() + x, onTablePosition.get().y() + y);
-        setOnTablePosition(newOnTablePosition);
+        setOnTablePosition(new Position(onTablePosition.get().x() + x, onTablePosition.get().y() + y));
     }
 
     private ObjectProperty<Tile> nextTile = new SimpleObjectProperty<>();
@@ -66,14 +67,15 @@ public class BoardViewModel {
 
     private void refreshTilesViewModels() {
         for(int xTable = onTablePosition.get().x() - onViewPosition.get().x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
-            for(int yTable = onTablePosition.get().y() - onViewPosition.get().y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++) {
-                if(onViewTilesViewModels[xView][yView] == null)
-                    onViewTilesViewModels[xView][yView] = new SimpleObjectProperty<>(tilesViewModels[xTable][yTable]);
-                else {
-                    tilesViewModels[xTable][yTable].setOutline(TileView.Outline.NONE);
-                    onViewTilesViewModels[xView][yView].set(tilesViewModels[xTable][yTable]);
+            for(int yTable = onTablePosition.get().y() - onViewPosition.get().y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++)
+                if(xTable >= 0 && xTable < Table.TABLE_DIMENSIONS && yTable >= 0 && yTable < Table.TABLE_DIMENSIONS){
+                    if(onViewTilesViewModels[xView][yView] == null)
+                        onViewTilesViewModels[xView][yView] = new SimpleObjectProperty<>(tilesViewModels[xTable][yTable]);
+                    else {
+                        tilesViewModels[xTable][yTable].setOutline(TileView.Outline.NONE);
+                        onViewTilesViewModels[xView][yView].set(tilesViewModels[xTable][yTable]);
+                    }
                 }
-            }
         updateSelection();
     }
 

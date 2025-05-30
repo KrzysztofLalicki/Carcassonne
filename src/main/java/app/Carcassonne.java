@@ -1,6 +1,5 @@
 package app;
 
-import app.controller.GameController;
 import app.model.Game;
 import app.model.Player;
 import app.view.GameView;

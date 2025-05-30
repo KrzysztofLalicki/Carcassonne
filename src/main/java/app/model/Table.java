@@ -33,11 +33,15 @@ public class Table {
             tiles[x][y].set(tile);
             tile.placeOnTable(this, x, y);
             tile.generateSegments();
-            // TODO: player should be able to place a follower in their turn
             game.nextPlayer();
         }
     }
     public boolean canPlace(Tile tile, int x, int y) {
+        //I don't know if its expected behaviour, but it prevents IndexOutOfBoundsException
+        if(x <= 0 || x >= TABLE_DIMENSIONS - 1) return false;
+        if(y <= 0 || y >= TABLE_DIMENSIONS - 1) return false;
+
+        if(tile == null) return false;
         if (tiles[x - 1][y].get() == null && tiles[x + 1][y].get() == null && tiles[x][y - 1].get() == null && tiles[x][y + 1].get() == null) return false;
         if (tiles[x - 1][y].get() != null && tile.left != tiles[x - 1][y].get().right) return false;
         if (tiles[x + 1][y].get() != null && tile.right != tiles[x + 1][y].get().left) return false;
