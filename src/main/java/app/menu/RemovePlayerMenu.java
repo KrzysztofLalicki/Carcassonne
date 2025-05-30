@@ -10,15 +10,15 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
-import static app.Carcassonne.game;
-import static app.Carcassonne.primaryStage;
+
 
 public class RemovePlayerMenu extends StackPane {
-    public RemovePlayerMenu(String text) {
+    public RemovePlayerMenu(String text, ViewModelMenu viewModelMenu) {
         Label label = new Label("Carcassonne");
         label.setFont(new Font("Comic Sans MS", 60));
         label.setTextFill(Color.GOLD);
@@ -32,21 +32,13 @@ public class RemovePlayerMenu extends StackPane {
         addPlayer.setTranslateY(-20);
 
         addPlayer.setOnAction(e -> {
-            if(game.getPlayers().size() <6) {
-                StackPane newPlayerLayout = new NewPlayerMenu("");
-                primaryStage.getScene().setRoot(newPlayerLayout);
-            }
-            else{
-                StackPane menuRemovePlayerLayout = new RemovePlayerMenu("Maksymalna liczba graczy");
-                primaryStage.getScene().setRoot(menuRemovePlayerLayout);
-            }
+            viewModelMenu.AddPlayerFromMainMenu();
         });
 
         Button endRemoving = new CreateStyledButton("Zakończ");
         endRemoving.setTranslateY(30);
         endRemoving.setOnAction(e -> {
-            StackPane menuLayout = new MainMenu("");
-            primaryStage.getScene().setRoot(menuLayout);
+            viewModelMenu.BackToMainMenu();
         });
 
 
@@ -64,7 +56,7 @@ public class RemovePlayerMenu extends StackPane {
             fade.play();
             this.getChildren().add(WarningLabel);
         }
-        if(!game.getPlayers().isEmpty())
+        if(!viewModelMenu.getPlayers().isEmpty())
         {
             Label playerLabel = new Label("Gracze:");
             playerLabel.setTextFill(Color.WHITE);
@@ -73,7 +65,7 @@ public class RemovePlayerMenu extends StackPane {
             playerLabel.setTranslateX(-230);
             this.getChildren().add(playerLabel);
             int level = -10;
-            for(Player player : game.getPlayers())
+            for(Player player : viewModelMenu.getPlayers())
             {
                 Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
@@ -81,21 +73,18 @@ public class RemovePlayerMenu extends StackPane {
                 playernameButton.setTranslateX(-230);
                 playernameButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
                 playernameButton.setStyle("-fx-background-color: yellow; -fx-text-fill: purple;");
+                Rectangle prostokat = new Rectangle(17, 34);
+                prostokat.setFill(player.getColor());
+                prostokat.setStroke(Color.BLACK);
+                prostokat.setStrokeWidth(2);
+                prostokat.setTranslateY(level);
+                prostokat.setTranslateX(-165);
                 level += 40;
                 playernameButton.setOnAction(e->{
-                    game.getPlayers().remove(player);
-                    if(game.getPlayers().isEmpty())
-                    {
-                        StackPane menuLayout = new MainMenu("");
-                        primaryStage.getScene().setRoot(menuLayout);
-                    }
-                    else
-                    {
-                        StackPane removeLayout = new RemovePlayerMenu("");
-                        primaryStage.getScene().setRoot(removeLayout);
-                    }
+                    viewModelMenu.RemovePlayer(player);
                 });
                 this.getChildren().add(playernameButton);
+                this.getChildren().add(prostokat);
             }
         }
         this.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, CornerRadii.EMPTY, Insets.EMPTY)));

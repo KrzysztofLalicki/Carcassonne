@@ -2,6 +2,8 @@ package app.menu;
 
 import app.model.Player;
 import javafx.animation.FadeTransition;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,15 +14,14 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
-import static app.Carcassonne.game;
-import static app.Carcassonne.primaryStage;
 
 public class NewPlayerMenu extends StackPane {
-    public NewPlayerMenu(String text)
+    public NewPlayerMenu(String text,ViewModelMenu viewModelMenu)
     {
         Label label = new Label("Carcassonne");
         label.setFont(new Font("Comic Sans MS", 60));
@@ -46,28 +47,11 @@ public class NewPlayerMenu extends StackPane {
         Button addPlayer = new CreateStyledButton("Dodaj gracza");
         addPlayer.setTranslateY(-20);
         addPlayer.setOnAction(e -> {
-            String stringPlayerName = nameField.getText();
-            if(stringPlayerName.isEmpty()) {
-                StackPane newPlayerthis = new NewPlayerMenu("Nieprwidłowa nazwa gracza");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else if(stringPlayerName.length()>10)
-            {
-                StackPane newPlayerthis = new NewPlayerMenu("Zadługa nazwa");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else if(PlayersContains(stringPlayerName)){
-                StackPane newPlayerthis = new NewPlayerMenu("Nazwa zajęta");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else{
-                game.getPlayers().add(new Player(stringPlayerName));
-                StackPane menu = new MainMenu("");
-                primaryStage.getScene().setRoot(menu);
-            }
+            String PlayerName = nameField.getText();
+            viewModelMenu.AddPlayerFromNewPlayerMenu(PlayerName);
         });
 
-        if(!game.getPlayers().isEmpty())
+        if(!viewModelMenu.getPlayers().isEmpty())
         {
             Label playerLabel = new Label("Gracze:");
             playerLabel.setTextFill(Color.WHITE);
@@ -76,7 +60,7 @@ public class NewPlayerMenu extends StackPane {
             playerLabel.setTranslateX(-230);
             this.getChildren().add(playerLabel);
             int level = -10;
-            for(Player player : game.getPlayers())
+            for(Player player : viewModelMenu.getPlayers())
             {
                 Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
@@ -84,18 +68,50 @@ public class NewPlayerMenu extends StackPane {
                 playernameButton.setTranslateX(-230);
                 playernameButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
                 playernameButton.setStyle("-fx-background-color: white; -fx-text-fill: purple;");
+                Rectangle prostokat = new Rectangle(17, 34);
+                prostokat.setFill(player.getColor());
+                prostokat.setStroke(Color.BLACK);
+                prostokat.setStrokeWidth(2);
+                prostokat.setTranslateY(level);
+                prostokat.setTranslateX(-165);
                 level += 40;
                 this.getChildren().add(playernameButton);
+                this.getChildren().add(prostokat);
             }
 
 
         }
+        Label colorlabel = new Label("Kolor gracza");
+        colorlabel.setTextFill(Color.WHITE);
+        colorlabel.setFont(new Font("Comic Sans MS", 20));
+        colorlabel.setTranslateY(-50);
+        colorlabel.setTranslateX(230);
+        this.getChildren().add(colorlabel);
+        // colors buttons
+        Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
+        int level = -20;
+        for (int i = 0; i < colors.length; i++) {
+            Color currentColor = colors[i];
+            if (!viewModelMenu.PlayersContains(currentColor)) {
+                Button colorButton = new Button();
+                colorButton.setStyle("-fx-background-color: " + toHex(currentColor) + ";");
 
+                colorButton.setTranslateY(level);
+                colorButton.setTranslateX(230);
+                colorButton.setMaxSize(75,25);
+
+                colorButton.setOnAction(e -> {
+                    viewModelMenu.setCurrentColor(currentColor);
+                });
+                this.getChildren().add(colorButton);
+
+                level += 30;
+            }
+        }
         Button returnToMenu = new CreateStyledButton("Anuluj");
         returnToMenu.setTranslateY(30);
         returnToMenu.setOnAction(e -> {
-            StackPane menuthis = new MainMenu("");
-            primaryStage.getScene().setRoot(menuthis);
+            viewModelMenu.BackToMainMenu();
         });
         this.getChildren().add(returnToMenu);
         if(!text.isEmpty()){
@@ -117,13 +133,12 @@ public class NewPlayerMenu extends StackPane {
         this.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    private boolean PlayersContains(String playerName)
-    {
-        for(Player player : game.getPlayers())
-        {
-            if(player.getName().equals(playerName))
-                return true;
-        }
-        return false;
+    public static String toHex(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int)(color.getRed() * 255),
+                (int)(color.getGreen() * 255),
+                (int)(color.getBlue() * 255));
     }
+
+
 }

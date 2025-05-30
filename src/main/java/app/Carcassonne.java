@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 import app.menu.*;
 
 public class Carcassonne extends Application {
-    public static Game game;
-    public static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -20,10 +18,7 @@ public class Carcassonne extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        VBox vbox = new OpenMenu();
-        primaryStage.setScene(new Scene(vbox,800,600));
-        primaryStage.show();
+        ViewModelMenu viewModelMenu = new ViewModelMenu(new Game(), primaryStage);
     }
 
 }

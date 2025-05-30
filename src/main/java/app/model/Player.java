@@ -1,17 +1,20 @@
 package app.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.paint.Color;
 
 public class Player {
 
     private final String name;
-    private Color color;
+    private ObjectProperty<Color> color = new SimpleObjectProperty<>();
     private int points;
     private final Follower[] followers;
 
-    public Player(String name) {
+    public Player(String name, Color color) {
         this.name = name;
         points = 0;
+        this.color.set(color);
         followers = new Follower[7];
         for (Follower follower : followers) {
             follower = new Follower(this);
@@ -27,10 +30,10 @@ public class Player {
         return name;
     }
     public void setColor(Color color) {
-        this.color = color;
+        this.color.set(color);
     }
     public Color getColor() {
-        return color;
+        return this.color.get();
     }
     public void addPoints(int points) {
         this.points += points;
