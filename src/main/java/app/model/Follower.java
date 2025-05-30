@@ -19,6 +19,7 @@ public class Follower {
             this.tile = tile;
             this.x = x;
             this.y = y;
+            tile.getSegments()[x][y].addFollower(this);
         }
     }
     public void remove() {

@@ -217,7 +217,4 @@ public class Tile {
     public boolean canPlace(int x, int y) {
         return segments[x][y] != null && segments[x][y].getArea().isFree();
     }
-    public boolean placeFollower(Follower follower) {
-        return false;
-    }
 }
