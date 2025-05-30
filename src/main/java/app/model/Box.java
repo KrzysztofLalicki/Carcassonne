@@ -53,6 +53,7 @@ public class Box {
         Random r = new Random();
         nextTile.set(tiles.remove(r.nextInt(tiles.size())));
     }
+
     public boolean isEmpty() {
         return tiles.isEmpty();
     }

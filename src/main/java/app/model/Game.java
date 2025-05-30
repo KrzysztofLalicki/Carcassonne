@@ -11,7 +11,7 @@ public class Game {
     private final Table table;
 
     private int currentPlayerNumber;
-    private ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
+    private final ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
 
     BooleanProperty hasEnded = new SimpleBooleanProperty(false);
 

@@ -10,12 +10,12 @@ public class GameViewModel {
     public static final String CONTROLS_TEXT = "CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
     public static final String GAME_END_TEXT = "The game has ended. Press ESC to exit.";
 
-    private Game game;
+    private final Game game;
 
-    private SideBarViewModel sideBarViewModel;
-    private BoardViewModel boardViewModel;
+    private final SideBarViewModel sideBarViewModel;
+    private final BoardViewModel boardViewModel;
 
-    private StringProperty bottomText = new SimpleStringProperty(CONTROLS_TEXT);
+    private final StringProperty bottomText = new SimpleStringProperty(CONTROLS_TEXT);
 
     public GameViewModel(Game game) {
         this.game = game;

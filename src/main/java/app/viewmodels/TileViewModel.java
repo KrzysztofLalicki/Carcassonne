@@ -42,9 +42,7 @@ public class TileViewModel {
 
     public TileViewModel(ObjectProperty<Tile> tile) {
         setTile(tile.get());
-        tile.addListener((_, _, newTile) -> {
-            setTile(newTile);
-        });
+        tile.addListener((_, _, newTile) -> setTile(newTile));
     }
 
 }

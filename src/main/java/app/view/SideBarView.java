@@ -9,13 +9,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class SideBarView extends BorderPane {
-    private final VBox playersBox = new VBox(4);
 
     public SideBarView(SideBarViewModel viewModel) {
         setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
         setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
 
+        VBox playersBox = new VBox(4);
         playersBox.setAlignment(Pos.TOP_LEFT);
 
         Label titleLabel = new Label("PLAYERS");

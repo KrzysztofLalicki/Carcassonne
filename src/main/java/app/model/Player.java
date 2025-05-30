@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 public class Player {
 
     private final StringProperty name = new SimpleStringProperty();
-    private ObjectProperty<Color> color = new SimpleObjectProperty<>();
+    private final ObjectProperty<Color> color = new SimpleObjectProperty<>();
     private IntegerProperty points = new SimpleIntegerProperty(0);
     private final Follower[] followers;
 
