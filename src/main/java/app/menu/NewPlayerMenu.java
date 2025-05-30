@@ -16,11 +16,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
-import static app.Carcassonne.game;
-import static app.Carcassonne.primaryStage;
 
 public class NewPlayerMenu extends StackPane {
-    public NewPlayerMenu(String text)
+    public NewPlayerMenu(String text,ViewModelMenu viewModelMenu)
     {
         Label label = new Label("Carcassonne");
         label.setFont(new Font("Comic Sans MS", 60));
@@ -46,28 +44,11 @@ public class NewPlayerMenu extends StackPane {
         Button addPlayer = new CreateStyledButton("Dodaj gracza");
         addPlayer.setTranslateY(-20);
         addPlayer.setOnAction(e -> {
-            String stringPlayerName = nameField.getText();
-            if(stringPlayerName.isEmpty()) {
-                StackPane newPlayerthis = new NewPlayerMenu("Nieprwidłowa nazwa gracza");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else if(stringPlayerName.length()>10)
-            {
-                StackPane newPlayerthis = new NewPlayerMenu("Zadługa nazwa");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else if(PlayersContains(stringPlayerName)){
-                StackPane newPlayerthis = new NewPlayerMenu("Nazwa zajęta");
-                primaryStage.getScene().setRoot(newPlayerthis);
-            }
-            else{
-                game.getPlayers().add(new Player(stringPlayerName));
-                StackPane menu = new MainMenu("");
-                primaryStage.getScene().setRoot(menu);
-            }
+            String PlayerName = nameField.getText();
+            viewModelMenu.AddPlayerFromNewPlayerMenu(PlayerName);
         });
 
-        if(!game.getPlayers().isEmpty())
+        if(!viewModelMenu.getPlayers().isEmpty())
         {
             Label playerLabel = new Label("Gracze:");
             playerLabel.setTextFill(Color.WHITE);
@@ -76,7 +57,7 @@ public class NewPlayerMenu extends StackPane {
             playerLabel.setTranslateX(-230);
             this.getChildren().add(playerLabel);
             int level = -10;
-            for(Player player : game.getPlayers())
+            for(Player player : viewModelMenu.getPlayers())
             {
                 Button playernameButton = new Button(player.getName());
                 playernameButton.setMaxSize(120,25);
@@ -90,12 +71,22 @@ public class NewPlayerMenu extends StackPane {
 
 
         }
-
+        Label colorlabel = new Label("Kolor gracza");
+        colorlabel.setTextFill(Color.WHITE);
+        colorlabel.setFont(new Font("Comic Sans MS", 20));
+        colorlabel.setTranslateY(-50);
+        colorlabel.setTranslateX(230);
+        this.getChildren().add(colorlabel);
+        // colors buttons
+        Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
+        for(int i = 0; i < 6; i++)
+        {
+            
+        }
         Button returnToMenu = new CreateStyledButton("Anuluj");
         returnToMenu.setTranslateY(30);
         returnToMenu.setOnAction(e -> {
-            StackPane menuthis = new MainMenu("");
-            primaryStage.getScene().setRoot(menuthis);
+            viewModelMenu.BackToMainMenu();
         });
         this.getChildren().add(returnToMenu);
         if(!text.isEmpty()){
@@ -117,13 +108,7 @@ public class NewPlayerMenu extends StackPane {
         this.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    private boolean PlayersContains(String playerName)
-    {
-        for(Player player : game.getPlayers())
-        {
-            if(player.getName().equals(playerName))
-                return true;
-        }
-        return false;
-    }
+
+
+
 }
