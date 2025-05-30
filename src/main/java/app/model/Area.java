@@ -9,24 +9,24 @@ public abstract class Area {
     ArrayList<Segment> segments;
     ArrayList<Follower> followers;
 
-    public Area() {
+    public Area(Tile tile) {
         tiles = new HashSet<>();
+        tiles.add(tile);
         segments = new ArrayList<>();
         followers = new ArrayList<>();
     }
 
     public void mergeWith(Area area) {
-        for (Segment segment : area.segments) {
-            segment.setArea(this);
+        if (area.getClass() == getClass() && area != this) {
+            for (Segment segment : area.segments) {
+                segment.setArea(this);
+            }
+            tiles.addAll(area.tiles);
+            segments.addAll(area.segments);
+            followers.addAll(area.followers);
         }
-        tiles.addAll(area.tiles);
-        segments.addAll(area.segments);
-        followers.addAll(area.followers);
     }
 
-    public void addTile(Tile tile) {
-        tiles.add(tile);
-    }
     public void addFollower(Follower follower) {
         followers.add(follower);
     }

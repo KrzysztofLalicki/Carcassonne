@@ -2,7 +2,7 @@ package app.model;
 
 public class Road extends Area {
 
-    public Road() {
-        super();
+    public Road(Tile tile) {
+        super(tile);
     }
 }
