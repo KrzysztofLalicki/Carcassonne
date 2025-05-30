@@ -20,7 +20,7 @@ public class SideBarView extends BorderPane {
     private Label titleLabel;
     private VBox playersBox;
 
-    private TileView nextTileView;
+//    private TileView nextTileView;
 
     private Player prevSelected = null;
 
@@ -47,21 +47,22 @@ public class SideBarView extends BorderPane {
 
         setTop(playersBox);
 
-        nextTileView = new TileView();
-        setBottom(nextTileView);
+//        nextTileView = new TileView();
+//        setBottom(nextTileView);
     }
 
     public void setNextTile(Tile nextTile) {
-        try {
-            nextTileView.setTileImage(new Image(getClass().getResource(TILE_IMAGE_DIRECTORY + nextTile.getSymbol() + TILE_IMAGE_EXTENSION).toExternalForm()));
-            nextTileView.setRotate(nextTile.getRotation());
-        } catch(NullPointerException | IndexOutOfBoundsException e) {
-            nextTileView.setTileImage(null);
-        }
+//        try {
+//            nextTileView.setTileImage(new Image(getClass().getResource(TILE_IMAGE_DIRECTORY + nextTile.getSymbol() + TILE_IMAGE_EXTENSION).toExternalForm()));
+//            nextTileView.setRotate(nextTile.getRotation());
+//        } catch(NullPointerException | IndexOutOfBoundsException e) {
+//            nextTileView.setTileImage(null);
+//        }
     }
 
     public void setNextTileOutline(TileView.Outline outline) {
-        nextTileView.setOutline(outline);
+
+//        nextTileView.setOutline(outline);
     }
 
     public void selectPlayer(Player player) {

@@ -10,6 +10,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 public class TileViewModel {
+    private final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
+    private final static String TILE_IMAGE_EXTENSION = ".png";
+
     Tile tile;
     public IntegerProperty rotation = new SimpleIntegerProperty();
     public ObjectProperty<Image> image = new SimpleObjectProperty<>();
@@ -26,9 +29,9 @@ public class TileViewModel {
         if(tile != null) {
             rotation = tile.getRotationProperty();
             image.bind(Bindings.createObjectBinding(() -> {
-                String path = tile.getImagePath();
+                String path = TILE_IMAGE_DIRECTORY + tile.getSymbol() + TILE_IMAGE_EXTENSION;
                 return new Image(getClass().getResource(path).toExternalForm());
-            }, tile.getImagePathProperty()));
+            }, tile.getSymbolProperty()));
         }
         else {
             if(image.isBound())

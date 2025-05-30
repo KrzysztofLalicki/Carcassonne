@@ -53,4 +53,10 @@ public class Table {
     public ObjectProperty<Tile>[][] getTiles() {
         return tiles;
     }
+
+    public Tile getTile(int x, int y) {
+        if(tiles[x][y] == null)
+            return null;
+        return tiles[x][y].get();
+    }
 }

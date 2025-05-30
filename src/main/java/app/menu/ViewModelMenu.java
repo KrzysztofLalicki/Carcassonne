@@ -1,9 +1,10 @@
 package app.menu;
 
-import app.controller.GameController;
 import app.model.Game;
 import app.model.Player;
 import app.view.GameView;
+import app.view.SideBarView;
+import app.viewmodels.GameViewModel;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -59,10 +60,13 @@ public class ViewModelMenu {
             primaryStage.getScene().setRoot(menuLayout);
         } else {  // Zaczynamy rozgrywke
             primaryStage.setResizable(false);
-            GameController gameController = new GameController(game);
-            GameView gameView = gameController.getGameView();
+
+            game.start();
+
+            GameViewModel gameViewModel = new GameViewModel(game);
+            GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel);
             Scene scene = new Scene(gameView);
-            scene.setOnKeyPressed(gameController::handleKeyPress);
+
             primaryStage.setScene(scene);
             primaryStage.show();
         }
