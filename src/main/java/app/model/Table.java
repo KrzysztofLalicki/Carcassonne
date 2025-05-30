@@ -1,10 +1,7 @@
 package app.model;
 
-import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-
-import java.util.Arrays;
 
 public class Table {
     public static final int TABLE_DIMENSIONS = 143;
@@ -13,8 +10,6 @@ public class Table {
 
     private final Game game;
     private final ObjectProperty<Tile>[][] tiles;
-
-
 
     public Table(Game game) {
         this.game = game;

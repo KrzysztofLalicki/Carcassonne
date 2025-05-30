@@ -11,28 +11,11 @@ public class Tile {
     private final Segment[][] segments;
 
     private final IntegerProperty rotation = new SimpleIntegerProperty(0);
-
-    public void setRotation(Integer rotation) {
-        this.rotation.set(rotation);
-    }
-
-    public IntegerProperty getRotationProperty() {
-        return rotation;
-    }
+    public IntegerProperty getRotationProperty() { return rotation; }
 
     private final StringProperty symbol = new SimpleStringProperty();
-
-    public String getSymbol() {
-        return symbol.get();
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol.set(symbol);
-    }
-
-    public StringProperty getSymbolProperty() {
-        return symbol;
-    }
+    public String getSymbol() {return symbol.get();}
+    public StringProperty getSymbolProperty() { return symbol;}
 
     public Tile(short[] terrain, String symbol) {
         up = terrain[0];
@@ -41,7 +24,7 @@ public class Tile {
         right = terrain[3];
         down = terrain[4];
         pennant = terrain[5] == 1;
-        setSymbol(symbol);
+        this.symbol.set(symbol);
         segments = new Segment[3][3];
     }
 
@@ -169,9 +152,37 @@ public class Tile {
                 }
             }
         }
-        if (centre == 3) {
-            segments[1][1] = new Segment(new Cloister(this));
-        } else {
+        if (centre == 2) {
+            if (up == 2) {
+                Road road = new Road(this);
+                segments[1][0] = new Segment(road);
+                if (table.getTile(x, y - 1) != null) {
+                    table.getTile(x, y - 1).getSegments()[1][2].getArea().mergeWith(road);
+                }
+            }
+            if (left == 2) {
+                Road road = new Road(this);
+                segments[0][1] = new Segment(road);
+                if (table.getTile(x - 1, y) != null) {
+                    table.getTile(x - 1, y).getSegments()[2][1].getArea().mergeWith(road);
+                }
+            }
+            if (right == 2) {
+                Road road = new Road(this);
+                segments[2][1] = new Segment(road);
+                if (table.getTile(x + 1, y) != null) {
+                    table.getTile(x + 1, y).getSegments()[0][1].getArea().mergeWith(road);
+                }
+            }
+            if (down == 2) {
+                Road road = new Road(this);
+                segments[1][2] = new Segment(road);
+                if (table.getTile(x, y + 1) != null) {
+                    table.getTile(x, y + 1).getSegments()[1][0].getArea().mergeWith(road);
+                }
+            }
+        }
+        else {
             Road road = new Road(this);
             if (up == 2) {
                 segments[1][0] = new Segment(road);
@@ -197,6 +208,9 @@ public class Tile {
                     table.getTile(x, y + 1).getSegments()[1][0].getArea().mergeWith(road);
                 }
             }
+        }
+        if (centre == 3) {
+            segments[1][1] = new Segment(new Cloister(this));
         }
     }
 
