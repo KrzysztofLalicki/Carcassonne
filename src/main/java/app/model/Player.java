@@ -7,14 +7,14 @@ import javafx.scene.paint.Color;
 public class Player {
 
     private final String name;
-    private ObjectProperty<Color> color;
+    private ObjectProperty<Color> color = new SimpleObjectProperty<>();
     private int points;
     private final Follower[] followers;
 
-    public Player(String name) {
+    public Player(String name, Color color) {
         this.name = name;
         points = 0;
-        this.color = new SimpleObjectProperty<>(Color.TRANSPARENT);
+        this.color.set(color);
         followers = new Follower[7];
         for (Follower follower : followers) {
             follower = new Follower(this);

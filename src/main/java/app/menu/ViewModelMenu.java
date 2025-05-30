@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class ViewModelMenu {
     private Game game;
     private Stage primaryStage;
+    Color currentColor = Color.TRANSPARENT;
 
     public ViewModelMenu(Game game, Stage primaryStage) {
         this.game = game;
@@ -85,6 +86,9 @@ public class ViewModelMenu {
 
     //NewPlayerMenu Functions
 
+    public void setCurrentColor(Color color) {
+        currentColor = color;
+    }
     public void AddPlayerFromNewPlayerMenu(String PlayerName) {
         if(PlayerName.isEmpty()) {
             StackPane newPlayerthis = new NewPlayerMenu("Nieprwidłowa nazwa gracza",this);
@@ -100,9 +104,23 @@ public class ViewModelMenu {
             primaryStage.getScene().setRoot(newPlayerthis);
         }
         else{
-            game.getPlayers().add(new Player(PlayerName));
+            if(!currentColor.equals(Color.TRANSPARENT) && !PlayersContains(currentColor)) {
+            game.getPlayers().add(new Player(PlayerName,currentColor));
             StackPane menu = new MainMenu("",this);
             primaryStage.getScene().setRoot(menu);
+            }
+            else{
+                Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
+                for(int i = 0; i < colors.length; i++) {
+                    if(!PlayersContains(colors[i])) {
+                        currentColor = colors[i];
+                        break;
+                    }
+                }
+                game.getPlayers().add(new Player(PlayerName,currentColor));
+                StackPane menu = new MainMenu("",this);
+                primaryStage.getScene().setRoot(menu);
+            }
         }
     }
 
@@ -111,7 +129,7 @@ public class ViewModelMenu {
         primaryStage.getScene().setRoot(menu);
     }
 
-    private boolean PlayersContains(String playerName)
+    public boolean PlayersContains(String playerName)
     {
         for(Player player : game.getPlayers())
         {
@@ -121,7 +139,7 @@ public class ViewModelMenu {
         return false;
     }
 
-    private boolean PlayersContains(Color playerColor)
+    public boolean PlayersContains(Color playerColor)
     {
         for(Player player : game.getPlayers())
         {

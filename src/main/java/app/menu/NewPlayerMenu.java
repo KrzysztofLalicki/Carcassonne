@@ -2,6 +2,8 @@ package app.menu;
 
 import app.model.Player;
 import javafx.animation.FadeTransition;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,6 +14,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
@@ -65,8 +68,15 @@ public class NewPlayerMenu extends StackPane {
                 playernameButton.setTranslateX(-230);
                 playernameButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
                 playernameButton.setStyle("-fx-background-color: white; -fx-text-fill: purple;");
+                Rectangle prostokat = new Rectangle(17, 34);
+                prostokat.setFill(player.getColor());
+                prostokat.setStroke(Color.BLACK);
+                prostokat.setStrokeWidth(2);
+                prostokat.setTranslateY(level);
+                prostokat.setTranslateX(-165);
                 level += 40;
                 this.getChildren().add(playernameButton);
+                this.getChildren().add(prostokat);
             }
 
 
@@ -79,9 +89,24 @@ public class NewPlayerMenu extends StackPane {
         this.getChildren().add(colorlabel);
         // colors buttons
         Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
-        for(int i = 0; i < 6; i++)
-        {
-            
+        int level = -20;
+        for (int i = 0; i < colors.length; i++) {
+            Color currentColor = colors[i];
+            if (!viewModelMenu.PlayersContains(currentColor)) {
+                Button colorButton = new Button();
+                colorButton.setStyle("-fx-background-color: " + toHex(currentColor) + ";");
+
+                colorButton.setTranslateY(level);
+                colorButton.setTranslateX(230);
+                colorButton.setMaxSize(75,25);
+
+                colorButton.setOnAction(e -> {
+                    viewModelMenu.setCurrentColor(currentColor);
+                });
+                this.getChildren().add(colorButton);
+
+                level += 30;
+            }
         }
         Button returnToMenu = new CreateStyledButton("Anuluj");
         returnToMenu.setTranslateY(30);
@@ -108,7 +133,12 @@ public class NewPlayerMenu extends StackPane {
         this.setBackground(new Background(new BackgroundFill(Color.LIMEGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-
+    public static String toHex(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int)(color.getRed() * 255),
+                (int)(color.getGreen() * 255),
+                (int)(color.getBlue() * 255));
+    }
 
 
 }

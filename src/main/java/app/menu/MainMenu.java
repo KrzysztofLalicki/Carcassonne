@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
@@ -79,8 +81,15 @@ public class MainMenu extends StackPane {
                 playernameButton.setTranslateX(-230);
                 playernameButton.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, 16));
                 playernameButton.setStyle("-fx-background-color: white; -fx-text-fill: purple;");
+                Rectangle prostokat = new Rectangle(17, 34);
+                prostokat.setFill(player.getColor());
+                prostokat.setStroke(Color.BLACK);
+                prostokat.setStrokeWidth(2);
+                prostokat.setTranslateY(level);
+                prostokat.setTranslateX(-165);
                 level += 40;
                 this.getChildren().add(playernameButton);
+                this.getChildren().add(prostokat);
             }
 
 
