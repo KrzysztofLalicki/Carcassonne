@@ -1,5 +1,6 @@
 package app.view;
 
+import app.viewmodels.TileViewModel;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,7 +38,9 @@ public class TileView extends StackPane {
         }
     }
 
-    public TileView() {
+    public TileView(TileViewModel model) {
+        tileImage.rotateProperty().bind(model.rotation);
+
         setMinSize(60, 60);
         setMaxSize(60, 60);
 
@@ -57,7 +60,7 @@ public class TileView extends StackPane {
         tileImage.setImage(image);
     }
 
-    public void setRotate(int rotation) {
-        tileImage.setRotate(rotation);
-    }
+//    public void setRotate(int rotation) {
+//        tileImage.setRotate(rotation);
+//    }
 }

@@ -4,6 +4,8 @@ import app.controller.GameController;
 import app.model.Game;
 import app.model.Player;
 import app.view.GameView;
+import app.view.SideBarView;
+import app.viewmodels.GameViewModel;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -50,10 +52,16 @@ public class MainMenu extends StackPane {
                 primaryStage.getScene().setRoot(menuLayout);
             } else {  // Zaczynamy rozgrywke
                 primaryStage.setResizable(false);
-                GameController gameController = new GameController(game);
-                GameView gameView = gameController.getGameView();
+//                GameController gameController = new GameController(game);
+//                GameView gameView = gameController.getGameView();
+
+                GameViewModel gameViewModel = new GameViewModel(game);
+                GameView gameView = new GameView(new SideBarView(game.getPlayers()), gameViewModel, game.getTable());
+                GameController gameController = new GameController(game, gameView);
+
+
                 Scene scene = new Scene(gameView);
-                scene.setOnKeyPressed(gameController::handleKeyPress);
+                scene.setOnKeyPressed(evt -> gameController.handleKeyPress(evt));
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }

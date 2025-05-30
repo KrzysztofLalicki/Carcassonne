@@ -3,6 +3,7 @@ package app.view;
 import app.model.Table;
 import app.utils.Position;
 import app.model.Tile;
+import app.viewmodels.BoardViewModel;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
@@ -17,11 +18,11 @@ public class BoardView extends GridPane {
     private Position onTablePosition;
 
 
-    public BoardView(Table table) {
+    public BoardView(Table table, BoardViewModel boardViewModel) {
         tiles = new TileView[DISPLAYED_GRID_SIZE][DISPLAYED_GRID_SIZE];
         for(int i = 0; i < DISPLAYED_GRID_SIZE; i++)
             for(int j = 0; j < DISPLAYED_GRID_SIZE; j++) {
-                tiles[i][j] = new TileView();
+                tiles[i][j] = new TileView(boardViewModel.getTileViewModel(i, j));
                 add(tiles[i][j], i, j);
             }
         onViewPosition = new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2);

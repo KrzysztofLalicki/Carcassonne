@@ -1,5 +1,8 @@
 package app.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Tile {
 
     private Table table;
@@ -9,7 +12,20 @@ public class Tile {
     private final Segment[][] segments;
 
     private final String image_path;
-    private Integer rotation = 0;
+    private final IntegerProperty rotation = new SimpleIntegerProperty(0);
+
+    public Integer getRotation() {
+        return rotation.get();
+    }
+
+    public void setRotation(Integer rotation) {
+        this.rotation.set(rotation);
+    }
+
+    public IntegerProperty getRotationPropert() {
+        return rotation;
+    }
+
 
     public Tile(short[] terrain, String image_path) {
         up = terrain[0];
@@ -28,13 +44,12 @@ public class Tile {
         left = down;
         down = right;
         right = temp;
-        rotation = (rotation + 90) % 360;
+
+        setRotation((getRotation()+90)%360);
+//        rotation = (rotation + 90) % 360;
     }
     public String getImagePath() {
         return image_path;
-    }
-    public Integer getRotation() {
-        return rotation;
     }
     public void generateSegments() {
         if (centre == 1) {
@@ -42,25 +57,25 @@ public class Tile {
             if (up == 1) {
                 segments[0][1] = new Segment(city);
                 if (table.getTiles()[x][y - 1] != null) {
-                    city.mergeWith(table.getTiles()[x][y - 1].getSegments()[2][1].getArea());
+                    city.mergeWith(table.getTiles()[x][y - 1].get().getSegments()[2][1].getArea());
                 }
             }
             if (left == 1) {
                 segments[1][0] = new Segment(city);
                 if (table.getTiles()[x - 1][y] != null) {
-                    city.mergeWith(table.getTiles()[x - 1][y].getSegments()[1][2].getArea());
+                    city.mergeWith(table.getTiles()[x - 1][y].get().getSegments()[1][2].getArea());
                 }
             }
             if (right == 1) {
                 segments[1][2] = new Segment(city);
                 if (table.getTiles()[x + 1][y] != null) {
-                    city.mergeWith(table.getTiles()[x + 1][y].getSegments()[1][0].getArea());
+                    city.mergeWith(table.getTiles()[x + 1][y].get().getSegments()[1][0].getArea());
                 }
             }
             if (down == 1) {
                 segments[2][1] = new Segment(city);
                 if (table.getTiles()[x][y + 1] != null) {
-                    city.mergeWith(table.getTiles()[x][y + 1].getSegments()[0][1].getArea());
+                    city.mergeWith(table.getTiles()[x][y + 1].get().getSegments()[0][1].getArea());
                 }
             }
         }
@@ -69,28 +84,28 @@ public class Tile {
                 City city = new City();
                 segments[0][1] = new Segment(city);
                 if (table.getTiles()[x][y - 1] != null) {
-                    city.mergeWith(table.getTiles()[x][y - 1].getSegments()[2][1].getArea());
+                    city.mergeWith(table.getTiles()[x][y - 1].get().getSegments()[2][1].getArea());
                 }
             }
             if (left == 1) {
                 City city = new City();
                 segments[1][0] = new Segment(city);
                 if (table.getTiles()[x - 1][y] != null) {
-                    city.mergeWith(table.getTiles()[x - 1][y].getSegments()[1][2].getArea());
+                    city.mergeWith(table.getTiles()[x - 1][y].get().getSegments()[1][2].getArea());
                 }
             }
             if (right == 1) {
                 City city = new City();
                 segments[1][2] = new Segment(city);
                 if (table.getTiles()[x + 1][y] != null) {
-                    city.mergeWith(table.getTiles()[x + 1][y].getSegments()[1][0].getArea());
+                    city.mergeWith(table.getTiles()[x + 1][y].get().getSegments()[1][0].getArea());
                 }
             }
             if (down == 1) {
                 City city = new City();
                 segments[2][1] = new Segment(city);
                 if (table.getTiles()[x][y + 1] != null) {
-                    city.mergeWith(table.getTiles()[x][y + 1].getSegments()[0][1].getArea());
+                    city.mergeWith(table.getTiles()[x][y + 1].get().getSegments()[0][1].getArea());
                 }
             }
         }
@@ -99,28 +114,28 @@ public class Tile {
                 Road road = new Road();
                 segments[0][1] = new Segment(road);
                 if (table.getTiles()[x][y - 1] != null) {
-                    road.mergeWith(table.getTiles()[x][y - 1].getSegments()[2][1].getArea());
+                    road.mergeWith(table.getTiles()[x][y - 1].get().getSegments()[2][1].getArea());
                 }
             }
             if (left == 1) {
                 Road road = new Road();
                 segments[1][0] = new Segment(road);
                 if (table.getTiles()[x - 1][y] != null) {
-                    road.mergeWith(table.getTiles()[x - 1][y].getSegments()[1][2].getArea());
+                    road.mergeWith(table.getTiles()[x - 1][y].get().getSegments()[1][2].getArea());
                 }
             }
             if (right == 1) {
                 Road road = new Road();
                 segments[1][2] = new Segment(road);
                 if (table.getTiles()[x + 1][y] != null) {
-                    road.mergeWith(table.getTiles()[x + 1][y].getSegments()[1][0].getArea());
+                    road.mergeWith(table.getTiles()[x + 1][y].get().getSegments()[1][0].getArea());
                 }
             }
             if (down == 1) {
                 Road road = new Road();
                 segments[2][1] = new Segment(road);
                 if (table.getTiles()[x][y + 1] != null) {
-                    road.mergeWith(table.getTiles()[x][y + 1].getSegments()[0][1].getArea());
+                    road.mergeWith(table.getTiles()[x][y + 1].get().getSegments()[0][1].getArea());
                 }
             }
         }
@@ -129,25 +144,25 @@ public class Tile {
             if (up == 1) {
                 segments[0][1] = new Segment(road);
                 if (table.getTiles()[x][y - 1] != null) {
-                    road.mergeWith(table.getTiles()[x][y - 1].getSegments()[2][1].getArea());
+                    road.mergeWith(table.getTiles()[x][y - 1].get().getSegments()[2][1].getArea());
                 }
             }
             if (left == 1) {
                 segments[1][0] = new Segment(road);
                 if (table.getTiles()[x - 1][y] != null) {
-                    road.mergeWith(table.getTiles()[x - 1][y].getSegments()[1][2].getArea());
+                    road.mergeWith(table.getTiles()[x - 1][y].get().getSegments()[1][2].getArea());
                 }
             }
             if (right == 1) {
                 segments[1][2] = new Segment(road);
                 if (table.getTiles()[x + 1][y] != null) {
-                    road.mergeWith(table.getTiles()[x + 1][y].getSegments()[1][0].getArea());
+                    road.mergeWith(table.getTiles()[x + 1][y].get().getSegments()[1][0].getArea());
                 }
             }
             if (down == 1) {
                 segments[2][1] = new Segment(road);
                 if (table.getTiles()[x][y + 1] != null) {
-                    road.mergeWith(table.getTiles()[x][y + 1].getSegments()[0][1].getArea());
+                    road.mergeWith(table.getTiles()[x][y + 1].get().getSegments()[0][1].getArea());
                 }
             }
         }

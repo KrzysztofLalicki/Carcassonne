@@ -22,15 +22,17 @@ public class GameController {
     private final BoardView boardView;
     private Position selected;
 
-    public GameController(Game game) {
+    public GameController(Game game, GameView gameView) {
         this.game = game;
         box = game.getBox();
         table = game.getTable();
 
-        this.sideBarView = new SideBarView(game.getPlayers());
-        this.boardView = new BoardView(game.getTable());
+        this.gameView = gameView;
 
-        this.gameView = new GameView(sideBarView, boardView);
+        this.sideBarView = gameView.getSideBarView();
+        this.boardView = gameView.getBoardView();
+
+        //this.gameView = new GameView(sideBarView, boardView);
 
         gameView.setBottomText(GameView.CONTROLS_TEXT);
 
@@ -39,13 +41,13 @@ public class GameController {
         nextTile = game.getBox().giveTile();
 
         sideBarView.setNextTile(nextTile);
-        sideBarView.setNextTileOutline(TileView.Outline.RED);
+//        sideBarView.setNextTileOutline(TileView.Outline.RED);
         sideBarView.selectPlayer(game.getCurrentPlayer());
     }
 
-    public GameView getGameView() {
-        return gameView;
-    }
+//    public GameView getGameView() {
+//        return gameView;
+//    }
 
     private boolean gameEnded = false;
     public void handleKeyPress(KeyEvent event) {
@@ -93,16 +95,16 @@ public class GameController {
 
             if (table.canPlace(nextTile, newPos.x(), newPos.y())) {
                 boardView.setSelectionOutline(TileView.Outline.GREEN);
-                sideBarView.setNextTileOutline(TileView.Outline.GREEN);
+//                sideBarView.setNextTileOutline(TileView.Outline.GREEN);
             }
             else {
                 boardView.setSelectionOutline(TileView.Outline.RED);
-                sideBarView.setNextTileOutline(TileView.Outline.RED);
+//                sideBarView.setNextTileOutline(TileView.Outline.RED);
             }
         }
         else {
             boardView.setSelectionOutline(TileView.Outline.RED);
-            sideBarView.setNextTileOutline(TileView.Outline.RED);
+//            sideBarView.setNextTileOutline(TileView.Outline.RED);
         }
     }
 }

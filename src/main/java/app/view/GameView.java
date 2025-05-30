@@ -1,5 +1,7 @@
 package app.view;
 
+import app.model.Table;
+import app.viewmodels.GameViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,10 +15,16 @@ public class GameView extends BorderPane {
 
     private final Label bottomLabel;
 
-    public GameView(SideBarView sideBarView, BoardView gameView) {
+    private BoardView boardView;
+    private SideBarView sideBarView;
+
+    //TODO: remove table from here!!!
+    public GameView(SideBarView sideBarView, GameViewModel gameViewModel, Table table) {
+        boardView = new BoardView(table, gameViewModel.getBoardViewModel());
+
         sideBarView.setPadding(new Insets(10));
         setLeft(sideBarView);
-        setRight(gameView);
+        setRight(boardView);
 
         bottomLabel = new Label();
         bottomLabel.setFont(Font.font("Monospaced"));
@@ -26,5 +34,13 @@ public class GameView extends BorderPane {
 
     public void setBottomText(String bottomText) {
         bottomLabel.setText(bottomText);
+    }
+
+    public BoardView getBoardView() {
+        return boardView;
+    }
+
+    public SideBarView getSideBarView() {
+        return sideBarView;
     }
 }

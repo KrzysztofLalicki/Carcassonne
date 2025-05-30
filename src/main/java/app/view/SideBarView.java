@@ -2,6 +2,7 @@ package app.view;
 
 import app.model.Player;
 import app.model.Tile;
+import app.viewmodels.TileViewModel;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,7 +19,7 @@ public class SideBarView extends BorderPane {
     private Label titleLabel;
     private VBox playersBox;
 
-    private TileView nextTileView;
+//    private TileView nextTileView;
 
     private Player prevSelected = null;
 
@@ -45,22 +46,22 @@ public class SideBarView extends BorderPane {
 
         setTop(playersBox);
 
-        nextTileView = new TileView();
-        setBottom(nextTileView);
+//        nextTileView = new TileView(new TileViewModel());
+//        setBottom(nextTileView);
     }
 
     public void setNextTile(Tile nextTile) {
         try {
-            nextTileView.setTileImage(new Image(getClass().getResource(nextTile.getImagePath()).toExternalForm()));
-            nextTileView.setRotate(nextTile.getRotation());
+//            nextTileView.setTileImage(new Image(getClass().getResource(nextTile.getImagePath()).toExternalForm()));
+//            nextTileView.setRotate(nextTile.getRotation());
         } catch(NullPointerException | IndexOutOfBoundsException e) {
-            nextTileView.setTileImage(null);
+//            nextTileView.setTileImage(null);
         }
     }
 
-    public void setNextTileOutline(TileView.Outline outline) {
-        nextTileView.setOutline(outline);
-    }
+//    public void setNextTileOutline(TileView.Outline outline) {
+//        nextTileView.setOutline(outline);
+//    }
 
     public void selectPlayer(Player player) {
         if(prevSelected != null)
