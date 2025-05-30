@@ -2,7 +2,6 @@ package app.view;
 
 import app.model.Player;
 import app.model.Tile;
-import app.viewmodels.TileViewModel;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,12 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 public class SideBarView extends BorderPane {
-    private Map<Player, Label> players = new HashMap<>();
+    private final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
+    private final static String TILE_IMAGE_EXTENSION = ".png";
+    private final Map<Player, Label> players = new HashMap<>();
 
     private Label titleLabel;
     private VBox playersBox;
 
-//    private TileView nextTileView;
+    private TileView nextTileView;
 
     private Player prevSelected = null;
 
@@ -46,22 +47,22 @@ public class SideBarView extends BorderPane {
 
         setTop(playersBox);
 
-//        nextTileView = new TileView(new TileViewModel());
-//        setBottom(nextTileView);
+        nextTileView = new TileView();
+        setBottom(nextTileView);
     }
 
     public void setNextTile(Tile nextTile) {
         try {
-//            nextTileView.setTileImage(new Image(getClass().getResource(nextTile.getImagePath()).toExternalForm()));
-//            nextTileView.setRotate(nextTile.getRotation());
+            nextTileView.setTileImage(new Image(getClass().getResource(TILE_IMAGE_DIRECTORY + nextTile.getSymbol() + TILE_IMAGE_EXTENSION).toExternalForm()));
+            nextTileView.setRotate(nextTile.getRotation());
         } catch(NullPointerException | IndexOutOfBoundsException e) {
-//            nextTileView.setTileImage(null);
+            nextTileView.setTileImage(null);
         }
     }
 
-//    public void setNextTileOutline(TileView.Outline outline) {
-//        nextTileView.setOutline(outline);
-//    }
+    public void setNextTileOutline(TileView.Outline outline) {
+        nextTileView.setOutline(outline);
+    }
 
     public void selectPlayer(Player player) {
         if(prevSelected != null)

@@ -4,8 +4,8 @@ public class City extends Area {
 
     int pennants;
 
-    public City() {
-        super();
+    public City(Tile tile) {
+        super(tile);
         pennants = 0;
     }
 }

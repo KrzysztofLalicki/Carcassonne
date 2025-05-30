@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class Table {
     public static final int TABLE_DIMENSIONS = 143;
     public static final int STARTING_TILE_POSITION = 71;
+    private static final String STARTING_TILE_SYMBOL = "D";
 
     private final Game game;
     private final ObjectProperty<Tile>[][] tiles;
@@ -23,7 +24,7 @@ public class Table {
             for(int j = 0; j < TABLE_DIMENSIONS; j++)
                 tiles[i][j] = new SimpleObjectProperty(null);
 
-        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, "/app/img/tiles/D.png");
+        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, STARTING_TILE_SYMBOL);
         startingTile.placeOnTable(this, STARTING_TILE_POSITION, STARTING_TILE_POSITION);
         startingTile.generateSegments();
         tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION].set(startingTile);

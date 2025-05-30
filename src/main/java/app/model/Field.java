@@ -4,8 +4,8 @@ public class Field extends Area {
 
     int cities;
 
-    public Field() {
-        super();
+    public Field(Tile tile) {
+        super(tile);
         cities = 0;
     }
 }
