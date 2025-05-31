@@ -27,6 +27,9 @@ public class Table {
     }
 
     public boolean canPlace(Tile tile, int x, int y) {
+        if(x <= 0 || x >= TABLE_DIMENSIONS - 1) return false;
+        if(y <= 0 || y >= TABLE_DIMENSIONS - 1) return false;
+
         if (tile == null) return false;
         if (tiles[x - 1][y].get() == null && tiles[x + 1][y].get() == null && tiles[x][y - 1].get() == null && tiles[x][y + 1].get() == null) return false;
         if (tiles[x - 1][y].get() != null && tile.left != tiles[x - 1][y].get().right) return false;
