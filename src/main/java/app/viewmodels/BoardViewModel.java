@@ -31,6 +31,7 @@ public class BoardViewModel {
         if (newOnViewPosition.x() > 0 && newOnViewPosition.x() < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y() > 0 && newOnViewPosition.y() < DISPLAYED_GRID_SIZE - 1)
             onViewPosition.set(newOnViewPosition);
         onTablePosition.set(newOnTablePosition);
+        refreshTilesViewModels();
     }
 
     public void moveSelection(int x, int y) {
@@ -51,14 +52,12 @@ public class BoardViewModel {
         nextTile.bind(game.getBox().getNextTileProperty());
         updateSelection();
 
-        onTablePosition.addListener((_, _, _) -> refreshTilesViewModels());
-        onViewPosition.addListener((_, _, _) -> updateSelection());
         nextTile.addListener((_, _, _) -> updateSelection());
-        nextTileViewModel.rotation.addListener((_, _, _) -> updateSelection());
     }
 
     public void rotateNextTile() {
         nextTile.get().rotate();
+        updateSelection();
     }
 
     public void placeTile() {
