@@ -11,12 +11,16 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Box {
+    private static final String TILE_SET_PATH = "src/main/resources/tiles.txt";
 
     private final ArrayList<Tile> tiles;
     private ObjectProperty<Tile> nextTile = new SimpleObjectProperty<>();
-    private static final String TILE_SET_PATH = "src/main/resources/tiles.txt";
 
-    public Box(){
+    private Game game;
+
+    public Box(Game game){
+        this.game = game;
+
         tiles = new ArrayList<>();
         List<String> lines;
         try {
@@ -42,6 +46,7 @@ public class Box {
     public void giveTile() {
         if (isEmpty()) {
             nextTile.set(null);
+            game.end();
             return;
         }
         Random r = new Random();
