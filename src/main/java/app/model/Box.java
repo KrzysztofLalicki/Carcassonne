@@ -43,6 +43,9 @@ public class Box {
         Random r = new Random();
         return tiles.remove(r.nextInt(tiles.size()));
     }
+    public void takeTiles(ArrayList<Tile> tiles) {
+        this.tiles.addAll(tiles);
+    }
     public boolean isEmpty() {
         return tiles.isEmpty();
     }

@@ -33,9 +33,25 @@ public class Game {
     public void start() {
         currentPlayer = 0;
         while (!box.isEmpty()) {
-            getCurrentPlayer().doTurn(box.giveTile(), table);
-            nextPlayer();
+            Tile tile = box.giveTile();
+            ArrayList<Tile> unluckyTiles = new ArrayList<>();
+            while (!table.canPlaceAnywhere(tile) && !box.isEmpty()) {
+                unluckyTiles.add(tile);
+                tile = box.giveTile();
+            }
+            if (table.canPlaceAnywhere(tile)) {
+                box.takeTiles(unluckyTiles);
+                getCurrentPlayer().doTurn(tile, table);
+                nextPlayer();
+            }
+            else {
+                end();
+            }
         }
+        end();
+    }
+    public void end() {
+
     }
 
     public ArrayList<Player> getPlayers() {

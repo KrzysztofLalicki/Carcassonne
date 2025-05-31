@@ -22,11 +22,13 @@ public abstract class Area {
                 segment.setArea(this);
             }
             tiles.addAll(area.tiles);
-            segments.addAll(area.segments);
             followers.addAll(area.followers);
         }
     }
 
+    public void addSegment(Segment segment) {
+        segments.add(segment);
+    }
     public void addFollower(Follower follower) {
         followers.add(follower);
     }
