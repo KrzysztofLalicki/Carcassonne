@@ -1,5 +1,6 @@
 package app.model;
 
+import javafx.beans.property.*;
 import java.util.ArrayList;
 
 public class Game {
@@ -7,14 +8,14 @@ public class Game {
     private final ArrayList<Player> players;
     private final Box box;
     private final Table table;
-    private Integer currentPlayer;
+    private int currentPlayerNumber;
+    private final ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
+    BooleanProperty hasEnded = new SimpleBooleanProperty(false);
 
     public Game(){
         players = new ArrayList<>();
         table = new Table(this);
         box = new Box();
-        // currentPlayer = null;
-        currentPlayer = 0;
     }
 
     public void addPlayer(Player player) {
@@ -24,46 +25,33 @@ public class Game {
         players.remove(nr);
     }
     public void nextPlayer() {
-        currentPlayer = (currentPlayer + 1) % players.size();
+        box.giveTile();
+        currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
+        currentPlayer.set(players.get(currentPlayerNumber));
     }
 
-//    For now, I will start the game by setting current player to 0 in constructor
-//    and calling next_player() from Table putTile().
-//    TODO: Improve model-controller communication
     public void start() {
-        currentPlayer = 0;
-        while (!box.isEmpty()) {
-            Tile tile = box.giveTile();
-            ArrayList<Tile> unluckyTiles = new ArrayList<>();
-            while (!table.canPlaceAnywhere(tile) && !box.isEmpty()) {
-                unluckyTiles.add(tile);
-                tile = box.giveTile();
-            }
-            if (table.canPlaceAnywhere(tile)) {
-                box.takeTiles(unluckyTiles);
-                getCurrentPlayer().doTurn(tile, table);
-                nextPlayer();
-            }
-            else {
-                end();
-            }
-        }
-        end();
-    }
-    public void end() {
-
+        currentPlayerNumber = 0;
+        currentPlayer.set(players.get(currentPlayerNumber));
+        box.giveTile();
     }
 
     public ArrayList<Player> getPlayers() {
         return players;
     }
-    public Table getTable() {
-        return table;
-    }
     public Box getBox() {
         return box;
     }
+    public Table getTable() {
+        return table;
+    }
     public Player getCurrentPlayer() {
-        return players.get(currentPlayer);
+        return currentPlayer.get();
+    }
+    public ObjectProperty<Player> getCurrentPlayerProperty() {
+        return currentPlayer;
+    }
+    public BooleanProperty getHasEndedProperty() {
+        return hasEnded;
     }
 }

@@ -1,11 +1,7 @@
 package app;
 
-import app.controller.GameController;
 import app.model.Game;
-import app.view.GameView;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import app.menu.*;

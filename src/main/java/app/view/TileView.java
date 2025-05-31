@@ -1,5 +1,7 @@
 package app.view;
 
+import app.viewmodels.TileViewModel;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,20 +14,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 public class TileView extends StackPane {
-    ImageView tileImage;
-
-    Rectangle selectionRectangle = new Rectangle(60, 60);
-    {
-        selectionRectangle.setFill(Color.TRANSPARENT);
-        selectionRectangle.setStroke(Color.TRANSPARENT);
-        selectionRectangle.setStrokeWidth(5);
-        selectionRectangle.setStrokeType(StrokeType.INSIDE);
-    }
-
-    public void setOutline(Outline outline) {
-        selectionRectangle.setStroke(outline.color);
-    }
-
     public enum Outline {
         NONE(Color.TRANSPARENT),
         RED(Color.RED),
@@ -37,7 +25,18 @@ public class TileView extends StackPane {
         }
     }
 
-    public TileView() {
+    ImageView tileImage = new ImageView();
+
+    Rectangle selectionRectangle = new Rectangle(60, 60);
+    {
+        selectionRectangle.setFill(Color.TRANSPARENT);
+        selectionRectangle.setStroke(Color.TRANSPARENT);
+        selectionRectangle.setStrokeWidth(5);
+        selectionRectangle.setStrokeType(StrokeType.INSIDE);
+    }
+
+
+    public TileView(TileViewModel model) {
         setMinSize(60, 60);
         setMaxSize(60, 60);
 
@@ -51,13 +50,18 @@ public class TileView extends StackPane {
 
         getChildren().add(tileImage);
         getChildren().add(selectionRectangle);
+
+        setTileViewModel(model);
     }
 
-    public void setTileImage(Image image) {
-        tileImage.setImage(image);
-    }
-
-    public void setRotate(int rotation) {
-        tileImage.setRotate(rotation);
+    public void setTileViewModel(TileViewModel model) {
+        tileImage.imageProperty().bind(model.image);
+        tileImage.rotateProperty().bind(model.rotation);
+        selectionRectangle.strokeProperty().bind(
+                Bindings.createObjectBinding(
+                        () -> model.getOutlineProperty().get().color,
+                        model.getOutlineProperty()
+                )
+        );
     }
 }
