@@ -15,7 +15,7 @@ public class Game {
     public Game(){
         players = new ArrayList<>();
         table = new Table(this);
-        box = new Box();
+        box = new Box(this);
     }
 
     public void addPlayer(Player player) {
@@ -34,6 +34,10 @@ public class Game {
         currentPlayerNumber = 0;
         currentPlayer.set(players.get(currentPlayerNumber));
         box.giveTile();
+    }
+
+    public void end() {
+        hasEnded.set(true);
     }
 
     public ArrayList<Player> getPlayers() {
