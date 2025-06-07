@@ -1,6 +1,7 @@
 package app.view;
 
 import app.viewmodels.GameViewModel;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -15,7 +16,7 @@ public class GameView extends BorderPane {
         sideBarView.setPadding(new Insets(10));
         setLeft(sideBarView);
 
-        setRight(new BoardView(gameViewModel.getBoardViewModel()));
+        setCenter(new BoardView(gameViewModel.getBoardViewModel()));
 
         Label bottomLabel = new Label();
         bottomLabel.setFont(Font.font("Monospaced"));

@@ -9,15 +9,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class PlayerView extends HBox {
-    public PlayerView(PlayerViewModel viewModel) {
+    public PlayerView(PlayerViewModel playerViewModel) {
         setSpacing(10);
         setAlignment(Pos.CENTER_LEFT);
 
         Label nameLabel = new Label();
         nameLabel.setFont(Font.font("Monospaced"));
-        nameLabel.textProperty().bind(viewModel.getNameProperty());
+        nameLabel.setText(playerViewModel.getName());
         nameLabel.textFillProperty().bind(
-                Bindings.when(viewModel.getSelectedProperty())
+                Bindings.when(playerViewModel.getSelectedProperty())
                         .then(Color.YELLOW)
                         .otherwise(Color.WHITE)
         );
@@ -26,7 +26,7 @@ public class PlayerView extends HBox {
         scoreLabel.setFont(Font.font("Monospaced"));
         scoreLabel.setTextFill(Color.LIGHTGRAY);
         scoreLabel.textProperty().bind(
-                Bindings.concat("[Score: ", viewModel.getScoreProperty().asString(), "]")
+                Bindings.concat("[Score: ", playerViewModel.getScoreProperty().asString(), "]")
         );
 
         getChildren().addAll(nameLabel, scoreLabel);

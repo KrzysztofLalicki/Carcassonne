@@ -1,5 +1,7 @@
 package app.model;
 
+import app.utils.Position;
+
 public class Follower {
 
     private final Player player;
@@ -30,5 +32,8 @@ public class Follower {
     }
     public boolean isFree() {
         return tile == null;
+    }
+    public Position getOnTilePosition() {
+        return new Position(x, y);
     }
 }
