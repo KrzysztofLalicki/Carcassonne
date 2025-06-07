@@ -22,12 +22,18 @@ import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
 
 public class BoardViewModel {
-    public Table table;
-    public TableViewModel tableViewModel;
-    public BoardSelectorViewModel boardSelectorViewModel;
+    private Table table;
+    private TableViewModel tableViewModel;
+    private BoardSelectorViewModel boardSelectorViewModel;
 
-    public ObjectProperty<Position> onTablePositionProperty = new SimpleObjectProperty<>(new Position(STARTING_TILE_POSITION, STARTING_TILE_POSITION));;
-    public ObjectProperty<Position> onViewPositionProperty = new SimpleObjectProperty<>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
+    private ObjectProperty<Position> onTablePositionProperty = new SimpleObjectProperty<>(new Position(STARTING_TILE_POSITION, STARTING_TILE_POSITION));;
+    private ObjectProperty<Position> onViewPositionProperty = new SimpleObjectProperty<>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
+
+    public Table getTable() {return table;}
+    public TableViewModel getTableViewModel() {return tableViewModel;}
+    public BoardSelectorViewModel getBoardSelectorViewModel() {return boardSelectorViewModel;}
+    public ObjectProperty<Position> getOnTablePositionProperty() {return onTablePositionProperty;}
+    public ObjectProperty<Position> getOnViewPositionProperty() {return onViewPositionProperty;}
 
     public BoardViewModel(Game game) {
         this.table = game.getTable();
@@ -47,29 +53,4 @@ public class BoardViewModel {
 
 
 
-//    private void setOnTablePosition(Position newOnTablePosition) {
-//        if(newOnTablePosition.x() < 0 || newOnTablePosition.x() >= Table.TABLE_DIMENSIONS || newOnTablePosition.y() < 0 || newOnTablePosition.y() >= Table.TABLE_DIMENSIONS)
-//            return;
-//        Position newOnViewPosition = new Position(onViewPosition.get().x() + newOnTablePosition.x() - onTablePosition.get().x(), onViewPosition.get().y() + newOnTablePosition.y() - onTablePosition.get().y());
-//        if (newOnViewPosition.x() > 0 && newOnViewPosition.x() < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y() > 0 && newOnViewPosition.y() < DISPLAYED_GRID_SIZE - 1)
-//            onViewPosition.set(newOnViewPosition);
-//        onTablePosition.set(newOnTablePosition);
-//        refreshTilesViewModels();
-//    }
-//
-//
-//
-//    public void onKeyPressed(KeyEvent event) {
-//            switch (event.getCode()) {
-//                case W, UP: moveSelection(0, -1); break;
-//                case S, DOWN: moveSelection(0, 1); break;
-//                case A, LEFT: moveSelection(-1, 0); break;
-//                case D, RIGHT: moveSelection(1, 0); break;
-//                case R: rotateNextTile(); break;
-//                case SPACE:
-//                        placeTile();
-//                        break;
-//                    }
-//            }
-//    }
 }

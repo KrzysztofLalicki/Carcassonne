@@ -54,8 +54,14 @@ public class BoardSelector extends AbstractBoardView {
             add(selectedTileView(onViewTile.get(), outline.get()), onViewPosition.get().x(), onViewPosition.get().y());
     }
 
-    private StackPane selectedTileView(Tile tile, Outline outline) {
+    public static StackPane selectedTileView(Tile tile, Outline outline) {
         StackPane selectedTileView = new StackPane();
+        selectedTileView.minHeightProperty().bind(TileView.TILE_SIZE);
+        selectedTileView.prefHeightProperty().bind(TileView.TILE_SIZE);
+        selectedTileView.maxHeightProperty().bind(TileView.TILE_SIZE);
+        selectedTileView.minWidthProperty().bind(TileView.TILE_SIZE);
+        selectedTileView.prefWidthProperty().bind(TileView.TILE_SIZE);
+        selectedTileView.maxWidthProperty().bind(TileView.TILE_SIZE);
 
         if(tile != null) {
             TileViewModel tileViewModel = new TileViewModel(tile);

@@ -41,14 +41,11 @@ public abstract class AbstractBoardView extends GridPane {
             column.prefWidthProperty().bind(TILE_SIZE);
             column.maxWidthProperty().bind(TILE_SIZE);
             column.setPercentWidth(100.0 / DISPLAYED_GRID_SIZE);
-//            column.setFillWidth(true);
             getColumnConstraints().add(column);
         }
 
         for (int i = 0; i < DISPLAYED_GRID_SIZE; i++) {
             RowConstraints row = new RowConstraints();
-//            row.setPercentHeight(100.0 / DISPLAYED_GRID_SIZE);
-//            row.setFillHeight(true);
             row.minHeightProperty().bind(TILE_SIZE);
             row.prefHeightProperty().bind(TILE_SIZE);
             row.maxHeightProperty().bind(TILE_SIZE);

@@ -24,19 +24,19 @@ public class TableViewModel implements TableChangeListener {
     private Map<Position, TileViewModel> tileViewModels = new HashMap<>();
 
     public BooleanProperty tableChangedEvent() { return tableChangedEvent; }
-    public Table getTable() { return boardViewModel.table; }
+    public Table getTable() { return boardViewModel.getTable(); }
 
     public ObjectProperty<Position> getOnTablePositionProperty() {
-        return boardViewModel.onTablePositionProperty;
+        return boardViewModel.getOnTablePositionProperty();
     }
     public ObjectProperty<Position> getOnViewPositionProperty() {
-        return boardViewModel.onViewPositionProperty;
+        return boardViewModel.getOnViewPositionProperty();
     }
     public Map<Position, TileViewModel> getTileViewModels() {return tileViewModels;}
 
     public TableViewModel(BoardViewModel boardViewModel) {
         this.boardViewModel = boardViewModel;
-        boardViewModel.table.addOnTableChangedListener(this);
+        boardViewModel.getTable().addOnTableChangedListener(this);
     }
 
     public void placeFollower(Tile tile, Follower follower) {
