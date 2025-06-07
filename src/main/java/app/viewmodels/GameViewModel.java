@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.input.KeyEvent;
 
 public class GameViewModel implements GameActionListener {
     public enum TurnState {
@@ -26,7 +25,7 @@ public class GameViewModel implements GameActionListener {
 
     public GameViewModel(Game game) {
         this.game = game;
-        game.addGameStateListener(this);
+        game.addGameActionListener(this);
         sideBarViewModel = new SideBarViewModel(game);
         boardViewModel = new BoardViewModel(game);
         getHasEndedProperty().addListener((_, _, newVal) -> {

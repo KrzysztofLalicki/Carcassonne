@@ -4,11 +4,8 @@ import app.model.Tile;
 import app.utils.Position;
 import app.viewmodels.BoardSelectorViewModel;
 import app.viewmodels.TileViewModel;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Insets;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -27,25 +24,34 @@ public class BoardSelector extends AbstractBoardView {
         }
     }
 
-    BoardSelectorViewModel boardSelectorViewModel;
+    private ObjectProperty<Position> onViewPosition;
+    private ObjectProperty<Position> onTablePosition;
+    private ObjectProperty<Outline> outline;
+    private ObjectProperty<Tile> onViewTile;
+    private BooleanProperty isActive;
 
     public BoardSelector(BoardSelectorViewModel boardSelectorViewModel) {
         super();
 
-        this.boardSelectorViewModel = boardSelectorViewModel;
+        onViewPosition = boardSelectorViewModel.getOnViewPosition();
+        onTablePosition = boardSelectorViewModel.getOnTablePosition();
+        outline = boardSelectorViewModel.getOutlineProperty();
+        onViewTile = boardSelectorViewModel.getOnViewTile();
+        isActive = boardSelectorViewModel.getIsActive();
 
-        boardSelectorViewModel.onViewPosition.addListener((_, _, _) -> update());
-        boardSelectorViewModel.onTablePosition.addListener((_, _, _) -> update());
-        boardSelectorViewModel.onViewTile.addListener((_, _, _) -> update());
-        boardSelectorViewModel.outlineProperty.addListener((_, _, _) -> update());
+        onViewPosition.addListener((_, _, _) -> updateView());
+        onTablePosition.addListener((_, _, _) -> updateView());
+        onViewTile.addListener((_, _, _) -> updateView());
+        outline.addListener((_, _, _) -> updateView());
+        isActive.addListener((_, _, _) -> updateView());
 
-        update();
+        updateView();
     }
 
-    private void update() {
+    private void updateView() {
         getChildren().clear();
-        if(boardSelectorViewModel.onViewPosition.get() != null)
-            add(selectedTileView(boardSelectorViewModel.onViewTile.get(), boardSelectorViewModel.outlineProperty.get()), boardSelectorViewModel.onViewPosition.get().x(), boardSelectorViewModel.onViewPosition.get().y());
+        if(onViewPosition.get() != null && isActive.get())
+            add(selectedTileView(onViewTile.get(), outline.get()), onViewPosition.get().x(), onViewPosition.get().y());
     }
 
     private StackPane selectedTileView(Tile tile, Outline outline) {

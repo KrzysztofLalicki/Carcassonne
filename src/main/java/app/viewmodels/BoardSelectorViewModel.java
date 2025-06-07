@@ -9,24 +9,25 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
-
-
 import java.util.function.Consumer;
 
 import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
 public class BoardSelectorViewModel {
     private BoardViewModel boardViewModel;
-
-    public ObjectProperty<Position> onViewPosition;
-    public ObjectProperty<Position> onTablePosition;// = new SimpleObjectProperty<>();
-    public ObjectProperty<Tile> onViewTile  = new SimpleObjectProperty<>();
-    public ObjectProperty<BoardSelector.Outline> outlineProperty = new SimpleObjectProperty<>(BoardSelector.Outline.NONE);
-
     private Tile tile;
+
+    private BooleanProperty isActive = new SimpleBooleanProperty(false);
+    private ObjectProperty<Position> onViewPosition;
+    private ObjectProperty<Position> onTablePosition;// = new SimpleObjectProperty<>();
+    private ObjectProperty<Tile> onViewTile  = new SimpleObjectProperty<>();
+    private ObjectProperty<BoardSelector.Outline> outlineProperty = new SimpleObjectProperty<>(BoardSelector.Outline.NONE);
+
+    public BooleanProperty getIsActive() {return isActive;}
+    public ObjectProperty<Position> getOnViewPosition() {return onViewPosition;}
+    public ObjectProperty<Position> getOnTablePosition() {return onTablePosition;}
+    public ObjectProperty<Tile> getOnViewTile() {return onViewTile;}
+    public ObjectProperty<BoardSelector.Outline> getOutlineProperty() {return outlineProperty;}
 
     public BoardSelectorViewModel(BoardViewModel boardViewModel) {
         this.boardViewModel = boardViewModel;
@@ -43,10 +44,6 @@ public class BoardSelectorViewModel {
         else
             onViewTile.set(tile);
 
-//        if(onViewPosition.get() == null || onViewTile.get() == null) {
-//            outlineProperty.set(BoardSelector.Outline.NONE);
-//            return;
-//        }
         if(boardViewModel.table.canPlace(tile, onTablePosition.get().x(), onTablePosition.get().y()))
             outlineProperty.set(BoardSelector.Outline.GREEN);
         else
@@ -55,6 +52,7 @@ public class BoardSelectorViewModel {
 
     public void placeTile(Tile tile) {
         this.tile = tile;
+        isActive.set(true);
         KeyboardManager.getInstance().register(keyEventHandler);
     }
 
@@ -71,18 +69,20 @@ public class BoardSelectorViewModel {
         onTablePosition.set(newOnTablePosition);
     }
 
-    private final Consumer<KeyEvent> keyEventHandler = new Consumer<KeyEvent>() {
+    private final Consumer<KeyEvent> keyEventHandler = new Consumer<>() {
         @Override
         public void accept(KeyEvent event) {
             switch (event.getCode()) {
-                case W, UP -> moveSelection(0, -1);
-                case S, DOWN -> moveSelection(0, 1);
-                case A, LEFT -> moveSelection(-1, 0);
-                case D, RIGHT -> moveSelection(1, 0);
+                case UP -> moveSelection(0, -1);
+                case DOWN -> moveSelection(0, 1);
+                case LEFT -> moveSelection(-1, 0);
+                case RIGHT -> moveSelection(1, 0);
                 case R -> tile.rotate();
                 case SPACE ->  {
                     if(boardViewModel.table.canPlace(tile, onTablePosition.get().x(), onTablePosition.get().y())) {
                         KeyboardManager.getInstance().remove(this);
+                        isActive.set(false);
+                        updateViewProperties();
                         boardViewModel.table.placeTile(tile, onTablePosition.get().x(), onTablePosition.get().y());
                     }
                 }

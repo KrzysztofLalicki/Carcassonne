@@ -3,7 +3,9 @@ package app.view;
 import app.utils.Position;
 import app.viewmodels.FollowerOverlayViewModel;
 import javafx.beans.property.ObjectProperty;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -35,6 +37,8 @@ public class FollowerOverlayView extends GridPane {
             circle.radiusProperty().bind(TILE_SIZE.divide(6).multiply(0.8));
             circle.setFill(colorProperty.get());
             add(circle, followerPositionProperty.get().x(), followerPositionProperty.get().y());
+            GridPane.setHalignment(circle, HPos.CENTER);
+            GridPane.setValignment(circle, VPos.CENTER);
         }
     }
 

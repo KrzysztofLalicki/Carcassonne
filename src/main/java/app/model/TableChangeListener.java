@@ -1,5 +1,5 @@
 package app.model;
 
-public interface OnTableChangedListener {
+public interface TableChangeListener {
     void onTableChanged();
 }

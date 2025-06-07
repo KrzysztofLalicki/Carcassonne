@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Tile {
     private Game game;
@@ -248,6 +249,7 @@ public class Tile {
         if(follower != null && position != null) {
             follower.placeOnTile(this, position.x(), position.y());
             this.follower = follower;
+            follower.getPlayer().notifyOnFollowerNumberChangeListeners();
             notifyOnFollowerChangedListeners();
         }
         game.nextPlayer();
@@ -257,20 +259,20 @@ public class Tile {
         return follower;
     }
 
-    private List<OnTileChangedListener> onTileChangedListeners = new ArrayList<>();
-    public void addOnTileChangedListener(OnTileChangedListener onTileChangedListener) {
+    private List<TileChangeListener> onTileChangedListeners = new ArrayList<>();
+    public void addOnTileChangedListener(TileChangeListener onTileChangedListener) {
         onTileChangedListeners.add(onTileChangedListener);
     }
-    public void removeOnTileChangedListener(OnTileChangedListener onTileChangedListener) {
+    public void removeOnTileChangedListener(TileChangeListener onTileChangedListener) {
         onTileChangedListeners.remove(onTileChangedListener);
     }
     public void notifyOnRotationChangedListeners() {
-        for(OnTileChangedListener listener : onTileChangedListeners) {
+        for(TileChangeListener listener : onTileChangedListeners) {
             listener.onRotationChanged();
         }
     }
     public void notifyOnFollowerChangedListeners() {
-        for(OnTileChangedListener listener : onTileChangedListeners)
+        for(TileChangeListener listener : onTileChangedListeners)
             listener.onFollowerChanged();
     }
 }
