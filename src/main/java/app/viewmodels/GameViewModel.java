@@ -26,8 +26,8 @@ public class GameViewModel implements GameActionListener {
     public GameViewModel(Game game) {
         this.game = game;
         game.addGameActionListener(this);
-        sideBarViewModel = new SideBarViewModel(game);
         boardViewModel = new BoardViewModel(game);
+        sideBarViewModel = new SideBarViewModel(game, boardViewModel.getBoardSelectorViewModel());
         getHasEndedProperty().addListener((_, _, newVal) -> {
             if(newVal)
                 bottomText.set(GAME_END_TEXT);
