@@ -3,50 +3,42 @@ package app.model;
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
-    private final StringProperty name = new SimpleStringProperty();
-    private final ObjectProperty<Color> color = new SimpleObjectProperty<>();
-    private IntegerProperty points = new SimpleIntegerProperty(0);
+    private String name;
+    private Color color;
+    private int points = 0;
     private final Follower[] followers;
 
     public Player(String name, Color color) {
-        this.name.set(name);
-        this.color.set(color);
+        this.name = name;
+        this.color = color;
         followers = new Follower[7];
         for (int i = 0; i < 7; i++) {
             followers[i] = new Follower(this);
         }
     }
 
-    /* PROBABLY USELESS
-    public void rename(String name) {
-        this.name.set(name);
-    }
-    */
-    public String getName() {return name.get();}
-    public StringProperty getNameProperty() {return name; }
-
-    public void setColor(Color color) {
-        this.color.set(color);
-    }
+    public String getName() {return name;}
     public Color getColor() {
-        return this.color.get();
+        return color;
     }
 
     public void addPoints(int points) {
-        this.points.add(points);
+        this.points += points;
+        notifyOnScoreChangeListeners();
     }
-    public int getPoints() {return points.get();}
-    public IntegerProperty getPointsProperty() { return points; }
+    public int getPoints() {return points;}
 
-    public boolean hasFollower() {
-        for (Follower follower : followers) {
-            if (follower.isFree()) {
-                return true;
-            }
-        }
-        return false;
+    public int getFollowersNumber() {
+        int res = 0;
+        for (Follower follower : followers)
+            if (follower.isFree())
+                res++;
+        return res;
     }
 
     public Follower getFollower() {
@@ -58,5 +50,16 @@ public class Player {
         return null;
     }
 
-    public void doTurn(Tile tile, Table table) {}
+    private List<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
+    public void addPlayerChangeListener(PlayerChangeListener playerChangeListener) {
+        playerChangeListeners.add(playerChangeListener);
+    }
+    public void notifyOnScoreChangeListeners() {
+        for (PlayerChangeListener listener : playerChangeListeners)
+            listener.onScoreChange();
+    }
+    void notifyOnFollowerNumberChangeListeners() {
+        for (PlayerChangeListener listener : playerChangeListeners)
+            listener.onFollowersNumberChange();
+    }
 }

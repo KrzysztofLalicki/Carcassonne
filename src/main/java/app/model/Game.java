@@ -26,20 +26,18 @@ public class Game {
     }
     public void nextPlayer() {
         currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
+        notifyCurrentPlayerChangeListeners();
+
         Tile tileToPlace = box.giveTile();
-        Player currentPlayer = players.get(currentPlayerNumber);
-        notifyOnPlaceTileListeners(tileToPlace);
-//        currentPlayer.set(players.get(currentPlayerNumber));
+        notifyPlaceTileListeners(tileToPlace);
     }
 
     public void start() {
         currentPlayerNumber = 0;
-//        while(!box.isEmpty()) {
-            Player currentPlayer = players.get(currentPlayerNumber);
-            Tile tileToPlace = box.giveTile();
-            notifyOnPlaceTileListeners(tileToPlace);
-//        }
-//        box.giveTile();
+        notifyCurrentPlayerChangeListeners();
+
+        Tile tileToPlace = box.giveTile();
+        notifyPlaceTileListeners(tileToPlace);
     }
 
     public void end() {
@@ -63,16 +61,25 @@ public class Game {
         return hasEnded;
     }
 
-    private List<GameActionListener> gameStateListeners = new ArrayList<>();
-    public void addGameStateListener(GameActionListener listener) {
-        gameStateListeners.add(listener);
+    private final List<GameActionListener> gameActionListeners = new ArrayList<>();
+    public void addGameActionListener(GameActionListener listener) {
+        gameActionListeners.add(listener);
     }
-    public void notifyOnPlaceTileListeners(Tile tile) {
-        for(GameActionListener listener : gameStateListeners)
+    public void notifyPlaceTileListeners(Tile tile) {
+        for(GameActionListener listener : gameActionListeners)
             listener.placeTile(tile);
     }
     public void notifyPlaceFollowerListeners(Tile tile, Follower follower) {
-        for(GameActionListener listener : gameStateListeners)
+        for(GameActionListener listener : gameActionListeners)
             listener.placeFollower(tile, follower);
+    }
+
+    private final List<GameStateChangeListener> gameStateChangeListeners = new ArrayList<>();
+    public void addGameStateChangeListener(GameStateChangeListener listener) {
+        gameStateChangeListeners.add(listener);
+    }
+    public void notifyCurrentPlayerChangeListeners() {
+        for(GameStateChangeListener listener : gameStateChangeListeners)
+            listener.onCurrentPlayerChange();
     }
 }

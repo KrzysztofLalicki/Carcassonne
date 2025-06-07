@@ -72,15 +72,15 @@ public class Table {
         return tiles[x][y];
     }
 
-    private List<OnTableChangedListener> onTableChangedListeners = new ArrayList<>();
-    public void addOnTableChangedListener(OnTableChangedListener onTableChangedListener) {
+    private List<TableChangeListener> onTableChangedListeners = new ArrayList<>();
+    public void addOnTableChangedListener(TableChangeListener onTableChangedListener) {
         onTableChangedListeners.add(onTableChangedListener);
     }
-    public void removeOnTableChangedListener(OnTableChangedListener onTableChangedListener) {
+    public void removeOnTableChangedListener(TableChangeListener onTableChangedListener) {
         onTableChangedListeners.remove(onTableChangedListener);
     }
     public void notifyOnTableChangedListeners() {
-        for(OnTableChangedListener listener : onTableChangedListeners)
+        for(TableChangeListener listener : onTableChangedListeners)
             listener.onTableChanged();
     }
 }

@@ -1,20 +1,11 @@
 package app.viewmodels;
 
 import app.model.Follower;
-import app.model.OnTileChangedListener;
+import app.model.TileChangeListener;
 import app.model.Tile;
-import app.utils.Position;
-import app.view.TileView;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-
-public class TileViewModel implements OnTileChangedListener {
+public class TileViewModel implements TileChangeListener {
     private Tile tile;
     private IntegerProperty rotation = new SimpleIntegerProperty();
     private FollowerOverlayViewModel followerOverlayViewModel;

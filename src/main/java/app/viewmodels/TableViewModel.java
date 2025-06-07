@@ -1,23 +1,18 @@
 package app.viewmodels;
 
 import app.model.Follower;
-import app.model.OnTableChangedListener;
+import app.model.TableChangeListener;
 import app.model.Table;
 import app.model.Tile;
 import app.utils.Position;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import static app.model.Table.TABLE_DIMENSIONS;
-
-public class TableViewModel implements OnTableChangedListener {
+public class TableViewModel implements TableChangeListener {
 
     private BoardViewModel boardViewModel;
 
