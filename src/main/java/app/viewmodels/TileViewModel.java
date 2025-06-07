@@ -1,48 +1,53 @@
 package app.viewmodels;
 
+import app.model.Follower;
+import app.model.OnTileChangedListener;
 import app.model.Tile;
+import app.utils.Position;
 import app.view.TileView;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
-public class TileViewModel {
-    private final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
-    private final static String TILE_IMAGE_EXTENSION = ".png";
+import java.util.Optional;
+import java.util.function.Consumer;
 
-    Tile tile;
-    public IntegerProperty rotation = new SimpleIntegerProperty();
-    public ObjectProperty<Image> image = new SimpleObjectProperty<>();
-    ObjectProperty<TileView.Outline> outline = new SimpleObjectProperty<>(TileView.Outline.NONE);
-    public void setOutline(TileView.Outline outline) {
-        this.outline.set(outline);
-    }
-    public ObjectProperty<TileView.Outline> getOutlineProperty() {
-        return outline;
-    }
-
-    void setTile(Tile tile) {
+public class TileViewModel implements OnTileChangedListener {
+    private Tile tile;
+    private IntegerProperty rotation = new SimpleIntegerProperty();
+    private FollowerOverlayViewModel followerOverlayViewModel;
+    public TileViewModel(Tile tile) {
         this.tile = tile;
-        if(tile != null) {
-            rotation = tile.getRotationProperty();
-            image.bind(Bindings.createObjectBinding(() -> {
-                String path = TILE_IMAGE_DIRECTORY + tile.getSymbolProperty().get() + TILE_IMAGE_EXTENSION;
-                return new Image(getClass().getResource(path).toExternalForm());
-            }, tile.getSymbolProperty()));
-        }
-        else {
-            if(image.isBound())
-                image.unbind();
-            image.set(null);
-        }
+        tile.addOnTileChangedListener(this);
+        followerOverlayViewModel = new FollowerOverlayViewModel(tile);
+        rotation.set(tile.getRotation());
     }
 
-    public TileViewModel(ObjectProperty<Tile> tile) {
-        setTile(tile.get());
-        tile.addListener((_, _, newTile) -> setTile(newTile));
+    public IntegerProperty getRotationProperty() {
+        return rotation;
     }
 
+    public String getSymbol() {
+        return tile.getSymbol();
+    }
+
+    public FollowerOverlayViewModel getFollowerOverlayViewModel() {
+        return followerOverlayViewModel;
+    }
+
+    public void placeFollower(Follower follower) {
+        followerOverlayViewModel.placeFollower(follower);
+    }
+
+    @Override
+    public void onRotationChanged() {
+        rotation.set(tile.getRotation());
+    };
+
+    public void unsubscribeTile() {
+        followerOverlayViewModel.unsubscribeTile();
+        tile.removeOnTileChangedListener(this);
+    }
 }

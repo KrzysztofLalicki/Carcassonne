@@ -4,6 +4,7 @@ import app.model.Game;
 import app.model.Player;
 import app.view.GameView;
 import app.viewmodels.GameViewModel;
+import app.viewmodels.KeyboardManager;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -58,13 +59,19 @@ public class ViewModelMenu {
             StackPane menuLayout = new MainMenu("Za mała ilość graczy",this);
             primaryStage.getScene().setRoot(menuLayout);
         } else {  // Zaczynamy rozgrywke
-            primaryStage.setResizable(false);
+//            primaryStage.setResizable(false);
 
-            game.start();
+//            game.start();
 
             GameViewModel gameViewModel = new GameViewModel(game);
             GameView gameView = new GameView(gameViewModel);
+
             Scene scene = new Scene(gameView);
+
+            KeyboardManager.getInstance().installOn(scene);
+
+            gameView.setFocusTraversable(true);
+            gameView.requestFocus();
 
             primaryStage.setScene(scene);
             primaryStage.show();

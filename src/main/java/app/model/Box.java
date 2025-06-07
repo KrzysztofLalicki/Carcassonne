@@ -14,7 +14,6 @@ public class Box {
     private static final String TILE_SET_PATH = "src/main/resources/tiles.txt";
 
     private final ArrayList<Tile> tiles;
-    private ObjectProperty<Tile> nextTile = new SimpleObjectProperty<>();
 
     private Game game;
 
@@ -38,23 +37,16 @@ public class Box {
             }
             int tiles = scanner.nextInt();
             for (int j = 0; j < tiles; j++) {
-                this.tiles.add(new Tile(tile, symbol));
+                this.tiles.add(new Tile(tile, symbol, game));
             }
         }
     }
 
-    public void giveTile() {
-        if (isEmpty()) {
-            nextTile.set(null);
-            game.end();
-            return;
-        }
+    public Tile giveTile() {
         Random r = new Random();
-        nextTile.set(tiles.remove(r.nextInt(tiles.size())));
+        return tiles.remove(r.nextInt(tiles.size()));
     }
-    public ObjectProperty<Tile> getNextTileProperty(){
-        return nextTile;
-    }
+
     public void takeTiles(ArrayList<Tile> tiles) {
         this.tiles.addAll(tiles);
     }

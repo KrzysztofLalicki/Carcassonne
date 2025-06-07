@@ -15,11 +15,11 @@ public class SideBarViewModel {
             players.put(player, new PlayerViewModel(player));
         }
 
-        players.get(game.getCurrentPlayer()).setSelected(true);
-        game.getCurrentPlayerProperty().addListener((_, oldPlayer, newPlayer) -> {
-            players.get(oldPlayer).setSelected(false);
-            players.get(newPlayer).setSelected(true);
-        });
+//        players.get(game.getCurrentPlayer()).setSelected(true);
+//        game.getCurrentPlayerProperty().addListener((_, oldPlayer, newPlayer) -> {
+//            players.get(oldPlayer).setSelected(false);
+//            players.get(newPlayer).setSelected(true);
+//        });
     }
 
     public List<PlayerViewModel> getPlayersViewModels() {

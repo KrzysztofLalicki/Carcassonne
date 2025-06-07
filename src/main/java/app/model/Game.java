@@ -2,6 +2,7 @@ package app.model;
 
 import javafx.beans.property.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -9,7 +10,6 @@ public class Game {
     private final Box box;
     private final Table table;
     private int currentPlayerNumber;
-    private final ObjectProperty<Player> currentPlayer = new SimpleObjectProperty<>();
     BooleanProperty hasEnded = new SimpleBooleanProperty(false);
 
     public Game(){
@@ -25,21 +25,30 @@ public class Game {
         players.remove(nr);
     }
     public void nextPlayer() {
-        box.giveTile();
         currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
-        currentPlayer.set(players.get(currentPlayerNumber));
+        Tile tileToPlace = box.giveTile();
+        Player currentPlayer = players.get(currentPlayerNumber);
+        notifyOnPlaceTileListeners(tileToPlace);
+//        currentPlayer.set(players.get(currentPlayerNumber));
     }
 
     public void start() {
         currentPlayerNumber = 0;
-        currentPlayer.set(players.get(currentPlayerNumber));
-        box.giveTile();
+//        while(!box.isEmpty()) {
+            Player currentPlayer = players.get(currentPlayerNumber);
+            Tile tileToPlace = box.giveTile();
+            notifyOnPlaceTileListeners(tileToPlace);
+//        }
+//        box.giveTile();
     }
 
     public void end() {
         hasEnded.set(true);
     }
 
+    public Player getCurrentPlayer() {
+        return players.get(currentPlayerNumber);
+    }
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -49,13 +58,21 @@ public class Game {
     public Table getTable() {
         return table;
     }
-    public Player getCurrentPlayer() {
-        return currentPlayer.get();
-    }
-    public ObjectProperty<Player> getCurrentPlayerProperty() {
-        return currentPlayer;
-    }
+
     public BooleanProperty getHasEndedProperty() {
         return hasEnded;
+    }
+
+    private List<GameActionListener> gameStateListeners = new ArrayList<>();
+    public void addGameStateListener(GameActionListener listener) {
+        gameStateListeners.add(listener);
+    }
+    public void notifyOnPlaceTileListeners(Tile tile) {
+        for(GameActionListener listener : gameStateListeners)
+            listener.placeTile(tile);
+    }
+    public void notifyPlaceFollowerListeners(Tile tile, Follower follower) {
+        for(GameActionListener listener : gameStateListeners)
+            listener.placeFollower(tile, follower);
     }
 }

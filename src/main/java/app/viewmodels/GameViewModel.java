@@ -1,12 +1,19 @@
 package app.viewmodels;
 
-import app.model.Game;
+import app.model.*;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.input.KeyEvent;
 
-public class GameViewModel {
+public class GameViewModel implements GameActionListener {
+    public enum TurnState {
+        PLACING_TILE,
+        PLACING_FOLLOWER,
+        REMOVING_FOLLOWER,
+    }
+
     public static final String CONTROLS_TEXT = "CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
     public static final String GAME_END_TEXT = "The game has ended. Press ESC to exit.";
 
@@ -19,12 +26,15 @@ public class GameViewModel {
 
     public GameViewModel(Game game) {
         this.game = game;
+        game.addGameStateListener(this);
         sideBarViewModel = new SideBarViewModel(game);
         boardViewModel = new BoardViewModel(game);
         getHasEndedProperty().addListener((_, _, newVal) -> {
             if(newVal)
                 bottomText.set(GAME_END_TEXT);
         });
+
+        game.start();
     }
 
     public SideBarViewModel getSideBarViewModel() {return sideBarViewModel;}
@@ -39,5 +49,15 @@ public class GameViewModel {
     public void escape() {
         //TODO: getBackToMenu
         Platform.exit();
+    }
+
+    @Override
+    public void placeTile(Tile tile) {
+        boardViewModel.placeTile(tile);
+    }
+
+    @Override
+    public void placeFollower(Tile tile, Follower follower) {
+        boardViewModel.placeFollower(tile, follower);
     }
 }

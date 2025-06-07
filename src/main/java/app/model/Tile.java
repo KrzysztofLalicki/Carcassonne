@@ -1,9 +1,13 @@
 package app.model;
 
+import app.utils.Position;
 import javafx.beans.property.*;
 
-public class Tile {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Tile {
+    private Game game;
     private Table table;
     private int x, y;
     short up, left, centre, right, down;
@@ -11,8 +15,18 @@ public class Tile {
     private final Segment[][] segments;
     private final StringProperty symbol = new SimpleStringProperty();
     private final IntegerProperty rotation = new SimpleIntegerProperty();
+    private Follower follower;
 
-    public Tile(short[] terrain, String symbol) {
+    public int getRotation() {
+        return rotation.get();
+    }
+
+    public String getSymbol() {
+        return symbol.get();
+    }
+
+    public Tile(short[] terrain, String symbol, Game game) {
+        this.game = game;
         up = terrain[0];
         left = terrain[1];
         centre = terrain[2];
@@ -31,6 +45,7 @@ public class Tile {
         down = right;
         right = temp;
         rotation.set((rotation.get() + 90) % 360);
+        notifyOnRotationChangedListeners();
     }
     public StringProperty getSymbolProperty() {
         return symbol;
@@ -220,6 +235,42 @@ public class Tile {
     public boolean canPlace(int x, int y) {
         return segments[x][y] != null && segments[x][y].getArea().isFree();
     }
-    public void placeFollower(Follower follower) {
+
+    public Position getOnTablePosition() {
+        return new Position(x, y);
+    }
+
+    /**
+     * Adds follower to this tile
+     * @param follower newly placed follower or {code @null} if follower placement was skipped
+     */
+    public void placeFollower(Follower follower, Position position) {
+        if(follower != null && position != null) {
+            follower.placeOnTile(this, position.x(), position.y());
+            this.follower = follower;
+            notifyOnFollowerChangedListeners();
+        }
+        game.nextPlayer();
+    }
+
+    public Follower getFollower() {
+        return follower;
+    }
+
+    private List<OnTileChangedListener> onTileChangedListeners = new ArrayList<>();
+    public void addOnTileChangedListener(OnTileChangedListener onTileChangedListener) {
+        onTileChangedListeners.add(onTileChangedListener);
+    }
+    public void removeOnTileChangedListener(OnTileChangedListener onTileChangedListener) {
+        onTileChangedListeners.remove(onTileChangedListener);
+    }
+    public void notifyOnRotationChangedListeners() {
+        for(OnTileChangedListener listener : onTileChangedListeners) {
+            listener.onRotationChanged();
+        }
+    }
+    public void notifyOnFollowerChangedListeners() {
+        for(OnTileChangedListener listener : onTileChangedListeners)
+            listener.onFollowerChanged();
     }
 }

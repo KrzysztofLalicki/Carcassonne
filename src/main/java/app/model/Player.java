@@ -14,8 +14,8 @@ public class Player {
         this.name.set(name);
         this.color.set(color);
         followers = new Follower[7];
-        for (Follower follower : followers) {
-            follower = new Follower(this);
+        for (int i = 0; i < 7; i++) {
+            followers[i] = new Follower(this);
         }
     }
 
@@ -48,6 +48,7 @@ public class Player {
         }
         return false;
     }
+
     public Follower getFollower() {
         for (Follower follower : followers) {
             if (follower.isFree()) {

@@ -1,67 +1,48 @@
 package app.view;
 
+import app.utils.Position;
 import app.viewmodels.TileViewModel;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.*;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 public class TileView extends StackPane {
-    public enum Outline {
-        NONE(Color.TRANSPARENT),
-        RED(Color.RED),
-        GREEN(Color.GREEN);
+    public final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
+    public final static String TILE_IMAGE_EXTENSION = ".png";
 
-        public final Color color;
-        Outline(Color color) {
-            this.color = color;
-        }
-    }
+    public static final IntegerProperty TILE_SIZE = new SimpleIntegerProperty(80);
 
-    ImageView tileImage = new ImageView();
+    public TileView(TileViewModel tileViewModel) {
+        minWidthProperty().bind(TILE_SIZE);
+        prefWidthProperty().bind(TILE_SIZE);
+        maxWidthProperty().bind(TILE_SIZE);
 
-    Rectangle selectionRectangle = new Rectangle(60, 60);
-    {
-        selectionRectangle.setFill(Color.TRANSPARENT);
-        selectionRectangle.setStroke(Color.TRANSPARENT);
-        selectionRectangle.setStrokeWidth(5);
-        selectionRectangle.setStrokeType(StrokeType.INSIDE);
-    }
+        minHeightProperty().bind(TILE_SIZE);
+        prefHeightProperty().bind(TILE_SIZE);
+        maxHeightProperty().bind(TILE_SIZE);
 
+        String path = TILE_IMAGE_DIRECTORY + tileViewModel.getSymbol() + TILE_IMAGE_EXTENSION;
+        Image image = new Image(getClass().getResource(path).toExternalForm());
 
-    public TileView(TileViewModel model) {
-        setMinSize(60, 60);
-        setMaxSize(60, 60);
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(false);
+        imageView.setSmooth(true);
+        imageView.fitWidthProperty().bind(widthProperty());
+        imageView.fitHeightProperty().bind(heightProperty());
+        imageView.rotateProperty().bind(tileViewModel.getRotationProperty());
 
-        setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        FollowerOverlayView followerOverlayView = new FollowerOverlayView(tileViewModel.getFollowerOverlayViewModel());
 
-        tileImage = new ImageView();
-        tileImage.setFitWidth(60);
-        tileImage.setFitHeight(60);
-        tileImage.setPreserveRatio(true);
-        tileImage.setSmooth(true);
-
-        getChildren().add(tileImage);
-        getChildren().add(selectionRectangle);
-
-        setTileViewModel(model);
-    }
-
-    public void setTileViewModel(TileViewModel model) {
-        tileImage.imageProperty().bind(model.image);
-        tileImage.rotateProperty().bind(model.rotation);
-        selectionRectangle.strokeProperty().bind(
-                Bindings.createObjectBinding(
-                        () -> model.getOutlineProperty().get().color,
-                        model.getOutlineProperty()
-                )
-        );
+        getChildren().add(imageView);
+        getChildren().add(followerOverlayView);
     }
 }

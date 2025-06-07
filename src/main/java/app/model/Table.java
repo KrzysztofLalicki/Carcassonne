@@ -3,6 +3,9 @@ package app.model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Table {
 
     public static final int TABLE_DIMENSIONS = 145;
@@ -20,10 +23,11 @@ public class Table {
                 tiles[i][j] = new SimpleObjectProperty(null);
             }
         }
-        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, STARTING_TILE_SYMBOL);
+        Tile startingTile = new Tile(new short[]{1, 2, 0, 2, 0, 0}, STARTING_TILE_SYMBOL, game);
         startingTile.placeOnTable(this, STARTING_TILE_POSITION, STARTING_TILE_POSITION);
         startingTile.generateSegments();
         tiles[STARTING_TILE_POSITION][STARTING_TILE_POSITION].set(startingTile);
+        notifyOnTableChangedListeners();
     }
 
     public boolean canPlace(Tile tile, int x, int y) {
@@ -53,8 +57,10 @@ public class Table {
         if (canPlace(tile, x, y)) {
             tiles[x][y].set(tile);
             tile.placeOnTable(this, x, y);
+            notifyOnTableChangedListeners();
             tile.generateSegments();
-            game.nextPlayer();
+            game.notifyPlaceFollowerListeners(tile, game.getCurrentPlayer().getFollower());
+//            game.nextPlayer();
         }
     }
     public Tile getTile(int x, int y) {
@@ -64,5 +70,17 @@ public class Table {
     }
     public ObjectProperty<Tile> getTileProperty(int x, int y) {
         return tiles[x][y];
+    }
+
+    private List<OnTableChangedListener> onTableChangedListeners = new ArrayList<>();
+    public void addOnTableChangedListener(OnTableChangedListener onTableChangedListener) {
+        onTableChangedListeners.add(onTableChangedListener);
+    }
+    public void removeOnTableChangedListener(OnTableChangedListener onTableChangedListener) {
+        onTableChangedListeners.remove(onTableChangedListener);
+    }
+    public void notifyOnTableChangedListeners() {
+        for(OnTableChangedListener listener : onTableChangedListeners)
+            listener.onTableChanged();
     }
 }
