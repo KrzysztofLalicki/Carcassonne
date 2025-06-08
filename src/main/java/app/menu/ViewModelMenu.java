@@ -63,8 +63,8 @@ public class ViewModelMenu {
         } else {  // Zaczynamy rozgrywke
             primaryStage.setResizable(false);
 
+            //TODO: integrate adding ai players into menu
             game.addPlayer(new AiPlayer(Color.PINK, game));
-
 
             GameViewModel gameViewModel = new GameViewModel(game);
             GameView gameView = new GameView(gameViewModel);

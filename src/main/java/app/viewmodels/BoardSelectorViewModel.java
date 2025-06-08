@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
-public class BoardSelectorViewModel implements AiPlayersActionsListener {
+public class BoardSelectorViewModel {
     private static double DELAY = 0.5;
 
     private BoardViewModel boardViewModel;
@@ -41,10 +41,6 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
         this.onViewPosition = boardViewModel.getOnViewPositionProperty();
         this.onTablePosition = boardViewModel.getOnTablePositionProperty();
 
-        for(Player p : boardViewModel.getGame().getPlayers())
-            if(p instanceof AiPlayer)
-                ((AiPlayer) p).addAiPlayerActionListener(this);
-
         updateViewProperties();
     }
 
@@ -61,8 +57,6 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
     }
 
     public void placeTile(Tile tile) {
-        if(boardViewModel.getGame().getCurrentPlayer() instanceof AiPlayer)
-            return;
         this.tile.set(tile);
         isActive.set(true);
         updateViewProperties();
@@ -108,7 +102,9 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
 
     private void rotateWithDelay(Tile tile, int remainingRotations, Runnable onDone) {
         if (remainingRotations <= 0) {
-            onDone.run();
+            PauseTransition finalPause = new PauseTransition(Duration.seconds(DELAY));
+            finalPause.setOnFinished(e -> onDone.run());
+            finalPause.play();
             return;
         }
 
@@ -142,8 +138,7 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
         pause.play();
     }
 
-    @Override
-    public void placeTileAi(Tile tile, AiPlayer.PlaceTileMove move) {
+    public void placeAiTile(Tile tile, AiPlayer.PlaceTileMove move) {
         this.tile.set(tile);
         isActive.set(true);
         moveToPositionWithDelay(move.pos(), () -> rotateWithDelay(tile, move.rotation(), () -> {

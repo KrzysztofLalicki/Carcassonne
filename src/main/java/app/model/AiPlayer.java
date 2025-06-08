@@ -2,7 +2,6 @@ package app.model;
 
 import app.utils.Position;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +9,7 @@ import java.util.Random;
 import static app.model.Box.NUMBER_OF_TILES;
 import static app.model.Table.TABLE_DIMENSIONS;
 
-public class AiPlayer extends Player implements GameActionListener {
+public class AiPlayer extends Player {
     private static String[] names = { "Zbigniew z Kotliny", "Jagoda z Zamczyska", "Mistrz Maciej", "Rycerz Tadeusz", "Czarodziejka Bożena", "Biskup Wiesław", "Szymon bez Ziemi", "Dobrosław Budowniczy", "Halina z Wieży", "Wojmir Płotkarz", "Kazimierz Murarz", "Hrabia Eugeniusz", "Otylia z Grodziska", "Grzegorz Mnich", "Zofia Zakonodajka", "Mikołaj z Rynku", "Wanda Kartografka", "Janusz Brukarzu" };
     private static Random random = new Random();
 
@@ -27,10 +26,7 @@ public class AiPlayer extends Player implements GameActionListener {
     }
 
     public record PlaceTileMove (int rotation, Position pos) {}
-    @Override
-    public void placeTile(Tile tile) {
-        if(game.getCurrentPlayer() != this)
-            return;
+    public PlaceTileMove getTilePlacement(Tile tile) {
         List<PlaceTileMove> allowedMoves = new ArrayList<>();
         for(int i = 0 ; i < 4; i++) {
             for(int x = 0; x < TABLE_DIMENSIONS; x++)
@@ -39,15 +35,10 @@ public class AiPlayer extends Player implements GameActionListener {
                         allowedMoves.add(new PlaceTileMove(i, new Position(x, y)));
             tile.rotate();
         }
-        PlaceTileMove move = allowedMoves.get(random.nextInt(allowedMoves.size()));
-        notifyOnPlaceTileAiListener(tile, move);
+        return allowedMoves.get(random.nextInt(allowedMoves.size()));
     }
 
-    @Override
-    public void placeFollower(Tile tile, Follower follower) {
-        if(game.getCurrentPlayer() != this)
-            return;
-
+    public Position getFollowerPlacement(Tile tile, Follower follower) {
         int numberOfPlayers = game.getPlayers().size();
         int numberOfTilesOnTable = 0;
         for(int x = 0; x < TABLE_DIMENSIONS; x++)
@@ -58,8 +49,7 @@ public class AiPlayer extends Player implements GameActionListener {
         int freeFollowers = this.getFollowersNumber();
 
         if(Math.min((double)freeFollowers/tilesToPlace, 1.0) < random.nextDouble()) {
-            tile.placeFollower(null, null);
-            return;
+            return null;
         }
 
         List<Position> possiblePlacements = new ArrayList<>();
@@ -69,19 +59,9 @@ public class AiPlayer extends Player implements GameActionListener {
                     possiblePlacements.add(new Position(i, j));
 
         if(possiblePlacements.isEmpty()) {
-            tile.placeFollower(null, null);
-            return;
+            return null;
         }
 
-        tile.placeFollower(follower, possiblePlacements.get(random.nextInt(possiblePlacements.size())));
-    }
-
-    List<AiPlayersActionsListener> aiPlayersActionsListeners = new ArrayList<>();
-    public void addAiPlayerActionListener(AiPlayersActionsListener listener) {
-        aiPlayersActionsListeners.add(listener);
-    }
-    public void notifyOnPlaceTileAiListener(Tile tile, PlaceTileMove move) {
-        for(AiPlayersActionsListener listener : aiPlayersActionsListeners)
-            listener.placeTileAi(tile, move);
+        return possiblePlacements.get(random.nextInt(possiblePlacements.size()));
     }
 }

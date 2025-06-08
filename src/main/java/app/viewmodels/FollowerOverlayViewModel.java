@@ -4,14 +4,18 @@ import app.model.Follower;
 import app.model.TileChangeListener;
 import app.model.Tile;
 import app.utils.Position;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.util.function.Consumer;
 
 public class FollowerOverlayViewModel implements TileChangeListener {
+    private static final double DELAY = 0.2;
+
     private ObjectProperty<Color> colorProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Position> followerPositionProperty = new SimpleObjectProperty<>();
 
@@ -28,8 +32,11 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
     private Follower follower;
     public void placeFollower(Follower follower) {
+        placementInit(follower);
+        KeyboardManager.getInstance().register(handleKeyEvent);
+    }
 
-
+    private void placementInit(Follower follower) {
         if (follower == null) {
             tile.placeFollower(null, null);
             return;
@@ -50,7 +57,44 @@ public class FollowerOverlayViewModel implements TileChangeListener {
         colorProperty.set(Color.GREEN);
 
         this.follower = follower;
-        KeyboardManager.getInstance().register(handleKeyEvent);
+    }
+
+
+
+    public void moveWithDelay(Position targetPos, Runnable onDone) {
+        Position currentPos = followerPositionProperty.get();
+        if (currentPos == null || currentPos.equals(targetPos)) {
+            if (onDone != null) {
+                onDone.run();
+            }
+            return;
+        }
+
+        final int dx, dy;
+
+        if (currentPos.x() < targetPos.x()) { dx = 1; dy = 0; }
+        else if (currentPos.x() > targetPos.x()) { dx = -1; dy = 0; }
+        else if (currentPos.y() < targetPos.y()) { dx = 0; dy = 1; }
+        else { dx = 0; dy = -1; }
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(DELAY));
+        pause.setOnFinished(event -> {
+            Position newPos = new Position(currentPos.x() + dx, currentPos.y() + dy);
+            followerPositionProperty.set(newPos);
+            moveWithDelay(targetPos, onDone);
+        });
+        pause.play();
+    }
+
+
+    public void placeAiFollower(Follower follower, Position pos) {
+        if(follower == null || pos == null) {
+            tile.placeFollower(null, null);
+            return;
+        }
+
+        placementInit(follower);
+        moveWithDelay(pos, () -> tile.placeFollower(follower, pos));
     }
 
     private final Consumer<KeyEvent> handleKeyEvent = new Consumer<KeyEvent>() {
@@ -67,6 +111,7 @@ public class FollowerOverlayViewModel implements TileChangeListener {
                     followerPositionProperty.set(null);
                     colorProperty.set(null);
                     tile.placeFollower(null, null);
+                    return;
                 }
                 case SPACE -> {
                     if (tile.canPlace(followerPositionProperty.get().x(), followerPositionProperty.get().y())) {
@@ -76,18 +121,22 @@ public class FollowerOverlayViewModel implements TileChangeListener {
                     }
                 }
             }
-            if(followerPositionProperty.get() != null) {
-                Position newPosition = new Position(followerPositionProperty.get().x() + positionChange.x(), followerPositionProperty.get().y() + positionChange.y());
-                if (0 <= newPosition.x() && newPosition.x() < 3 && 0 <= newPosition.y() && newPosition.y() < 3) {
-                    followerPositionProperty.set(newPosition);
-                    if (tile.canPlace(followerPositionProperty.get().x(), followerPositionProperty.get().y()))
-                        colorProperty.set(Color.GREEN);
-                    else
-                        colorProperty.set(Color.RED);
-                }
-            }
+            move(positionChange);
         }
     };
+
+    private void move(Position positionChange) {
+        if(followerPositionProperty.get() != null) {
+            Position newPosition = new Position(followerPositionProperty.get().x() + positionChange.x(), followerPositionProperty.get().y() + positionChange.y());
+            if (0 <= newPosition.x() && newPosition.x() < 3 && 0 <= newPosition.y() && newPosition.y() < 3) {
+                followerPositionProperty.set(newPosition);
+                if (tile.canPlace(followerPositionProperty.get().x(), followerPositionProperty.get().y()))
+                    colorProperty.set(Color.GREEN);
+                else
+                    colorProperty.set(Color.RED);
+            }
+        }
+    }
 
     private void updateProperties() {
         if(tile.getFollower() == null) {

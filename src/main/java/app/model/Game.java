@@ -18,8 +18,6 @@ public class Game {
     }
 
     public void addPlayer(Player player) {
-        if(player instanceof AiPlayer)
-            addGameActionListener((AiPlayer)player);
         players.add(player);
     }
     public void removePlayer(int nr) {

@@ -17,7 +17,9 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
     }
 
     public static final String PLACE_TILE_CONTROLS_TEXT = "Place a tile. CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
-    public static final String PLACE_FOLLOWER_CONTROLS_TEXT = "Place a follower. CONTROLS: Arrow keys to navigate, S to skip, Space to place a tile.";
+    public static final String AI_PLACE_TILE = "AI is placing a tile. Wait for your move.";
+    public static final String PLACE_FOLLOWER_CONTROLS_TEXT = "Place a follower. CONTROLS: Arrow keys to navigate, S to skip, Space to place a follower.";
+    public static final String AI_PLACE_FOLLOWER = "AI is placing a follower. Wait for your move.";
     public static final String GAME_END_TEXT = "The game has ended. Press ESC to exit.";
 
     private final Game game;
@@ -55,16 +57,28 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
 
     @Override
     public void placeTile(Tile tile) {
-        bottomText.set(PLACE_TILE_CONTROLS_TEXT);
+        if(game.getCurrentPlayer() instanceof HumanPlayer)
+            bottomText.set(PLACE_TILE_CONTROLS_TEXT);
+        else
+            bottomText.set(AI_PLACE_TILE);
+
         if(game.getCurrentPlayer() instanceof HumanPlayer)
             boardViewModel.placeTile(tile);
+        else if(game.getCurrentPlayer() instanceof AiPlayer)
+            boardViewModel.placeAiTile(tile, ((AiPlayer) game.getCurrentPlayer()).getTilePlacement(tile));
     }
 
     @Override
     public void placeFollower(Tile tile, Follower follower) {
-        bottomText.set(PLACE_FOLLOWER_CONTROLS_TEXT);
+        if(game.getCurrentPlayer() instanceof HumanPlayer)
+            bottomText.set(PLACE_FOLLOWER_CONTROLS_TEXT);
+        else
+            bottomText.set(AI_PLACE_FOLLOWER);
+
         if(game.getCurrentPlayer() instanceof HumanPlayer)
             boardViewModel.placeFollower(tile, follower);
+        if(game.getCurrentPlayer() instanceof AiPlayer)
+            boardViewModel.placeAiFollower(tile, follower, ((AiPlayer) game.getCurrentPlayer()).getFollowerPlacement(tile, follower));
     }
 
     @Override

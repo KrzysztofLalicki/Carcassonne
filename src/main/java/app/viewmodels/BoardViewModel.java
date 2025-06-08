@@ -1,9 +1,6 @@
 package app.viewmodels;
 
-import app.model.Follower;
-import app.model.Game;
-import app.model.Table;
-import app.model.Tile;
+import app.model.*;
 import app.utils.Position;
 import app.view.BoardSelector;
 import app.view.TileView;
@@ -49,9 +46,18 @@ public class BoardViewModel {
         boardSelectorViewModel.placeTile(tile);
     }
 
+    public void placeAiTile(Tile tile, AiPlayer.PlaceTileMove move) {
+        boardSelectorViewModel.placeAiTile(tile, move);
+    }
+
     public void placeFollower(Tile tile, Follower follower) {
         tableViewModel.placeFollower(tile, follower);
     }
+
+    public void placeAiFollower(Tile tile, Follower follower, Position pos) {
+        tableViewModel.placeAiFollower(tile, follower, pos);
+    }
+
 
 
 
