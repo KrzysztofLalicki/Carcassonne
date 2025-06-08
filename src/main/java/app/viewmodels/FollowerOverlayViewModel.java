@@ -28,6 +28,10 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
     private Follower follower;
     public void placeFollower(Follower follower) {
+        if (follower == null) {
+            tile.placeFollower(null, null);
+            return;
+        }
         colorProperty.set(null);
         followerPositionProperty.set(null);
         boolean canPlaceFollower = false;
@@ -37,8 +41,10 @@ public class FollowerOverlayViewModel implements TileChangeListener {
                     canPlaceFollower = true;
                     followerPositionProperty.set(new Position(i, j));
                 }
-        if(!canPlaceFollower)
+        if(!canPlaceFollower) {
             tile.placeFollower(null, null);
+            return;
+        }
         colorProperty.set(Color.GREEN);
 
         this.follower = follower;

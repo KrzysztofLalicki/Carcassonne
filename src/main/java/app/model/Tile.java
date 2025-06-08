@@ -293,7 +293,9 @@ public class Tile {
         count_points();
         game.nextPlayer();
     }
-
+    public void removeFollower() {
+        follower = null;
+    }
     public Follower getFollower() {
         return follower;
     }
