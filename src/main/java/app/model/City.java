@@ -19,10 +19,14 @@ public class City extends Area {
     public void mergeWith(Area area) {
         super.mergeWith(area);
         if (area instanceof City c) {
+            pennants += c.pennants;
             holes += c.holes - 2;
         }
     }
 
+    public void addPennant() {
+        pennants++;
+    }
     public void addHole() {
         holes++;
     }

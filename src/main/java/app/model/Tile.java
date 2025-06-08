@@ -102,6 +102,9 @@ public class Tile {
         }
         if (centre == 1) {
             City city = new City(this);
+            if (pennant) {
+                city.addPennant();
+            }
             if (up == 1) {
                 segments[1][0] = new Segment(city);
                 city.addHole();
