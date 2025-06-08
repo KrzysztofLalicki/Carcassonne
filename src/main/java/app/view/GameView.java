@@ -1,11 +1,9 @@
 package app.view;
 
 import app.viewmodels.GameViewModel;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
@@ -23,14 +21,5 @@ public class GameView extends BorderPane {
         bottomLabel.textProperty().bind(gameViewModel.getBottomTextProperty());
         setBottom(bottomLabel);
         setAlignment(bottomLabel, Pos.CENTER);
-
-        gameViewModel.getHasEndedProperty().addListener((_, _, newValue) -> {
-            if(newValue) {
-                setOnKeyPressed(event -> {
-                    if(event.getCode() == KeyCode.ESCAPE)
-                        gameViewModel.escape();
-                });
-            }
-        });
     }
 }

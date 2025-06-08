@@ -59,12 +59,12 @@ public class ViewModelMenu {
             StackPane menuLayout = new MainMenu("Za mała ilość graczy",this);
             primaryStage.getScene().setRoot(menuLayout);
         } else {  // Zaczynamy rozgrywke
-//            primaryStage.setResizable(false);
-
-//            game.start();
+            primaryStage.setResizable(false);
 
             GameViewModel gameViewModel = new GameViewModel(game);
             GameView gameView = new GameView(gameViewModel);
+
+            game.start();
 
             Scene scene = new Scene(gameView);
 

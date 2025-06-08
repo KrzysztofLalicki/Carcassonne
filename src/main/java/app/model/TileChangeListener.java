@@ -1,6 +1,6 @@
 package app.model;
 
 public interface TileChangeListener {
-    public default void onRotationChanged() {};
-    public default void onFollowerChanged() {};
+    default void onRotationChanged() {};
+    default void onFollowerChanged() {};
 }
