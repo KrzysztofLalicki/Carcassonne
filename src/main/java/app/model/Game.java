@@ -18,6 +18,8 @@ public class Game {
     }
 
     public void addPlayer(Player player) {
+        if(player instanceof AiPlayer)
+            addGameActionListener((AiPlayer)player);
         players.add(player);
     }
     public void removePlayer(int nr) {
@@ -35,11 +37,8 @@ public class Game {
     }
 
     public void start() {
-        currentPlayerNumber = 0;
-        notifyCurrentPlayerChangeListeners();
-
-        Tile tileToPlace = box.giveTile();
-        notifyPlaceTileListeners(tileToPlace);
+        currentPlayerNumber = -1;
+        nextPlayer();
     }
 
     public void end() {

@@ -22,6 +22,7 @@ import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
 
 public class BoardViewModel {
+    private Game game;
     private Table table;
     private TableViewModel tableViewModel;
     private BoardSelectorViewModel boardSelectorViewModel;
@@ -29,6 +30,7 @@ public class BoardViewModel {
     private ObjectProperty<Position> onTablePositionProperty = new SimpleObjectProperty<>(new Position(STARTING_TILE_POSITION, STARTING_TILE_POSITION));;
     private ObjectProperty<Position> onViewPositionProperty = new SimpleObjectProperty<>(new Position(DISPLAYED_GRID_SIZE / 2, DISPLAYED_GRID_SIZE / 2));
 
+    public Game getGame() {return game;}
     public Table getTable() {return table;}
     public TableViewModel getTableViewModel() {return tableViewModel;}
     public BoardSelectorViewModel getBoardSelectorViewModel() {return boardSelectorViewModel;}
@@ -36,6 +38,7 @@ public class BoardViewModel {
     public ObjectProperty<Position> getOnViewPositionProperty() {return onViewPositionProperty;}
 
     public BoardViewModel(Game game) {
+        this.game = game;
         this.table = game.getTable();
         tableViewModel = new TableViewModel(this);
         boardSelectorViewModel = new BoardSelectorViewModel(this);

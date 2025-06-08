@@ -1,19 +1,24 @@
 package app.viewmodels;
 
-import app.model.Table;
-import app.model.Tile;
+import app.model.*;
 import app.utils.Position;
 import app.view.BoardSelector;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
+
+import java.awt.*;
 import java.util.function.Consumer;
 
 import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
-public class BoardSelectorViewModel {
+public class BoardSelectorViewModel implements AiPlayersActionsListener {
+    private static double DELAY = 0.5;
+
     private BoardViewModel boardViewModel;
     private Table table;
 
@@ -38,6 +43,10 @@ public class BoardSelectorViewModel {
         this.onViewPosition = boardViewModel.getOnViewPositionProperty();
         this.onTablePosition = boardViewModel.getOnTablePositionProperty();
 
+        for(Player p : boardViewModel.getGame().getPlayers())
+            if(p instanceof AiPlayer)
+                ((AiPlayer) p).addAiPlayerActionListener(this);
+
         updateViewProperties();
     }
 
@@ -54,6 +63,8 @@ public class BoardSelectorViewModel {
     }
 
     public void placeTile(Tile tile) {
+        if(boardViewModel.getGame().getCurrentPlayer() instanceof AiPlayer)
+            return;
         this.tile.set(tile);
         isActive.set(true);
         updateViewProperties();
@@ -71,6 +82,7 @@ public class BoardSelectorViewModel {
         if (newOnViewPosition.x() > 0 && newOnViewPosition.x() < DISPLAYED_GRID_SIZE - 1 && newOnViewPosition.y() > 0 && newOnViewPosition.y() < DISPLAYED_GRID_SIZE - 1)
             onViewPosition.set(newOnViewPosition);
         onTablePosition.set(newOnTablePosition);
+        updateViewProperties();
     }
 
     private final Consumer<KeyEvent> keyEventHandler = new Consumer<>() {
@@ -94,4 +106,51 @@ public class BoardSelectorViewModel {
             updateViewProperties();
         }
     };
+
+    private void rotateWithDelay(Tile tile, int remainingRotations, Runnable onDone) {
+        if (remainingRotations <= 0) {
+            onDone.run();
+            return;
+        }
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(DELAY)); // adjust delay as needed
+        pause.setOnFinished(event -> {
+            tile.rotate();
+            updateViewProperties();
+            rotateWithDelay(tile, remainingRotations - 1, onDone);
+        });
+        pause.play();
+    }
+
+    private void moveToPositionWithDelay(Position targetPos, Runnable onDone) {
+        Position currentPos = onTablePosition.get();
+        if (currentPos.equals(targetPos)) {
+            onDone.run();
+            return;
+        }
+
+        final int dx, dy;
+        if (currentPos.x() < targetPos.x()) { dx = 1; dy = 0;}
+        else if (currentPos.x() > targetPos.x()) { dx = -1; dy = 0;}
+        else if (currentPos.y() < targetPos.y())  { dx = 0; dy = 1;}
+        else { dx = 0; dy = -1;}
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(DELAY));
+        pause.setOnFinished(event -> {
+            moveSelection(dx, dy);
+            moveToPositionWithDelay(targetPos, onDone);
+        });
+        pause.play();
+    }
+
+    @Override
+    public void placeTileAi(Tile tile, AiPlayer.PlaceTileMove move) {
+        this.tile.set(tile);
+        isActive.set(true);
+        moveToPositionWithDelay(move.pos(), () -> rotateWithDelay(tile, move.rotation(), () -> {
+            updateViewProperties();
+            isActive.set(false);
+            table.placeTile(tile, move.pos().x(), move.pos().y());
+        }));
+    }
 }

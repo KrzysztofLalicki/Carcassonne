@@ -1,21 +1,16 @@
 package app.model;
 
-import javafx.beans.property.*;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public abstract class Player {
 
-    private String name;
-    private Color color;
-    private int points = 0;
-    private final Follower[] followers;
-
-    public Player(String name, Color color) {
-        this.name = name;
-        this.color = color;
+    String name;
+    Color color;
+    int points = 0;
+    final Follower[] followers;
+    {
         followers = new Follower[7];
         for (int i = 0; i < 7; i++) {
             followers[i] = new Follower(this);
