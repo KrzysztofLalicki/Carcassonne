@@ -88,7 +88,7 @@ public class NewPlayerMenu extends StackPane {
         colorlabel.setTranslateX(230);
         this.getChildren().add(colorlabel);
         // colors buttons
-        Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
+        Color colors[] = {Color.ORANGE,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.LIME};
         int level = -20;
         for (int i = 0; i < colors.length; i++) {
             Color currentColor = colors[i];

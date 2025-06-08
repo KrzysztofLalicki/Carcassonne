@@ -126,7 +126,7 @@ public class ViewModelMenu {
             primaryStage.getScene().setRoot(menu);
             }
             else{
-                Color colors[] = {Color.RED,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.GREEN};
+                Color colors[] = {Color.ORANGE,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.LIME};
                 for(int i = 0; i < colors.length; i++) {
                     if(!PlayersContains(colors[i])) {
                         currentColor = colors[i];

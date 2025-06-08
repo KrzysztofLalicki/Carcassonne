@@ -22,6 +22,7 @@ public abstract class Area {
                 segment.setArea(this);
             }
             tiles.addAll(area.tiles);
+            segments.addAll(area.segments);
             followers.addAll(area.followers);
         }
     }
