@@ -35,4 +35,6 @@ public abstract class Area {
     public boolean isFree() {
         return followers.isEmpty();
     }
+    public boolean isFinished() { return false; }
+    public void finish() {}
 }

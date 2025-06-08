@@ -22,4 +22,8 @@ public class Segment {
         this.follower = follower;
         area.addFollower(follower);
     }
+    public void removeFollower() {
+        follower.remove();
+        follower = null;
+    }
 }
