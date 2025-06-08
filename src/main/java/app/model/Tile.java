@@ -250,6 +250,16 @@ public class Tile {
                     if (s.getArea() instanceof Road r && r.isFinished()) {
                         r.finish();
                     }
+                    if (s.getArea() instanceof Cloister c && c.isFinished()) {
+                        c.finish();
+                    }
+                }
+            }
+        }
+        for (int xx = -1; xx <= 1; xx++) {
+            for (int yy = -1; yy <= 1; yy++) {
+                if (table.getTile(x + xx, y + yy) != null && table.getTile(x + xx, y + yy).getSegments()[1][1] != null && table.getTile(x + xx, y + yy).getSegments()[1][1].getArea() instanceof Cloister c && c.isFinished()) {
+                    c.finish();
                 }
             }
         }
@@ -262,7 +272,9 @@ public class Tile {
     public boolean canPlace(int x, int y) {
         return segments[x][y] != null && segments[x][y].getArea().isFree();
     }
-
+    public Table getTable() {
+        return table;
+    }
     public Position getOnTablePosition() {
         return new Position(x, y);
     }

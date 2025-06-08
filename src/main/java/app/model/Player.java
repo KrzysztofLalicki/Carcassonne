@@ -1,6 +1,5 @@
 package app.model;
 
-import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -8,8 +7,8 @@ import java.util.List;
 
 public class Player {
 
-    private String name;
-    private Color color;
+    private final String name;
+    private final Color color;
     private int points = 0;
     private final Follower[] followers;
 
@@ -50,7 +49,7 @@ public class Player {
         return null;
     }
 
-    private List<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
+    private final List<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
     public void addPlayerChangeListener(PlayerChangeListener playerChangeListener) {
         playerChangeListeners.add(playerChangeListener);
     }
