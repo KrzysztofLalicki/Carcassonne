@@ -237,7 +237,18 @@ public class Tile {
             }
         }
         if (centre == 3) {
-            segments[1][1] = new Segment(new Cloister(this));
+            Cloister cloister = new Cloister(this);
+            segments[1][1] = new Segment(cloister);
+            for (int xx = -1; xx <= 1; xx++) {
+                for (int yy = -1; yy <= 1; yy++) {
+                    if ((x != 0 || y != 0) && table.getTile(x + xx, y + yy) != null) {
+                        cloister.surround();
+                        if (table.getTile(x + xx, y + yy).getSegments()[1][1] != null && table.getTile(x + xx, y + yy).getSegments()[1][1].getArea() instanceof Cloister c) {
+                            c.surround();
+                        }
+                    }
+                }
+            }
         }
     }
     public Segment[][] getSegments() {
