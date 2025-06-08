@@ -42,17 +42,6 @@ public class Table {
         if (tiles[x][y + 1].get() != null && tile.down != tiles[x][y + 1].get().up) return false;
         return tiles[x][y].get() == null;
     }
-    public boolean canPlaceAnywhere(Tile tile) {
-        for (int x = 1; x < TABLE_DIMENSIONS - 1; x++) {
-            for (int y = 1; y < TABLE_DIMENSIONS - 1; y++) {
-                for (int r = 0; r < 4; r++) {
-                    if (canPlace(tile, x, y)) return true;
-                    tile.rotate();
-                }
-            }
-        }
-        return false;
-    }
     public void placeTile(Tile tile, int x, int y) {
         if (canPlace(tile, x, y)) {
             tiles[x][y].set(tile);
@@ -68,6 +57,32 @@ public class Table {
             return null;
         return tiles[x][y].get();
     }
+
+    public void endGame() {
+        for (int x = 0; x < TABLE_DIMENSIONS; x++) {
+            for (int y = 0; y < TABLE_DIMENSIONS; y++) {
+                if(getTile(x, y) != null) {
+                    for (int xx = 0; xx < 3; xx++) {
+                        for (int yy = 0; yy < 3; yy++) {
+                            if (getTile(x, y).getSegments()[xx][yy] != null) {
+                                Area a = getTile(x, y).getSegments()[xx][yy].getArea();
+                                if (a instanceof City c) {
+                                    c.finish();
+                                }
+                                if (a instanceof Road r) {
+                                    r.finish();
+                                }
+                                if (a instanceof Cloister c) {
+                                    c.finish();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public ObjectProperty<Tile> getTileProperty(int x, int y) {
         return tiles[x][y];
     }
