@@ -28,7 +28,7 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
     private Follower follower;
     public void placeFollower(Follower follower) {
-        if(follower==null) {
+        if (follower == null) {
             tile.placeFollower(null, null);
             return;
         }
