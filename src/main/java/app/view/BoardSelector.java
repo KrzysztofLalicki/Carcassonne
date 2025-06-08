@@ -70,7 +70,7 @@ public class BoardSelector extends AbstractBoardView {
         }
 
         if(outline != null ) {
-                Rectangle rectangle = new Rectangle();
+            Rectangle rectangle = new Rectangle();
             rectangle.setFill(Color.TRANSPARENT);
             rectangle.setStroke(outline.color);
             rectangle.setStrokeWidth(5);

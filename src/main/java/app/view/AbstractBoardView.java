@@ -23,11 +23,6 @@ public abstract class AbstractBoardView extends GridPane {
 
         setAlignment(Pos.CENTER);
 
-//        heightProperty().addListener((obs, oldVal, newVal) -> {
-//            setMinWidth(Math.round(newVal.doubleValue()));
-//            setMaxWidth(Math.round(newVal.doubleValue()));
-//        });
-
         minHeightProperty().bind(BOARD_SIZE);
         prefHeightProperty().bind(BOARD_SIZE);
         maxHeightProperty().bind(BOARD_SIZE);

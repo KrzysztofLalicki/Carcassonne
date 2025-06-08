@@ -2,13 +2,12 @@ package app.view;
 
 import app.model.Table;
 import app.utils.Position;
-import app.viewmodels.BoardViewModel;
 import app.viewmodels.TableViewModel;
 import app.viewmodels.TileViewModel;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-
 import java.util.Map;
+
+import static app.model.Table.TABLE_DIMENSIONS;
 
 public class TableView extends AbstractBoardView {
     private Table table;
@@ -37,11 +36,12 @@ public class TableView extends AbstractBoardView {
         getChildren().clear();
         for(int xTable = onTablePosition.get().x() - onViewPosition.get().x(), xView = 0; xView < DISPLAYED_GRID_SIZE; xTable++, xView++)
             for(int yTable = onTablePosition.get().y() - onViewPosition.get().y(), yView = 0; yView < DISPLAYED_GRID_SIZE; yTable++, yView++)
-                if(table.getTile(xTable, yTable) != null) {
-                    TileViewModel tileViewModel = new TileViewModel(table.getTile(xTable, yTable));
-                    tileViewModels.put(new Position(xTable, yTable), tileViewModel);
-                    TileView tileView = new TileView(tileViewModel);
-                    add(tileView, xView, yView);
-                }
+                if(xTable >= 0 && xTable < TABLE_DIMENSIONS && yTable >= 0 && yTable < TABLE_DIMENSIONS)
+                    if(table.getTile(xTable, yTable) != null) {
+                        TileViewModel tileViewModel = new TileViewModel(table.getTile(xTable, yTable));
+                        tileViewModels.put(new Position(xTable, yTable), tileViewModel);
+                        TileView tileView = new TileView(tileViewModel);
+                        add(tileView, xView, yView);
+                    }
     }
 }

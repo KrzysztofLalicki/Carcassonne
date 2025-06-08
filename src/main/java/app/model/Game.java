@@ -10,7 +10,6 @@ public class Game {
     private final Box box;
     private final Table table;
     private int currentPlayerNumber;
-    BooleanProperty hasEnded = new SimpleBooleanProperty(false);
 
     public Game(){
         players = new ArrayList<>();
@@ -27,7 +26,10 @@ public class Game {
     public void nextPlayer() {
         currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
         notifyCurrentPlayerChangeListeners();
-
+        if(box.isEmpty()) {
+            end();
+            return;
+        }
         Tile tileToPlace = box.giveTile();
         notifyPlaceTileListeners(tileToPlace);
     }
@@ -41,7 +43,7 @@ public class Game {
     }
 
     public void end() {
-        hasEnded.set(true);
+        notifyOnGameEndListeners();
     }
 
     public Player getCurrentPlayer() {
@@ -55,10 +57,6 @@ public class Game {
     }
     public Table getTable() {
         return table;
-    }
-
-    public BooleanProperty getHasEndedProperty() {
-        return hasEnded;
     }
 
     private final List<GameActionListener> gameActionListeners = new ArrayList<>();
@@ -81,5 +79,9 @@ public class Game {
     public void notifyCurrentPlayerChangeListeners() {
         for(GameStateChangeListener listener : gameStateChangeListeners)
             listener.onCurrentPlayerChange();
+    }
+    public void notifyOnGameEndListeners() {
+        for(GameStateChangeListener listener : gameStateChangeListeners)
+            listener.onGameEnd();
     }
 }

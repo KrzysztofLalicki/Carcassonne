@@ -2,18 +2,22 @@ package app.viewmodels;
 
 import app.model.*;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.input.KeyEvent;
+import java.util.function.Consumer;
 
-public class GameViewModel implements GameActionListener {
+import static javafx.scene.input.KeyCode.ESCAPE;
+
+public class GameViewModel implements GameActionListener, GameStateChangeListener {
     public enum TurnState {
         PLACING_TILE,
         PLACING_FOLLOWER,
         REMOVING_FOLLOWER,
     }
 
-    public static final String CONTROLS_TEXT = "CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
+    public static final String PLACE_TILE_CONTROLS_TEXT = "Place a tile. CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
+    public static final String PLACE_FOLLOWER_CONTROLS_TEXT = "Place a follower. CONTROLS: Arrow keys to navigate, S to skip, Space to place a tile.";
     public static final String GAME_END_TEXT = "The game has ended. Press ESC to exit.";
 
     private final Game game;
@@ -21,19 +25,14 @@ public class GameViewModel implements GameActionListener {
     private final SideBarViewModel sideBarViewModel;
     private final BoardViewModel boardViewModel;
 
-    private final StringProperty bottomText = new SimpleStringProperty(CONTROLS_TEXT);
+    private final StringProperty bottomText = new SimpleStringProperty(PLACE_TILE_CONTROLS_TEXT);
 
     public GameViewModel(Game game) {
         this.game = game;
         game.addGameActionListener(this);
+        game.addGameStateChangeListener(this);
         boardViewModel = new BoardViewModel(game);
         sideBarViewModel = new SideBarViewModel(game, boardViewModel.getBoardSelectorViewModel());
-        getHasEndedProperty().addListener((_, _, newVal) -> {
-            if(newVal)
-                bottomText.set(GAME_END_TEXT);
-        });
-
-        game.start();
     }
 
     public SideBarViewModel getSideBarViewModel() {return sideBarViewModel;}
@@ -41,22 +40,34 @@ public class GameViewModel implements GameActionListener {
 
     public StringProperty getBottomTextProperty() { return bottomText; }
 
-    public BooleanProperty getHasEndedProperty() {
-        return game.getHasEndedProperty();
-    }
-
     public void escape() {
         //TODO: getBackToMenu
         Platform.exit();
     }
 
+    private final Consumer<KeyEvent> handleKeyEvent = new Consumer<KeyEvent>() {
+        @Override
+        public void accept(KeyEvent event) {
+            if (event.getCode() == ESCAPE)
+                escape();
+        }
+    };
+
     @Override
     public void placeTile(Tile tile) {
+        bottomText.set(PLACE_TILE_CONTROLS_TEXT);
         boardViewModel.placeTile(tile);
     }
 
     @Override
     public void placeFollower(Tile tile, Follower follower) {
+        bottomText.set(PLACE_FOLLOWER_CONTROLS_TEXT);
         boardViewModel.placeFollower(tile, follower);
+    }
+
+    @Override
+    public void onGameEnd() {
+        bottomText.set(GAME_END_TEXT);
+        KeyboardManager.getInstance().register(handleKeyEvent);
     }
 }
