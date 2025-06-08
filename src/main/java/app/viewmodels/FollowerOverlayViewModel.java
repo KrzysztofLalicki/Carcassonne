@@ -72,6 +72,7 @@ public class FollowerOverlayViewModel implements TileChangeListener {
                     if (tile.canPlace(followerPositionProperty.get().x(), followerPositionProperty.get().y())) {
                         KeyboardManager.getInstance().remove(this);
                         tile.placeFollower(follower, followerPositionProperty.get());
+                        return;
                     }
                 }
             }

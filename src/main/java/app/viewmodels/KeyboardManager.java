@@ -5,12 +5,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public class KeyboardManager {
     private static final KeyboardManager INSTANCE = new KeyboardManager();
 
-    private final List<Consumer<KeyEvent>> activeKeyEventsHandlers = new LinkedList<>();
+    List<Consumer<KeyEvent>> activeKeyEventsHandlers = new CopyOnWriteArrayList<>();
 
     private KeyboardManager() {}
 
@@ -19,7 +20,8 @@ public class KeyboardManager {
     }
 
     public void register(Consumer<KeyEvent> keyEventHandler) {
-        activeKeyEventsHandlers.add(keyEventHandler);
+        if(!activeKeyEventsHandlers.contains(keyEventHandler))
+            activeKeyEventsHandlers.add(keyEventHandler);
     }
 
     public void remove(Consumer<KeyEvent> keyEventHandler) {

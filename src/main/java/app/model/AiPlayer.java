@@ -57,8 +57,10 @@ public class AiPlayer extends Player implements GameActionListener {
         int tilesToPlace = (NUMBER_OF_TILES - numberOfTilesOnTable) / numberOfPlayers;
         int freeFollowers = this.getFollowersNumber();
 
-        if(Math.min((double)freeFollowers/tilesToPlace, 1.0) < random.nextDouble())
+        if(Math.min((double)freeFollowers/tilesToPlace, 1.0) < random.nextDouble()) {
             tile.placeFollower(null, null);
+            return;
+        }
 
         List<Position> possiblePlacements = new ArrayList<>();
         for(int i = 0; i < 3; i++)
@@ -66,8 +68,10 @@ public class AiPlayer extends Player implements GameActionListener {
                 if(tile.canPlace(i, j))
                     possiblePlacements.add(new Position(i, j));
 
-        if(possiblePlacements.isEmpty())
+        if(possiblePlacements.isEmpty()) {
             tile.placeFollower(null, null);
+            return;
+        }
 
         tile.placeFollower(follower, possiblePlacements.get(random.nextInt(possiblePlacements.size())));
     }

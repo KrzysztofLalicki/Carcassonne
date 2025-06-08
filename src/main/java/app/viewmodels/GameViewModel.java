@@ -56,13 +56,15 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
     @Override
     public void placeTile(Tile tile) {
         bottomText.set(PLACE_TILE_CONTROLS_TEXT);
-        boardViewModel.placeTile(tile);
+        if(game.getCurrentPlayer() instanceof HumanPlayer)
+            boardViewModel.placeTile(tile);
     }
 
     @Override
     public void placeFollower(Tile tile, Follower follower) {
         bottomText.set(PLACE_FOLLOWER_CONTROLS_TEXT);
-        boardViewModel.placeFollower(tile, follower);
+        if(game.getCurrentPlayer() instanceof HumanPlayer)
+            boardViewModel.placeFollower(tile, follower);
     }
 
     @Override

@@ -98,6 +98,7 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
                         isActive.set(false);
                         updateViewProperties();
                         table.placeTile(tile.get(), onTablePosition.get().x(), onTablePosition.get().y());
+                        return;
                     }
                 }
             }
