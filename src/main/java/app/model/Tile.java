@@ -47,12 +47,6 @@ public class Tile {
         rotation.set((rotation.get() + 90) % 360);
         notifyOnRotationChangedListeners();
     }
-    public StringProperty getSymbolProperty() {
-        return symbol;
-    }
-    public IntegerProperty getRotationProperty() {
-        return rotation;
-    }
     public void generateSegments() {
         if (left != 1 || centre != 1 || up != 1) {
             Field field = new Field(this);
@@ -110,24 +104,28 @@ public class Tile {
             City city = new City(this);
             if (up == 1) {
                 segments[1][0] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x, y - 1) != null) {
                     city.mergeWith(table.getTile(x, y - 1).getSegments()[1][2].getArea());
                 }
             }
             if (left == 1) {
                 segments[0][1] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x - 1, y) != null) {
                     city.mergeWith(table.getTile(x - 1, y).getSegments()[2][1].getArea());
                 }
             }
             if (right == 1) {
                 segments[2][1] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x + 1, y) != null) {
                     city.mergeWith(table.getTile(x + 1, y).getSegments()[0][1].getArea());
                 }
             }
             if (down == 1) {
                 segments[1][2] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x, y + 1) != null) {
                     city.mergeWith(table.getTile(x, y + 1).getSegments()[1][0].getArea());
                 }
@@ -137,6 +135,7 @@ public class Tile {
             if (up == 1) {
                 City city = new City(this);
                 segments[1][0] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x, y - 1) != null) {
                     table.getTile(x, y - 1).getSegments()[1][2].getArea().mergeWith(city);
                 }
@@ -144,6 +143,7 @@ public class Tile {
             if (left == 1) {
                 City city = new City(this);
                 segments[0][1] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x - 1, y) != null) {
                     table.getTile(x - 1, y).getSegments()[2][1].getArea().mergeWith(city);
                 }
@@ -151,6 +151,7 @@ public class Tile {
             if (right == 1) {
                 City city = new City(this);
                 segments[2][1] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x + 1, y) != null) {
                     table.getTile(x + 1, y).getSegments()[0][1].getArea().mergeWith(city);
                 }
@@ -158,6 +159,7 @@ public class Tile {
             if (down == 1) {
                 City city = new City(this);
                 segments[1][2] = new Segment(city);
+                city.addHole();
                 if (table.getTile(x, y + 1) != null) {
                     table.getTile(x, y + 1).getSegments()[1][0].getArea().mergeWith(city);
                 }
@@ -261,6 +263,9 @@ public class Tile {
                     if (s.getArea() instanceof Road r && r.isFinished()) {
                         r.finish();
                     }
+                    if (s.getArea() instanceof City c && c.isFinished()) {
+                        c.finish();
+                    }
                     if (s.getArea() instanceof Cloister c && c.isFinished()) {
                         c.finish();
                     }
@@ -282,9 +287,6 @@ public class Tile {
     }
     public boolean canPlace(int x, int y) {
         return segments[x][y] != null && segments[x][y].getArea().isFree();
-    }
-    public Table getTable() {
-        return table;
     }
     public Position getOnTablePosition() {
         return new Position(x, y);
