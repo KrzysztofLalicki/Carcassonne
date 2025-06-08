@@ -25,7 +25,10 @@ public class Follower {
         }
     }
     public void remove() {
+        tile.removeFollower();
+        tile.notifyOnFollowerChangedListeners();
         tile = null;
+        player.notifyOnFollowerNumberChangeListeners();
     }
     public Tile getTile() {
         return tile;
