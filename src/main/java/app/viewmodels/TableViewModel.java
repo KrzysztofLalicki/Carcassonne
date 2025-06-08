@@ -43,6 +43,10 @@ public class TableViewModel implements TableChangeListener {
         tileViewModels.get(tile.getOnTablePosition()).placeFollower(follower);
     }
 
+    public void placeAiFollower(Tile tile, Follower follower, Position pos) {
+        tileViewModels.get(tile.getOnTablePosition()).placeAiFollower(follower, pos);
+    }
+
     @Override
     public void onTableChanged() {
         tableChangedEvent.set(!tableChangedEvent.get());

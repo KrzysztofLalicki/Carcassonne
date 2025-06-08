@@ -1,6 +1,8 @@
 package app.menu;
 
+import app.model.AiPlayer;
 import app.model.Game;
+import app.model.HumanPlayer;
 import app.model.Player;
 import app.view.GameView;
 import app.viewmodels.GameViewModel;
@@ -61,8 +63,12 @@ public class ViewModelMenu {
         } else {  // Zaczynamy rozgrywke
             primaryStage.setResizable(false);
 
+            //TODO: integrate adding ai players into menu
+            game.addPlayer(new AiPlayer(Color.PINK, game));
+
             GameViewModel gameViewModel = new GameViewModel(game);
             GameView gameView = new GameView(gameViewModel);
+
 
             game.start();
 
@@ -115,7 +121,7 @@ public class ViewModelMenu {
         }
         else{
             if(!currentColor.equals(Color.TRANSPARENT) && !PlayersContains(currentColor)) {
-            game.getPlayers().add(new Player(PlayerName,currentColor));
+            game.getPlayers().add(new HumanPlayer(PlayerName,currentColor));
             StackPane menu = new MainMenu("",this);
             primaryStage.getScene().setRoot(menu);
             }
@@ -127,7 +133,7 @@ public class ViewModelMenu {
                         break;
                     }
                 }
-                game.getPlayers().add(new Player(PlayerName,currentColor));
+                game.getPlayers().add(new HumanPlayer(PlayerName,currentColor));
                 StackPane menu = new MainMenu("",this);
                 primaryStage.getScene().setRoot(menu);
             }

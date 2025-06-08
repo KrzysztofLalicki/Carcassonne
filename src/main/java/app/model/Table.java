@@ -49,7 +49,6 @@ public class Table {
             notifyOnTableChangedListeners();
             tile.generateSegments();
             game.notifyPlaceFollowerListeners(tile, game.getCurrentPlayer().getFollower());
-//            game.nextPlayer();
         }
     }
     public Tile getTile(int x, int y) {

@@ -35,11 +35,8 @@ public class Game {
     }
 
     public void start() {
-        currentPlayerNumber = 0;
-        notifyCurrentPlayerChangeListeners();
-
-        Tile tileToPlace = box.giveTile();
-        notifyPlaceTileListeners(tileToPlace);
+        currentPlayerNumber = -1;
+        nextPlayer();
     }
 
     public void end() {

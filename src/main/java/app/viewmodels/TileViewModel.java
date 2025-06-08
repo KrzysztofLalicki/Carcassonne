@@ -3,6 +3,7 @@ package app.viewmodels;
 import app.model.Follower;
 import app.model.TileChangeListener;
 import app.model.Tile;
+import app.utils.Position;
 import javafx.beans.property.*;
 
 public class TileViewModel implements TileChangeListener {
@@ -30,6 +31,10 @@ public class TileViewModel implements TileChangeListener {
 
     public void placeFollower(Follower follower) {
         followerOverlayViewModel.placeFollower(follower);
+    }
+
+    public void placeAiFollower(Follower follower, Position pos) {
+        followerOverlayViewModel.placeAiFollower(follower, pos);
     }
 
     @Override

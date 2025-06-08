@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class Box {
     private static final String TILE_SET_PATH = "src/main/resources/tiles.txt";
+    public final static int NUMBER_OF_TILES = 72;
 
     private final ArrayList<Tile> tiles;
 
