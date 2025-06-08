@@ -14,9 +14,11 @@ public class Road extends Area {
         ends = 0;
     }
 
-    public void mergeWith(Road road) {
-        super.mergeWith(road);
-        ends += road.ends;
+    public void mergeWith(Area area) {
+        super.mergeWith(area);
+        if (area instanceof Road road) {
+            ends += road.ends;
+        }
     }
 
     public void end() {
@@ -36,7 +38,7 @@ public class Road extends Area {
         int max = max(owners.values());
         for (Map.Entry<Player, Integer> pair : owners.entrySet()) {
             if (pair.getValue() == max) {
-                pair.getKey().addPoints(segments.size());
+                pair.getKey().addPoints(tiles.size());
             }
         }
         for (Segment segment : segments) {

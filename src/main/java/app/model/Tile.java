@@ -169,7 +169,7 @@ public class Tile {
                 road.end();
                 segments[1][0] = new Segment(road);
                 if (table.getTile(x, y - 1) != null) {
-                    table.getTile(x, y - 1).getSegments()[1][2].getArea().mergeWith(road);
+                    road.mergeWith(table.getTile(x, y - 1).getSegments()[1][2].getArea());
                 }
             }
             if (left == 2) {
@@ -177,7 +177,7 @@ public class Tile {
                 road.end();
                 segments[0][1] = new Segment(road);
                 if (table.getTile(x - 1, y) != null) {
-                    table.getTile(x - 1, y).getSegments()[2][1].getArea().mergeWith(road);
+                    road.mergeWith(table.getTile(x - 1, y).getSegments()[2][1].getArea());
                 }
             }
             if (right == 2) {
@@ -185,7 +185,7 @@ public class Tile {
                 road.end();
                 segments[2][1] = new Segment(road);
                 if (table.getTile(x + 1, y) != null) {
-                    table.getTile(x + 1, y).getSegments()[0][1].getArea().mergeWith(road);
+                    road.mergeWith(table.getTile(x + 1, y).getSegments()[0][1].getArea());
                 }
             }
             if (down == 2) {
@@ -193,7 +193,7 @@ public class Tile {
                 road.end();
                 segments[1][2] = new Segment(road);
                 if (table.getTile(x, y + 1) != null) {
-                    table.getTile(x, y + 1).getSegments()[1][0].getArea().mergeWith(road);
+                    road.mergeWith(table.getTile(x, y + 1).getSegments()[1][0].getArea());
                 }
             }
         }
@@ -204,11 +204,17 @@ public class Tile {
                 if (table.getTile(x, y - 1) != null) {
                     road.mergeWith(table.getTile(x, y - 1).getSegments()[1][2].getArea());
                 }
+                if (left == 1 && right == 1) {
+                    road.end();
+                }
             }
             if (left == 2) {
                 segments[0][1] = new Segment(road);
                 if (table.getTile(x - 1, y) != null) {
                     road.mergeWith(table.getTile(x - 1, y).getSegments()[2][1].getArea());
+                }
+                if (up == 1 && down == 1) {
+                    road.end();
                 }
             }
             if (right == 2) {
@@ -216,11 +222,17 @@ public class Tile {
                 if (table.getTile(x + 1, y) != null) {
                     road.mergeWith(table.getTile(x + 1, y).getSegments()[0][1].getArea());
                 }
+                if (up == 1 && down == 1) {
+                    road.end();
+                }
             }
             if (down == 2) {
                 segments[1][2] = new Segment(road);
                 if (table.getTile(x, y + 1) != null) {
                     road.mergeWith(table.getTile(x, y + 1).getSegments()[1][0].getArea());
+                }
+                if (left == 1 && right == 1) {
+                    road.end();
                 }
             }
         }
@@ -234,8 +246,10 @@ public class Tile {
     public void count_points() {
         for (Segment[] ss : segments) {
             for (Segment s : ss) {
-                if (s != null && s.getArea().isFinished()) {
-                    s.getArea().finish();
+                if (s != null) {
+                    if (s.getArea() instanceof Road r && r.isFinished()) {
+                        r.finish();
+                    }
                 }
             }
         }
@@ -264,6 +278,7 @@ public class Tile {
             follower.getPlayer().notifyOnFollowerNumberChangeListeners();
             notifyOnFollowerChangedListeners();
         }
+        count_points();
         game.nextPlayer();
     }
 

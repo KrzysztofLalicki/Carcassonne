@@ -23,7 +23,9 @@ public class Segment {
         area.addFollower(follower);
     }
     public void removeFollower() {
-        follower.remove();
+        if (follower != null) {
+            follower.remove();
+        }
         follower = null;
     }
 }
