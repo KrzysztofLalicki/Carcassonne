@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static app.model.Box.NUMBER_OF_TILES;
 import static app.model.Table.TABLE_DIMENSIONS;
 
 public class AiPlayer extends Player implements GameActionListener {
@@ -44,7 +45,31 @@ public class AiPlayer extends Player implements GameActionListener {
 
     @Override
     public void placeFollower(Tile tile, Follower follower) {
+        if(game.getCurrentPlayer() != this)
+            return;
 
+        int numberOfPlayers = game.getPlayers().size();
+        int numberOfTilesOnTable = 0;
+        for(int x = 0; x < TABLE_DIMENSIONS; x++)
+            for(int y = 0; y < TABLE_DIMENSIONS; y++)
+                if(game.getTable().getTile(x, y) != null)
+                    numberOfTilesOnTable++;
+        int tilesToPlace = (NUMBER_OF_TILES - numberOfTilesOnTable) / numberOfPlayers;
+        int freeFollowers = this.getFollowersNumber();
+
+        if(Math.min((double)freeFollowers/tilesToPlace, 1.0) < random.nextDouble())
+            tile.placeFollower(null, null);
+
+        List<Position> possiblePlacements = new ArrayList<>();
+        for(int i = 0; i < 3; i++)
+            for(int j = 0; j < 3; j++)
+                if(tile.canPlace(i, j))
+                    possiblePlacements.add(new Position(i, j));
+
+        if(possiblePlacements.isEmpty())
+            tile.placeFollower(null, null);
+
+        tile.placeFollower(follower, possiblePlacements.get(random.nextInt(possiblePlacements.size())));
     }
 
     List<AiPlayersActionsListener> aiPlayersActionsListeners = new ArrayList<>();

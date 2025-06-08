@@ -10,8 +10,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-
-import java.awt.*;
 import java.util.function.Consumer;
 
 import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
@@ -113,7 +111,7 @@ public class BoardSelectorViewModel implements AiPlayersActionsListener {
             return;
         }
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(DELAY)); // adjust delay as needed
+        PauseTransition pause = new PauseTransition(Duration.seconds(DELAY));
         pause.setOnFinished(event -> {
             tile.rotate();
             updateViewProperties();
