@@ -72,6 +72,9 @@ public class Table {
                                 if (a instanceof Road r) {
                                     r.finish();
                                 }
+                                if (a instanceof Field f) {
+                                    f.finish();
+                                }
                                 if (a instanceof Cloister c) {
                                     c.finish();
                                 }

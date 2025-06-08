@@ -48,58 +48,6 @@ public class Tile {
         notifyOnRotationChangedListeners();
     }
     public void generateSegments() {
-        if (left != 1 || centre != 1 || up != 1) {
-            Field field = new Field(this);
-            segments[0][0] = new Segment(field);
-            if (left != 1 && table.getTile(x - 1, y) != null) {
-                table.getTile(x - 1, y).getSegments()[2][0].getArea().mergeWith(field);
-            }
-            if (up != 1 && table.getTile(x, y - 1) != null) {
-                table.getTile(x, y - 1).getSegments()[0][2].getArea().mergeWith(field);
-            }
-        }
-        if (up != 1 || centre != 1 || right != 1) {
-            Field field = new Field(this);
-            segments[2][0] = new Segment(field);
-            if (up != 1 && table.getTile(x, y - 1) != null) {
-                table.getTile(x, y - 1).getSegments()[2][2].getArea().mergeWith(field);
-            }
-            if (right != 1 && table.getTile(x + 1, y) != null) {
-                table.getTile(x + 1, y).getSegments()[0][0].getArea().mergeWith(field);
-            }
-        }
-        if (left != 1 || centre != 1 || down != 1) {
-            Field field = new Field(this);
-            segments[0][2] = new Segment(field);
-            if (left != 1 && table.getTile(x - 1, y) != null) {
-                table.getTile(x - 1, y).getSegments()[2][2].getArea().mergeWith(field);
-            }
-            if (down != 1 && table.getTile(x, y + 1) != null) {
-                table.getTile(x, y + 1).getSegments()[0][0].getArea().mergeWith(field);
-            }
-        }
-        if (down != 1 || centre != 1 || right != 1) {
-            Field field = new Field(this);
-            segments[2][2] = new Segment(field);
-            if (down != 1 && table.getTile(x, y + 1) != null) {
-                table.getTile(x, y + 1).getSegments()[2][0].getArea().mergeWith(field);
-            }
-            if (right != 1 && table.getTile(x + 1, y) != null) {
-                table.getTile(x + 1, y).getSegments()[0][2].getArea().mergeWith(field);
-            }
-        }
-        if (up == 0 || (up == 1 && centre != 1)) {
-            segments[0][0].getArea().mergeWith(segments[2][0].getArea());
-        }
-        if (left == 0 || (left == 1 && centre != 1)) {
-            segments[0][0].getArea().mergeWith(segments[0][2].getArea());
-        }
-        if (right == 0 || (right == 1 && centre != 1)) {
-            segments[2][0].getArea().mergeWith(segments[2][2].getArea());
-        }
-        if (down == 0 || (down == 1 && centre != 1)) {
-            segments[0][2].getArea().mergeWith(segments[2][2].getArea());
-        }
         if (centre == 1) {
             City city = new City(this);
             if (pennant) {
@@ -254,6 +202,82 @@ public class Tile {
                     }
                 }
             }
+        }
+        if (left != 1 || centre != 1 || up != 1) {
+            Field field = new Field(this);
+            segments[0][0] = new Segment(field);
+            if (left != 1 && table.getTile(x - 1, y) != null) {
+                table.getTile(x - 1, y).getSegments()[2][0].getArea().mergeWith(field);
+            }
+            if (up != 1 && table.getTile(x, y - 1) != null) {
+                table.getTile(x, y - 1).getSegments()[0][2].getArea().mergeWith(field);
+            }
+            if (left == 1) {
+                field.addCity((City) getSegments()[0][1].getArea());
+            }
+            if (up == 1) {
+                field.addCity((City) getSegments()[1][0].getArea());
+            }
+        }
+        if (up != 1 || centre != 1 || right != 1) {
+            Field field = new Field(this);
+            segments[2][0] = new Segment(field);
+            if (up != 1 && table.getTile(x, y - 1) != null) {
+                table.getTile(x, y - 1).getSegments()[2][2].getArea().mergeWith(field);
+            }
+            if (right != 1 && table.getTile(x + 1, y) != null) {
+                table.getTile(x + 1, y).getSegments()[0][0].getArea().mergeWith(field);
+            }
+            if (up == 1) {
+                field.addCity((City) getSegments()[1][0].getArea());
+            }
+            if (right == 1) {
+                field.addCity((City) getSegments()[2][1].getArea());
+            }
+        }
+        if (left != 1 || centre != 1 || down != 1) {
+            Field field = new Field(this);
+            segments[0][2] = new Segment(field);
+            if (left != 1 && table.getTile(x - 1, y) != null) {
+                table.getTile(x - 1, y).getSegments()[2][2].getArea().mergeWith(field);
+            }
+            if (down != 1 && table.getTile(x, y + 1) != null) {
+                table.getTile(x, y + 1).getSegments()[0][0].getArea().mergeWith(field);
+            }
+            if (left == 1) {
+                field.addCity((City) getSegments()[0][1].getArea());
+            }
+            if (down == 1) {
+                field.addCity((City) getSegments()[1][2].getArea());
+            }
+        }
+        if (down != 1 || centre != 1 || right != 1) {
+            Field field = new Field(this);
+            segments[2][2] = new Segment(field);
+            if (down != 1 && table.getTile(x, y + 1) != null) {
+                table.getTile(x, y + 1).getSegments()[2][0].getArea().mergeWith(field);
+            }
+            if (right != 1 && table.getTile(x + 1, y) != null) {
+                table.getTile(x + 1, y).getSegments()[0][2].getArea().mergeWith(field);
+            }
+            if (down == 1) {
+                field.addCity((City) getSegments()[1][2].getArea());
+            }
+            if (right == 1) {
+                field.addCity((City) getSegments()[2][1].getArea());
+            }
+        }
+        if (up == 0 || (up == 1 && centre != 1)) {
+            segments[0][0].getArea().mergeWith(segments[2][0].getArea());
+        }
+        if (left == 0 || (left == 1 && centre != 1)) {
+            segments[0][0].getArea().mergeWith(segments[0][2].getArea());
+        }
+        if (right == 0 || (right == 1 && centre != 1)) {
+            segments[2][0].getArea().mergeWith(segments[2][2].getArea());
+        }
+        if (down == 0 || (down == 1 && centre != 1)) {
+            segments[0][2].getArea().mergeWith(segments[2][2].getArea());
         }
     }
     public Segment[][] getSegments() {
