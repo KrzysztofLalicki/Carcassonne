@@ -15,6 +15,7 @@ public class PlayerViewModel implements PlayerChangeListener {
     private final IntegerProperty followers = new SimpleIntegerProperty();
     private final Color color;
 
+    public Player getPlayer() { return player; }
     public String getName() { return name; }
     public IntegerProperty getScoreProperty() { return score; }
     public BooleanProperty getSelectedProperty() { return selected; }

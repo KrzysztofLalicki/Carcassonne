@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SideBarViewModel implements GameStateChangeListener {
     private final Game game;
-    private final Map<Player, PlayerViewModel> players = new HashMap<>();
+    private final List<PlayerViewModel> playersViewModels = new ArrayList<>();
     private Player selectedPlayer;
 
     private BooleanProperty isActive;
@@ -27,7 +27,7 @@ public class SideBarViewModel implements GameStateChangeListener {
     public ObjectProperty<BoardSelector.Outline> getOutlineProperty() {return outlineProperty;}
 
 
-    public List<PlayerViewModel> getPlayersViewModels() {return new ArrayList<>(players.values());}
+    public List<PlayerViewModel> getPlayersViewModels() {return playersViewModels;}
 
     public SideBarViewModel(Game game, BoardSelectorViewModel boardSelectorViewModel) {
         this.game = game;
@@ -38,15 +38,24 @@ public class SideBarViewModel implements GameStateChangeListener {
         outlineProperty = boardSelectorViewModel.getOutlineProperty();
 
         for (Player player : game.getPlayers())
-            players.put(player, new PlayerViewModel(player));
+            playersViewModels.add(new PlayerViewModel(player));
 
         updateSelectedPlayer();
     }
 
     private void updateSelectedPlayer() {
-        if(selectedPlayer != null)
-            players.get(selectedPlayer).setSelected(false);
-        players.get(game.getCurrentPlayer()).setSelected(true);
+        if (selectedPlayer != null) {
+            playersViewModels.stream()
+                    .filter(vm -> vm.getPlayer().equals(selectedPlayer))
+                    .findFirst()
+                    .ifPresent(vm -> vm.setSelected(false));
+        }
+
+        playersViewModels.stream()
+                .filter(vm -> vm.getPlayer().equals(game.getCurrentPlayer()))
+                .findFirst()
+                .ifPresent(vm -> vm.setSelected(true));
+
         selectedPlayer = game.getCurrentPlayer();
     }
 
