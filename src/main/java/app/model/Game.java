@@ -61,10 +61,12 @@ public class Game {
         gameActionListeners.add(listener);
     }
     public void notifyPlaceTileListeners(Tile tile) {
+        System.out.println("notifyPlaceTileListeners");
         for(GameActionListener listener : gameActionListeners)
             listener.placeTile(tile);
     }
     public void notifyPlaceFollowerListeners(Tile tile, Follower follower) {
+        System.out.println("notifyPlaceFollowerListeners");
         for(GameActionListener listener : gameActionListeners)
             listener.placeFollower(tile, follower);
     }

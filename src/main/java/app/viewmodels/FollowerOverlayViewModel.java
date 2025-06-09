@@ -32,11 +32,6 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
     private Follower follower;
     public void placeFollower(Follower follower) {
-        placementInit(follower);
-        KeyboardManager.getInstance().register(handleKeyEvent);
-    }
-
-    private void placementInit(Follower follower) {
         if (follower == null) {
             tile.placeFollower(null, null);
             return;
@@ -57,9 +52,9 @@ public class FollowerOverlayViewModel implements TileChangeListener {
         colorProperty.set(Color.GREEN);
 
         this.follower = follower;
+
+        KeyboardManager.getInstance().register(handleKeyEvent);
     }
-
-
 
     public void moveWithDelay(Position targetPos, Runnable onDone) {
         Position currentPos = followerPositionProperty.get();
@@ -79,8 +74,7 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
         PauseTransition pause = new PauseTransition(Duration.seconds(DELAY));
         pause.setOnFinished(event -> {
-            Position newPos = new Position(currentPos.x() + dx, currentPos.y() + dy);
-            followerPositionProperty.set(newPos);
+            move(new Position(dx, dy));
             moveWithDelay(targetPos, onDone);
         });
         pause.play();
@@ -88,12 +82,29 @@ public class FollowerOverlayViewModel implements TileChangeListener {
 
 
     public void placeAiFollower(Follower follower, Position pos) {
+        KeyboardManager.getInstance().clear();
         if(follower == null || pos == null) {
             tile.placeFollower(null, null);
             return;
         }
 
-        placementInit(follower);
+        colorProperty.set(null);
+        followerPositionProperty.set(null);
+        boolean canPlaceFollower = false;
+        for(int i=0; i<3; i++)
+            for(int j=0; j<3; j++)
+                if(tile.canPlace(i, j)) {
+                    canPlaceFollower = true;
+                    followerPositionProperty.set(new Position(i, j));
+                }
+        if(!canPlaceFollower) {
+            tile.placeFollower(null, null);
+            return;
+        }
+        colorProperty.set(Color.GREEN);
+
+        this.follower = follower;
+
         moveWithDelay(pos, () -> tile.placeFollower(follower, pos));
     }
 
@@ -107,15 +118,15 @@ public class FollowerOverlayViewModel implements TileChangeListener {
                 case LEFT -> positionChange = new Position(-1, 0);
                 case RIGHT -> positionChange = new Position(1, 0);
                 case S -> {
-                    KeyboardManager.getInstance().remove(this);
                     followerPositionProperty.set(null);
                     colorProperty.set(null);
+                    KeyboardManager.getInstance().clear();
                     tile.placeFollower(null, null);
                     return;
                 }
                 case SPACE -> {
                     if (tile.canPlace(followerPositionProperty.get().x(), followerPositionProperty.get().y())) {
-                        KeyboardManager.getInstance().remove(this);
+                        KeyboardManager.getInstance().clear();
                         tile.placeFollower(follower, followerPositionProperty.get());
                         return;
                     }
