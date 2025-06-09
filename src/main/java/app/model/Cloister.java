@@ -14,6 +14,7 @@ public class Cloister extends Area {
     }
 
     public boolean isFinished() {
+        System.out.println("surroundings " + surroundings);
         return surroundings == 9;
     }
     public void finish() {
@@ -24,5 +25,7 @@ public class Cloister extends Area {
         if (t.getFollower() != null) {
             t.getFollower().getPlayer().addPoints(surroundings);
         }
+        t.getSegments()[1][1].removeFollower();
+        followers.clear();
     }
 }

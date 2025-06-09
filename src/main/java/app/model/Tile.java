@@ -194,11 +194,8 @@ public class Tile {
             segments[1][1] = new Segment(cloister);
             for (int xx = -1; xx <= 1; xx++) {
                 for (int yy = -1; yy <= 1; yy++) {
-                    if ((x != 0 || y != 0) && table.getTile(x + xx, y + yy) != null) {
+                    if ((xx != 0 || yy != 0) && table.getTile(x + xx, y + yy) != null) {
                         cloister.surround();
-                        if (table.getTile(x + xx, y + yy).getSegments()[1][1] != null && table.getTile(x + xx, y + yy).getSegments()[1][1].getArea() instanceof Cloister c) {
-                            c.surround();
-                        }
                     }
                 }
             }
@@ -301,8 +298,16 @@ public class Tile {
         }
         for (int xx = -1; xx <= 1; xx++) {
             for (int yy = -1; yy <= 1; yy++) {
-                if (table.getTile(x + xx, y + yy) != null && table.getTile(x + xx, y + yy).getSegments()[1][1] != null && table.getTile(x + xx, y + yy).getSegments()[1][1].getArea() instanceof Cloister c && c.isFinished()) {
-                    c.finish();
+                if (xx != 0 || yy != 0) {
+                    Tile t = table.getTile(x + xx, y + yy);
+                    if (t != null) {
+                        if (t.getSegments()[1][1] != null && t.getSegments()[1][1].getArea() instanceof Cloister c) {
+                            c.surround();
+                            if (c.isFinished()) {
+                                c.finish();
+                            }
+                        }
+                    }
                 }
             }
         }

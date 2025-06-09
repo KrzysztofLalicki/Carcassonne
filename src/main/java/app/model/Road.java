@@ -18,6 +18,9 @@ public class Road extends Area {
         super.mergeWith(area);
         if (area instanceof Road road) {
             ends += road.ends;
+            if (road == this) {
+                ends = 2;
+            }
         }
     }
 
