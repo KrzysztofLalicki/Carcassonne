@@ -88,9 +88,9 @@ public class BoardSelectorViewModel {
                 case R -> tile.get().rotate();
                 case SPACE ->  {
                     if(table.canPlace(tile.get(), onTablePosition.get().x(), onTablePosition.get().y())) {
-                        KeyboardManager.getInstance().remove(this);
                         isActive.set(false);
                         updateViewProperties();
+                        KeyboardManager.getInstance().clear();
                         table.placeTile(tile.get(), onTablePosition.get().x(), onTablePosition.get().y());
                         return;
                     }
@@ -113,6 +113,7 @@ public class BoardSelectorViewModel {
             tile.rotate();
             updateViewProperties();
             rotateWithDelay(tile, remainingRotations - 1, onDone);
+//            onDone.run();
         });
         pause.play();
     }
@@ -139,6 +140,7 @@ public class BoardSelectorViewModel {
     }
 
     public void placeAiTile(Tile tile, AiPlayer.PlaceTileMove move) {
+        KeyboardManager.getInstance().clear();
         this.tile.set(tile);
         isActive.set(true);
         moveToPositionWithDelay(move.pos(), () -> rotateWithDelay(tile, move.rotation(), () -> {

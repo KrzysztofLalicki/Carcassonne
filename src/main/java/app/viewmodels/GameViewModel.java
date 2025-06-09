@@ -10,12 +10,6 @@ import java.util.function.Consumer;
 import static javafx.scene.input.KeyCode.ESCAPE;
 
 public class GameViewModel implements GameActionListener, GameStateChangeListener {
-    public enum TurnState {
-        PLACING_TILE,
-        PLACING_FOLLOWER,
-        REMOVING_FOLLOWER,
-    }
-
     public static final String PLACE_TILE_CONTROLS_TEXT = "Place a tile. CONTROLS: Arrow keys to navigate, R to rotate, Space to place a tile.";
     public static final String AI_PLACE_TILE = "AI is placing a tile. Wait for your move.";
     public static final String PLACE_FOLLOWER_CONTROLS_TEXT = "Place a follower. CONTROLS: Arrow keys to navigate, S to skip, Space to place a follower.";
@@ -62,6 +56,7 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
         else
             bottomText.set(AI_PLACE_TILE);
 
+        System.out.printf("\t%s placing tile\n", game.getCurrentPlayer().getName() );
         if(game.getCurrentPlayer() instanceof HumanPlayer)
             boardViewModel.placeTile(tile);
         else if(game.getCurrentPlayer() instanceof AiPlayer)
@@ -75,9 +70,10 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
         else
             bottomText.set(AI_PLACE_FOLLOWER);
 
+        System.out.printf("\t%s placing follower\n", game.getCurrentPlayer().getName() );
         if(game.getCurrentPlayer() instanceof HumanPlayer)
             boardViewModel.placeFollower(tile, follower);
-        if(game.getCurrentPlayer() instanceof AiPlayer)
+        else if(game.getCurrentPlayer() instanceof AiPlayer)
             boardViewModel.placeAiFollower(tile, follower, ((AiPlayer) game.getCurrentPlayer()).getFollowerPlacement(tile, follower));
     }
 

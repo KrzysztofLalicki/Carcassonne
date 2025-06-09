@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 public class KeyboardManager {
     private static final KeyboardManager INSTANCE = new KeyboardManager();
 
-    List<Consumer<KeyEvent>> activeKeyEventsHandlers = new ArrayList<>();
+    Consumer<KeyEvent> activeKeyEventHandler = null;
 
     private KeyboardManager() {}
 
@@ -19,14 +19,14 @@ public class KeyboardManager {
         return INSTANCE;
     }
 
-    public synchronized void register(Consumer<KeyEvent> keyEventHandler) {
-        if(!activeKeyEventsHandlers.contains(keyEventHandler))
-            activeKeyEventsHandlers.add(keyEventHandler);
+    public void register(Consumer<KeyEvent> keyEventHandler) {
+        activeKeyEventHandler = keyEventHandler;
     }
 
-    public synchronized void remove(Consumer<KeyEvent> keyEventHandler) {
-        activeKeyEventsHandlers.remove(keyEventHandler);
+    public void clear() {
+        activeKeyEventHandler = null;
     }
+
 
     public void installOn(Scene scene) {
         scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKey);
@@ -34,12 +34,7 @@ public class KeyboardManager {
     }
 
     private void handleKey(KeyEvent event) {
-        List<Consumer<KeyEvent>> copy;
-        synchronized (this) {
-            copy = new ArrayList<>(activeKeyEventsHandlers);
-        }
-        for (Consumer<KeyEvent> handler : copy) {
-            handler.accept(event);
-        }
+        if(activeKeyEventHandler != null)
+            activeKeyEventHandler.accept(event);
     }
 }
