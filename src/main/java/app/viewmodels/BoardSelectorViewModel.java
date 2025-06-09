@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import static app.view.AbstractBoardView.DISPLAYED_GRID_SIZE;
 
 public class BoardSelectorViewModel {
-    private static double DELAY = 0.5;
+    private static double DELAY = 0.4;
 
     private BoardViewModel boardViewModel;
     private Table table;

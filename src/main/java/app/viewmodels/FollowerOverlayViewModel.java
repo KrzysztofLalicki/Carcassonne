@@ -14,7 +14,7 @@ import javafx.util.Duration;
 import java.util.function.Consumer;
 
 public class FollowerOverlayViewModel implements TileChangeListener {
-    private static final double DELAY = 0.2;
+    private static final double DELAY = 0.3;
 
     private ObjectProperty<Color> colorProperty = new SimpleObjectProperty<>();
     private ObjectProperty<Position> followerPositionProperty = new SimpleObjectProperty<>();
