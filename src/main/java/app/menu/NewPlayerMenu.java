@@ -108,11 +108,24 @@ public class NewPlayerMenu extends StackPane {
                 level += 30;
             }
         }
+        Button changeAiHuman = new CreateStyledButton("Człek");
+        changeAiHuman.setTranslateY(30);
+        changeAiHuman.setOnAction(e -> {
+            if(changeAiHuman.getText() == "Człek") {
+                changeAiHuman.setText("Ai");
+                viewModelMenu.setCzy_human(false);
+            }else {
+                changeAiHuman.setText("Człek");
+                viewModelMenu.setCzy_human(true);
+            }
+        });
+        this.getChildren().add(changeAiHuman);
         Button returnToMenu = new CreateStyledButton("Anuluj");
-        returnToMenu.setTranslateY(30);
+        returnToMenu.setTranslateY(80);
         returnToMenu.setOnAction(e -> {
             viewModelMenu.BackToMainMenu();
         });
+
         this.getChildren().add(returnToMenu);
         if(!text.isEmpty()){
             Label incorrectPlayerName = new Label(text);

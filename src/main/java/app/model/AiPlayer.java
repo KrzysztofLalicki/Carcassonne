@@ -15,13 +15,14 @@ public class AiPlayer extends Player {
 
     private Game game;
 
-    public AiPlayer(Color color, Game game) {
+    public AiPlayer(Color color, Game game, String name) {
+        this.name = name;
         this.color = color;
-        while(name == null) {
+        /*while(name == null) {
             name = names[random.nextInt(names.length)];
             if(game.getPlayers().stream().map(Player::getName).anyMatch(name::equals))
                 name = null;
-        }
+        }*/
         this.game = game;
     }
 

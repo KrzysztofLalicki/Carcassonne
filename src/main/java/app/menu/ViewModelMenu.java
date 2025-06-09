@@ -20,6 +20,7 @@ public class ViewModelMenu {
     private Game game;
     private Stage primaryStage;
     Color currentColor = Color.TRANSPARENT;
+    boolean czy_human = true;
 
     public ViewModelMenu(Game game, Stage primaryStage) {
         this.game = game;
@@ -56,6 +57,10 @@ public class ViewModelMenu {
         }
     }
 
+    public void setCzy_human(boolean czy_human) {
+        this.czy_human = czy_human;
+    }
+
     public void StarGame(){
         if (game.getPlayers().size() < 2) {
             StackPane menuLayout = new MainMenu("Za mała ilość graczy",this);
@@ -63,10 +68,8 @@ public class ViewModelMenu {
         } else {  // Zaczynamy rozgrywke
             primaryStage.setResizable(false);
 
-            //TODO: integrate adding ai players into menu
-            game.addPlayer(new AiPlayer(Color.PINK, game));
 
-            GameViewModel gameViewModel = new GameViewModel(game);
+            GameViewModel gameViewModel = new GameViewModel(game,primaryStage,this);
             GameView gameView = new GameView(gameViewModel);
 
 
@@ -120,22 +123,43 @@ public class ViewModelMenu {
             primaryStage.getScene().setRoot(newPlayerthis);
         }
         else{
-            if(!currentColor.equals(Color.TRANSPARENT) && !PlayersContains(currentColor)) {
-            game.getPlayers().add(new HumanPlayer(PlayerName,currentColor));
-            StackPane menu = new MainMenu("",this);
-            primaryStage.getScene().setRoot(menu);
+            if(czy_human) {
+                if (!currentColor.equals(Color.TRANSPARENT) && !PlayersContains(currentColor)) {
+                    game.getPlayers().add(new HumanPlayer(PlayerName, currentColor));
+                    StackPane menu = new MainMenu("", this);
+                    primaryStage.getScene().setRoot(menu);
+                } else {
+                    Color colors[] = {Color.ORANGE, Color.WHITE, Color.PURPLE, Color.BLUE, Color.BLACK, Color.LIME};
+                    for (int i = 0; i < colors.length; i++) {
+                        if (!PlayersContains(colors[i])) {
+                            currentColor = colors[i];
+                            break;
+                        }
+                    }
+                    game.getPlayers().add(new HumanPlayer(PlayerName, currentColor));
+                    StackPane menu = new MainMenu("", this);
+                    primaryStage.getScene().setRoot(menu);
+                }
             }
             else{
-                Color colors[] = {Color.ORANGE,Color.WHITE,Color.PURPLE,Color.BLUE,Color.BLACK,Color.LIME};
-                for(int i = 0; i < colors.length; i++) {
-                    if(!PlayersContains(colors[i])) {
-                        currentColor = colors[i];
-                        break;
+                if (!currentColor.equals(Color.TRANSPARENT) && !PlayersContains(currentColor)) {
+                    game.getPlayers().add(new AiPlayer(currentColor, game, PlayerName));
+                    StackPane menu = new MainMenu("", this);
+                    primaryStage.getScene().setRoot(menu);
+                } else {
+                    Color colors[] = {Color.ORANGE, Color.WHITE, Color.PURPLE, Color.BLUE, Color.BLACK, Color.LIME};
+                    for (int i = 0; i < colors.length; i++) {
+                        if (!PlayersContains(colors[i])) {
+                            currentColor = colors[i];
+                            break;
+                        }
                     }
+                    game.getPlayers().add(new AiPlayer(currentColor, game, PlayerName));
+                    StackPane menu = new MainMenu("", this);
+                    primaryStage.getScene().setRoot(menu);
                 }
-                game.getPlayers().add(new HumanPlayer(PlayerName,currentColor));
-                StackPane menu = new MainMenu("",this);
-                primaryStage.getScene().setRoot(menu);
+                czy_human = true;
+
             }
         }
     }
@@ -179,6 +203,11 @@ public class ViewModelMenu {
             StackPane removeLayout = new RemovePlayerMenu("",this);
             primaryStage.getScene().setRoot(removeLayout);
         }
+    }
+
+    public void PostGameMenugotoMain(){
+        game = new Game();
+        primaryStage.getScene().setRoot(new OpenMenu(this));
     }
 
 

@@ -1,10 +1,16 @@
 package app.viewmodels;
 
+import app.menu.PostGameMenu;
+import app.menu.ViewModelMenu;
 import app.model.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+
+import javax.swing.text.View;
 import java.util.function.Consumer;
 
 import static javafx.scene.input.KeyCode.ESCAPE;
@@ -21,10 +27,15 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
     private final SideBarViewModel sideBarViewModel;
     private final BoardViewModel boardViewModel;
 
+    private final Stage primaryStage;
+    private final ViewModelMenu viewModelMenu;
+
     private final StringProperty bottomText = new SimpleStringProperty(PLACE_TILE_CONTROLS_TEXT);
 
-    public GameViewModel(Game game) {
+    public GameViewModel(Game game, Stage primaryStage, ViewModelMenu viewModelMenu) {
         this.game = game;
+        this.primaryStage = primaryStage;
+        this.viewModelMenu = viewModelMenu;
         game.addGameActionListener(this);
         game.addGameStateChangeListener(this);
         boardViewModel = new BoardViewModel(game);
@@ -37,8 +48,9 @@ public class GameViewModel implements GameActionListener, GameStateChangeListene
     public StringProperty getBottomTextProperty() { return bottomText; }
 
     public void escape() {
-        //TODO: getBackToMenu
-        Platform.exit();
+        primaryStage.setResizable(true);
+        Scene scene = new Scene(new PostGameMenu(viewModelMenu),800,600);
+        primaryStage.setScene(scene);
     }
 
     private final Consumer<KeyEvent> handleKeyEvent = new Consumer<KeyEvent>() {
