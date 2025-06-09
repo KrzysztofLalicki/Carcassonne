@@ -40,6 +40,7 @@ public class Game {
     }
 
     public void end() {
+        table.endGame();
         notifyOnGameEndListeners();
     }
 
