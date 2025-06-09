@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class SideBarView extends BorderPane {
     private StackPane tilePreview;
@@ -29,14 +30,8 @@ public class SideBarView extends BorderPane {
         setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
 
-        VBox playersBox = new VBox(4);
+        VBox playersBox = new VBox(15);
         playersBox.setAlignment(Pos.TOP_LEFT);
-
-        Label titleLabel = new Label("PLAYERS");
-        titleLabel.setTextFill(Color.WHITE);
-        titleLabel.setFont(Font.font("Monospaced", 14));
-        titleLabel.setUnderline(true);
-        playersBox.getChildren().add(titleLabel);
 
         for (PlayerViewModel pvm : viewModel.getPlayersViewModels()) {
             PlayerView playerView = new PlayerView(pvm);

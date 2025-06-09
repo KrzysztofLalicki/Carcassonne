@@ -17,7 +17,7 @@ public class GameView extends BorderPane {
         setCenter(new BoardView(gameViewModel.getBoardViewModel()));
 
         Label bottomLabel = new Label();
-        bottomLabel.setFont(Font.font("Monospaced"));
+        bottomLabel.setFont(Font.font("Monospaced", 16));
         bottomLabel.textProperty().bind(gameViewModel.getBottomTextProperty());
         setBottom(bottomLabel);
         setAlignment(bottomLabel, Pos.CENTER);
