@@ -19,7 +19,7 @@ public class TileView extends StackPane {
     public final static String TILE_IMAGE_DIRECTORY = "/app/img/tiles/";
     public final static String TILE_IMAGE_EXTENSION = ".png";
 
-    public static final IntegerProperty TILE_SIZE = new SimpleIntegerProperty(80);
+    public static final IntegerProperty TILE_SIZE = new SimpleIntegerProperty(60);
 
     public TileView(TileViewModel tileViewModel) {
         minWidthProperty().bind(TILE_SIZE);

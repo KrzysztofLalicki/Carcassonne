@@ -36,12 +36,17 @@ public class Road extends Area {
         }
         HashMap<Player, Integer> owners = new HashMap<>();
         for (Follower follower : followers) {
-            owners.put(follower.getPlayer(), owners.getOrDefault(follower.getPlayer(), 1));
+            if (owners.containsKey(follower.getPlayer())) {
+                owners.replace(follower.getPlayer(), owners.get(follower.getPlayer()) + 1);
+            }
+            else {
+                owners.put(follower.getPlayer(), 1);
+            }
         }
         int max = max(owners.values());
-        for (Map.Entry<Player, Integer> pair : owners.entrySet()) {
-            if (pair.getValue() == max) {
-                pair.getKey().addPoints(tiles.size());
+        for (Map.Entry<Player, Integer> entry : owners.entrySet()) {
+            if (entry.getValue() == max) {
+                entry.getKey().addPoints(tiles.size());
             }
         }
         for (Segment segment : segments) {

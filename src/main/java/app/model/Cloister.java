@@ -14,7 +14,6 @@ public class Cloister extends Area {
     }
 
     public boolean isFinished() {
-        System.out.println("surroundings " + surroundings);
         return surroundings == 9;
     }
     public void finish() {
